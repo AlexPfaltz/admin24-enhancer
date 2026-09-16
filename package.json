@@ -1,0 +1,25 @@
+{
+  "name": "admin24-enhancer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Admin24 interface improvements: full ticket names in the mobile layout, search in the 'Assignee' field, and visual themes.",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && npm run build:firefox && npm run build:chrome",
+    "build:firefox": "node esbuild.config.mjs firefox",
+    "build:chrome": "node esbuild.config.mjs chrome",
+    "watch:firefox": "node esbuild.config.mjs firefox --watch",
+    "watch:chrome": "node esbuild.config.mjs chrome --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/webextension-polyfill": "^0.12.1",
+    "esbuild": "^0.28.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.12.0"
+  }
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin24 Enhancer</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <h1 class="popup__title">Admin24 Enhancer</h1>
+
+      <label class="popup__row">
+        <input type="checkbox" id="enabled" />
+        <span>Включить перенос текста на бейдже</span>
+      </label>
+
+      <label class="popup__row">
+        <input type="checkbox" id="simplify-titles" />
+        <span>Упрощать названия заявок</span>
+      </label>
+
+      <label class="popup__row">
+        <input type="checkbox" id="executor-fix" />
+        <span>Добавить поиск в поле «Ответственный»</span>
+      </label>
+
+      <fieldset class="popup__fieldset">
+        <legend class="popup__legend">Тема</legend>
+
+        <label class="popup__radio">
+          <input type="radio" name="theme-mode" value="auto" />
+          <span>Авто (по системной)</span>
+        </label>
+        <label class="popup__radio">
+          <input type="radio" name="theme-mode" value="fixed" />
+          <span>Пользовательская</span>
+        </label>
+        <label class="popup__radio">
+          <input type="radio" name="theme-mode" value="native" />
+          <span>Оригинальная (Admin24)</span>
+        </label>
+
+        <label class="popup__theme-row">
+          <span>Тема:</span>
+          <select id="theme-id"></select>
+        </label>
+      </fieldset>
+
+      <p class="popup__hint" id="hint">
+        Изменения применяются на открытых вкладках Admin24 сразу.
+      </p>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

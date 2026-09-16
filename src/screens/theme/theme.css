@@ -1,0 +1,1311 @@
+/*
+ * Тёмная тема Admin24 Ticket Enricher.
+ * Активируется атрибутом [data-a24-theme] на <html>.
+ *
+ * Принципы:
+ *  1. Перекрашиваем ВСЕ контейнерные поверхности Vuetify.
+ *  2. Не трогаем inline-цвета статусов, логотипы, картинки.
+ *  3. Значения цветов — только через var(--a24-*), определённые ниже.
+ *  4. Селекторы умышленно «широкие» там, где Vuetify использует
+ *     утилитарные классы (.bg-white, .v-card, .v-sheet и т.п.).
+ */
+
+html[data-a24-theme] {
+  --a24-bg: var(--p-bg);
+  --a24-bg-elevated: var(--p-bg-elevated);
+  --a24-bg-sunken: var(--p-bg-sunken);
+  --a24-surface: var(--p-surface);
+  --a24-surface-2: var(--p-surface2);
+  --a24-surface-hover: var(--p-surface-hover);
+  --a24-border: var(--p-border);
+  --a24-border-strong: var(--p-border-strong);
+  --a24-text: var(--p-text);
+  --a24-text-muted: var(--p-text-muted);
+  --a24-text-dim: var(--p-text-dim);
+  --a24-accent: var(--p-accent);
+  --a24-danger: var(--p-danger);
+  --a24-success: var(--p-success);
+  --a24-warning: var(--p-warning);
+  --a24-info: var(--p-info);
+  --a24-status-new: var(--p-status-new, #2a5b66);
+  --a24-status-warning: var(--p-status-warning, #5c5215);
+  --a24-status-ok: var(--p-status-ok, #2d4a2c);
+  --a24-status-own: var(--p-status-own, #1e3a55);
+  --a24-status-neutral: var(--p-status-neutral, #242a30);
+
+  background: var(--a24-bg);
+}
+
+/* ============================================================
+   Базовые поверхности страницы
+   ============================================================ */
+
+html[data-a24-theme] body,
+html[data-a24-theme] .v-application,
+html[data-a24-theme] .v-application__wrap,
+html[data-a24-theme] .v-container,
+html[data-a24-theme] .admin--container,
+html[data-a24-theme] main.v-main,
+html[data-a24-theme] .admin--main,
+html[data-a24-theme] .admin--content {
+  background: var(--a24-bg) !important;
+  color: var(--a24-text);
+}
+
+/* ============================================================
+   Шапка, боковое меню, тулбар
+   ============================================================ */
+
+html[data-a24-theme] .v-toolbar,
+html[data-a24-theme] .v-app-bar,
+html[data-a24-theme] .v-app-bar__content,
+html[data-a24-theme] .v-toolbar__content,
+html[data-a24-theme] .desktop-app-bar,
+html[data-a24-theme] header.admin-horizontal-menu,
+html[data-a24-theme] .admin-horizontal-menu-container {
+  background: var(--a24-bg-elevated) !important;
+  color: var(--a24-text);
+  border-color: var(--a24-border);
+}
+
+html[data-a24-theme] .v-navigation-drawer,
+html[data-a24-theme] .admin-vertical-menu,
+html[data-a24-theme] .v-navigation-drawer__content {
+  background: var(--a24-bg-elevated) !important;
+  color: var(--a24-text);
+}
+
+html[data-a24-theme] .admin-vertical-menu__main,
+html[data-a24-theme] .admin-vertical-menu__footer {
+  background: transparent !important;
+}
+
+/* ============================================================
+   Универсальные поверхности Vuetify
+   ============================================================ */
+
+html[data-a24-theme] .v-card,
+html[data-a24-theme] .v-sheet,
+html[data-a24-theme] .v-list,
+html[data-a24-theme] .v-list-item,
+html[data-a24-theme] .v-expansion-panel,
+html[data-a24-theme] .v-expansion-panel-title,
+html[data-a24-theme] .v-expansion-panel-text,
+html[data-a24-theme] .v-table,
+html[data-a24-theme] .v-data-table,
+html[data-a24-theme] .v-tabs,
+html[data-a24-theme] .v-tab,
+html[data-a24-theme] .v-window,
+html[data-a24-theme] .v-window-item,
+html[data-a24-theme] .v-footer {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-sheet--tile,
+html[data-a24-theme] .v-toolbar.v-sheet,
+html[data-a24-theme] .v-app-bar.v-sheet {
+  background: var(--a24-bg-elevated) !important;
+}
+
+/* Диалоги и меню */
+html[data-a24-theme] .v-overlay__content,
+html[data-a24-theme] .v-menu > .v-overlay__content,
+html[data-a24-theme] .v-menu > .v-overlay__content > .v-list,
+html[data-a24-theme] .v-dialog,
+html[data-a24-theme] .v-dialog .v-card {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border);
+}
+
+html[data-a24-theme] .v-tooltip .v-overlay__content {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border-strong);
+}
+
+/* ============================================================
+   Карточки, «.bg-white» и прочие утилитарные фоны
+   ============================================================ */
+
+html[data-a24-theme] .bg-white,
+html[data-a24-theme] .v-field--has-background.bg-white,
+html[data-a24-theme] .v-card.bg-white,
+html[data-a24-theme] .v-sheet.bg-white {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .bg-transparent {
+  background: transparent !important;
+}
+
+/* Виджеты дашборда — они лежат как .v-sheet без .v-card */
+html[data-a24-theme] .v-responsive.v-img {
+  background: transparent;
+}
+
+/* ============================================================
+   Поля ввода / селекты / автокомплиты
+   ============================================================ */
+
+html[data-a24-theme] .v-field,
+html[data-a24-theme] .v-field__field,
+html[data-a24-theme] .v-field__input,
+html[data-a24-theme] .v-input__control,
+html[data-a24-theme] .v-input__slot {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-field--variant-outlined .v-field__outline,
+html[data-a24-theme] .v-field--variant-outlined .v-field__outline__start,
+html[data-a24-theme] .v-field--variant-outlined .v-field__outline__end,
+html[data-a24-theme] .v-field--variant-outlined .v-field__outline__notch {
+  color: var(--a24-border-strong) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .v-field--focused .v-field__outline {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .v-field__input input,
+html[data-a24-theme] input.v-field__input,
+html[data-a24-theme] textarea.v-field__input,
+html[data-a24-theme] .v-select__selection,
+html[data-a24-theme] .v-select__selection-text,
+html[data-a24-theme] .v-autocomplete__selection,
+html[data-a24-theme] .v-autocomplete__selection-text {
+  color: var(--a24-text) !important;
+  caret-color: var(--a24-accent);
+}
+
+html[data-a24-theme] .v-field__input::placeholder,
+html[data-a24-theme] input.v-field__input::placeholder {
+  color: var(--a24-text-dim) !important;
+}
+
+html[data-a24-theme] .v-label,
+html[data-a24-theme] .v-field-label,
+html[data-a24-theme] .v-field-label--floating {
+  color: var(--a24-text-muted) !important;
+}
+
+/* ============================================================
+   Чипы
+   ============================================================ */
+
+html[data-a24-theme] .v-chip {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .v-chip--variant-outlined {
+  background: transparent !important;
+  border: 1px solid var(--a24-border-strong) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-chip--variant-tonal {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-chip--variant-flat {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-chip .v-chip__content,
+html[data-a24-theme] .v-chip__content {
+  color: inherit !important;
+}
+
+/* Но НЕ трогаем бейджи со своими bg-* (status, priority, tariff). */
+html[data-a24-theme] .v-chip.bg-primary,
+html[data-a24-theme] .v-chip.bg-success,
+html[data-a24-theme] .v-chip.bg-error,
+html[data-a24-theme] .v-chip.bg-warning,
+html[data-a24-theme] .v-chip.bg-info,
+html[data-a24-theme] .v-chip.bg-red,
+html[data-a24-theme] .v-chip.bg-green,
+html[data-a24-theme] .v-chip.bg-orange {
+  /* цвет фона оставляем — приходит из --v-theme-* через .bg-* */
+  color: #fff;
+}
+
+html[data-a24-theme] .v-chip[style*="background-color"] {
+  /* chip с inline background-color (например теги с цветами) — оставляем */
+  color: inherit;
+}
+
+/* ============================================================
+   Кнопки
+   ============================================================ */
+
+html[data-a24-theme] .v-btn--variant-text,
+html[data-a24-theme] .v-btn--variant-plain {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-btn--variant-text.text-primary,
+html[data-a24-theme] .v-btn--variant-plain.text-primary {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .v-btn--variant-text.text-red,
+html[data-a24-theme] .v-btn--variant-text.text-error {
+  color: var(--a24-danger) !important;
+}
+
+html[data-a24-theme] .v-btn--variant-outlined {
+  background: transparent !important;
+  border-color: var(--a24-border-strong) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-btn--variant-elevated:not([class*="bg-"]),
+html[data-a24-theme] .v-btn--variant-flat:not([class*="bg-"]) {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border);
+}
+
+/* «Специальные» кнопки — не сломать цвет action */
+html[data-a24-theme] .v-btn.bg-success {
+  background: rgb(var(--v-theme-success)) !important;
+  color: #fff !important;
+}
+
+html[data-a24-theme] .v-btn.bg-error,
+html[data-a24-theme] .v-btn.bg-red {
+  background: rgb(var(--v-theme-error, 229, 57, 53)) !important;
+  color: #fff !important;
+}
+
+/* ============================================================
+   Аватары, дивайдеры, иконки
+   ============================================================ */
+
+html[data-a24-theme] .v-avatar {
+  background: var(--a24-surface-2);
+  color: var(--a24-text-muted);
+}
+
+html[data-a24-theme] .v-divider,
+html[data-a24-theme] .admin-divider,
+html[data-a24-theme] .a-divider {
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-icon {
+  /* у Vuetify иконки наследуют color, но у text-* утилит он свой.
+     Общий цвет — на всякий случай; status-icon не трогаем (у них style) */
+}
+
+html[data-a24-theme] .v-list-item-title,
+html[data-a24-theme] .v-list-item-subtitle {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-list-item:hover,
+html[data-a24-theme] .v-list-item--link:hover,
+html[data-a24-theme] .a-list-item:hover,
+html[data-a24-theme] .admin-menu-item__content:hover {
+  background: var(--a24-surface-hover) !important;
+}
+
+html[data-a24-theme] .admin-menu-item__title-text,
+html[data-a24-theme] .admin-logo-title span,
+html[data-a24-theme] .admin-menu-settings__title {
+  color: var(--a24-text);
+}
+
+html[data-a24-theme] .admin-menu-item--active .admin-menu-item__content--active {
+  background: var(--a24-surface-2) !important;
+}
+
+/* ============================================================
+   Чекбоксы / радио / свитчи
+   ============================================================ */
+
+html[data-a24-theme] .v-selection-control__input > .v-icon,
+html[data-a24-theme] .v-checkbox-btn .v-icon {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .v-selection-control--dirty .v-selection-control__input > .v-icon,
+html[data-a24-theme] .v-checkbox-btn .v-selection-control--dirty .v-icon {
+  color: var(--a24-accent) !important;
+}
+
+/* ============================================================
+   Таблицы
+   ============================================================ */
+
+html[data-a24-theme] .v-data-table__th,
+html[data-a24-theme] .v-data-table-header th,
+html[data-a24-theme] .v-table__th {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text-muted) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-data-table__td,
+html[data-a24-theme] .v-table__td {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* ============================================================
+   Список заявок — семантика статусов (только тёмные темы).
+   В светлой теме цвета остаются стоковыми (Admin24 задаёт
+   их inline через Vue-scoped переменную --b*).
+   ============================================================ */
+
+html[data-a24-theme] .tickets-mobile-template,
+html[data-a24-theme] .tickets-list {
+  background: transparent;
+}
+
+html[data-a24-theme] .ticket {
+  /* фон НЕ задаём — он приходит inline через --b* и кодирует статус */
+  color: var(--a24-text);
+  border: 1px solid var(--a24-border);
+  border-radius: 6px;
+}
+
+/* В тёмной теме перекрашиваем фон карточки в тёмный вариант
+   того же оттенка. Селектор ловит известные значения inline
+   --b*-переменной; незнакомые — гасим в surface-2 через fallback. */
+
+html[data-a24-theme-kind="dark"] .ticket[style*="#8EE7EB"] {
+  background: var(--a24-status-new) !important;
+}
+html[data-a24-theme-kind="dark"] .ticket[style*="#FDF304"] {
+  background: var(--a24-status-warning) !important;
+}
+html[data-a24-theme-kind="dark"] .ticket[style*="#BDE2AC"] {
+  background: var(--a24-status-ok) !important;
+}
+html[data-a24-theme-kind="dark"] .ticket[style*="#FFFFFF"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#ffffff"] {
+  background: var(--a24-surface) !important;
+}
+
+/* Fallback: любая карточка с inline --b* (значит статус цветной),
+   но с неизвестным цветом — приглушаем. */
+html[data-a24-theme-kind="dark"] .ticket[style*="--b"]:not([style*="#8EE7EB"]):not([style*="#FDF304"]):not([style*="#BDE2AC"]):not([style*="#FFFFFF"]):not([style*="#ffffff"]) {
+  background: var(--a24-surface-2) !important;
+}
+
+/* Текст и чипы на карточке — светлые в тёмной теме, независимо
+   от того, перекрашен фон или остался стоковым. */
+html[data-a24-theme-kind="dark"] .ticket,
+html[data-a24-theme-kind="dark"] .ticket * {
+  color: var(--a24-text);
+}
+
+html[data-a24-theme-kind="dark"] .ticket a.ticket-title,
+html[data-a24-theme-kind="dark"] .ticket a.ticket-title > span,
+html[data-a24-theme-kind="dark"] .ticket a.ticket-number {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .ticket .ticket-date,
+html[data-a24-theme] .ticket .v-chip.ticket-date {
+  background: transparent !important;
+  border-color: var(--a24-border-strong) !important;
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .ticket .ticket-property .property-title {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .ticket .ticket-property .property-text {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .tickets-list-pagination {
+  color: var(--a24-text-muted);
+}
+
+html[data-a24-theme] .tickets-list .ticket[data-a24-clinic] a.ticket-title::before {
+  background: var(--p-accent-soft, #2a3550);
+  color: var(--p-accent-on-soft, #b8c8e8);
+}
+
+html[data-a24-theme] .tickets-list .ticket[data-a24-today] .ticket-date::after {
+  color: var(--a24-success);
+}
+
+/* ============================================================
+   Дашборд / виджеты
+   ============================================================ */
+
+html[data-a24-theme] .dashboard .v-card,
+html[data-a24-theme] .dashboard-widget,
+html[data-a24-theme] .v-card__title,
+html[data-a24-theme] .v-card__text,
+html[data-a24-theme] .v-card__subtitle {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-card-title.text-grey,
+html[data-a24-theme] .v-card-subtitle.text-grey {
+  color: var(--a24-text-muted) !important;
+}
+
+/* ============================================================
+   Скроллбар
+   ============================================================ */
+
+html[data-a24-theme] * {
+  scrollbar-color: var(--a24-border-strong) transparent;
+}
+
+html[data-a24-theme] ::-webkit-scrollbar-thumb {
+  background: var(--a24-border-strong);
+  border-radius: 4px;
+}
+
+html[data-a24-theme] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* ============================================================
+   Переопределение Vuetify-переменных темы.
+   Admin24 использует .v-theme--myCustomLightTheme, где
+   --v-theme-* заданы светлыми. Перебиваем их на тёмные,
+   и тогда .text-*, .bg-*, компоненты Vuetify сами станут
+   корректными. Один класс + html-атрибут = выше специфичность.
+   ============================================================ */
+
+html[data-a24-theme-kind="dark"] .v-theme--myCustomLightTheme,
+html[data-a24-theme-kind="dark"] .v-theme--light {
+  color-scheme: dark;
+
+  /* Основные поверхности */
+  --v-theme-background: 18, 20, 23;              /* #121417 */
+  --v-theme-background-overlay-multiplier: 1;
+  --v-theme-surface: 30, 34, 38;                 /* #1e2226 */
+  --v-theme-surface-overlay-multiplier: 1;
+  --v-theme-surface-bright: 42, 49, 56;          /* #2a3138 */
+  --v-theme-surface-bright-overlay-multiplier: 1;
+  --v-theme-surface-light: 36, 42, 48;           /* #242a30 */
+  --v-theme-surface-light-overlay-multiplier: 1;
+  --v-theme-surface-variant: 44, 50, 56;         /* #2c3238 */
+  --v-theme-surface-variant-overlay-multiplier: 1;
+
+  /* Текст */
+  --v-theme-on-background: 230, 232, 235;        /* #e6e8eb */
+  --v-theme-on-surface: 230, 232, 235;           /* #e6e8eb */
+  --v-theme-on-surface-bright: 230, 232, 235;
+  --v-theme-on-surface-light: 230, 232, 235;
+  --v-theme-on-surface-variant: 154, 161, 169;   /* #9aa1a9 */
+
+  /* Акценты — не меняем, они работают на любом фоне */
+  /* --v-theme-primary: оставляем 25,118,210 для синего */
+  --v-theme-primary: 106, 169, 255;              /* #6aa9ff */
+  --v-theme-primary-overlay-multiplier: 1;
+
+  /* Системные */
+  --v-border-color: 255, 255, 255;
+  --v-border-opacity: 0.12;
+
+  --v-high-emphasis-opacity: 1;
+  --v-medium-emphasis-opacity: 0.75;
+  --v-disabled-opacity: 0.5;
+  --v-idle-opacity: 0.1;
+  --v-hover-opacity: 0.06;
+  --v-focus-opacity: 0.12;
+  --v-selected-opacity: 0.1;
+  --v-activated-opacity: 0.12;
+  --v-pressed-opacity: 0.16;
+  --v-dragged-opacity: 0.08;
+
+  --v-theme-kbd: 66, 66, 66;
+  --v-theme-on-kbd: 255, 255, 255;
+  --v-theme-code: 52, 52, 52;
+  --v-theme-on-code: 204, 204, 204;
+}
+/* Панель инструментов на списке заявок */
+html[data-a24-theme] .tickets-mobile-template .toolbar,
+html[data-a24-theme] .tickets-mobile-template .toolbar-buttons,
+html[data-a24-theme] .tickets-mobile-template .toolbar-filters-panel {
+  background: var(--a24-bg) !important;
+  color: var(--a24-text);
+}
+
+html[data-a24-theme] .tickets-mobile-template .toolbar .v-btn--variant-text {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .tickets-mobile-template .toolbar .v-btn--variant-elevated {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border) !important;
+}
+html[data-a24-theme] .v-field__outline,
+html[data-a24-theme] .v-field__outline__start,
+html[data-a24-theme] .v-field__outline__end,
+html[data-a24-theme] .v-field__outline__notch {
+  --v-field-border-opacity: 0.4;
+  color: var(--a24-border-strong) !important;
+}
+html[data-a24-theme] .v-label,
+html[data-a24-theme] .v-field-label,
+html[data-a24-theme] .v-field__input::placeholder {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .v-field--focused .v-label,
+html[data-a24-theme] .v-field--active .v-field-label {
+  color: var(--a24-accent) !important;
+}
+/* ============================================================
+   Шаг 4.7 — хардкод-переопределения.
+   Admin24 во многих местах задаёт цвета не через Vuetify-переменные,
+   а напрямую (inline style="color: rgb(...)" или CSS-классы без var).
+   Это финальный слой: бьёт и по утилитам, и по inline-стилям.
+   ============================================================ */
+
+/* --- Inline-цвета текста (перебиваем через [style*=...]) --- */
+
+html[data-a24-theme] [style*="color: rgb(51, 51, 51)"],
+html[data-a24-theme] [style*="color: rgb(51,51,51)"] {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] [style*="color: rgb(119, 119, 119)"],
+html[data-a24-theme] [style*="color: rgb(119,119,119)"],
+html[data-a24-theme] [style*="color: rgb(130, 130, 130)"],
+html[data-a24-theme] [style*="color: rgb(130,130,130)"],
+html[data-a24-theme] [style*="color: rgba(0, 0, 0, 0.54)"],
+html[data-a24-theme] [style*="color: rgba(0,0,0,0.54)"] {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] [style*="color: black"],
+html[data-a24-theme] [style*="color: #000"],
+html[data-a24-theme] [style*="color:#000"] {
+  color: var(--a24-text) !important;
+}
+
+/* --- Telegram-мессенджер: пузыри сообщений --- */
+
+/* Тёмный текст на светлом фоне пузырей → сделать светлым */
+html[data-a24-theme] .v-card.text-blue.lighten-5,
+html[data-a24-theme] .v-card.text-grey.lighten-5 {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-card.text-blue.lighten-5 .v-card-text,
+html[data-a24-theme] .v-card.text-grey.lighten-5 .v-card-text {
+  background: transparent !important;
+}
+
+/* Список чатов: subtitle с inline-цветом — перебиваем */
+html[data-a24-theme] .v-list-item-subtitle,
+html[data-a24-theme] .v-list-item-subtitle > div,
+html[data-a24-theme] .v-list-item-subtitle > span {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .v-list-item-title,
+html[data-a24-theme] .v-list-item-title > div {
+  color: var(--a24-text) !important;
+}
+
+/* Время в списке чатов (справа) */
+html[data-a24-theme] .v-list-item__append .v-container div {
+  color: var(--a24-text-dim) !important;
+}
+
+/* --- Отчёты: цифры-индикаторы --- */
+
+/* Пробуем все возможные классы, которые Admin24 может использовать
+   для крупных цифр в отчётах */
+html[data-a24-theme] .dashboard-widget,
+html[data-a24-theme] .dashboard-widget *,
+html[data-a24-theme] [class*="indicator"],
+html[data-a24-theme] [class*="metric"],
+html[data-a24-theme] [class*="report"] {
+  /* ничего не форсируем — но дадим светлый текст по умолчанию */
+}
+
+html[data-a24-theme] .reports,
+html[data-a24-theme] .reports * {
+  color: var(--a24-text);
+}
+
+html[data-a24-theme] .reports .text-grey,
+html[data-a24-theme] .reports .text-grey-darken-3 {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Цифровое значение в виджете — как правило .text-h3, .text-h4, или большой вес */
+html[data-a24-theme] [class*="value"],
+html[data-a24-theme] [class*="Value"],
+html[data-a24-theme] [class*="number"],
+html[data-a24-theme] .text-h1,
+html[data-a24-theme] .text-h2,
+html[data-a24-theme] .text-h3,
+html[data-a24-theme] .text-h4,
+html[data-a24-theme] .text-h5,
+html[data-a24-theme] .text-h6 {
+  color: var(--a24-text);
+}
+
+/* --- Список заявок: белая шапка (toolbar) --- */
+
+/* Здесь .toolbar или его родитель имеет .bg-white с !important —
+   бьём более специфичным селектором + !important */
+html[data-a24-theme] .tickets-mobile-template > .toolbar,
+html[data-a24-theme] .tickets-mobile-template > .toolbar.bg-white,
+html[data-a24-theme] .tickets-mobile-template > .toolbar[class*="bg-"],
+html[data-a24-theme] .tickets-mobile-template > div > .toolbar,
+html[data-a24-theme] .tickets-mobile-template > div > .toolbar.bg-white,
+html[data-a24-theme] .admin--content > .tickets-mobile-template > .toolbar,
+html[data-a24-theme] .admin--content > .tickets-mobile-template > div > .toolbar {
+  background: var(--a24-bg) !important;
+  color: var(--a24-text) !important;
+}
+
+/* На всякий случай — тот же приём для дашборда */
+html[data-a24-theme] .dashboard .toolbar,
+html[data-a24-theme] .dashboard > .toolbar.bg-white {
+  background: var(--a24-bg) !important;
+}
+
+/* Все bg-white в Admin24, которые не перекрасились через Vuetify-переменные */
+html[data-a24-theme] .bg-white,
+html[data-a24-theme] [class~="bg-white"] {
+  background-color: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+/* Поля ввода с bg-white — но они должны остаться "поверхностями", не bg */
+html[data-a24-theme] .v-field.bg-white,
+html[data-a24-theme] .v-field--has-background.bg-white {
+  background: var(--a24-surface) !important;
+}
+
+/* --- Правая колонка в мессенджере (детали чата) --- */
+
+html[data-a24-theme] .v-navigation-drawer.bg-white,
+html[data-a24-theme] .v-navigation-drawer[class*="bg-"] {
+  background: var(--a24-bg-elevated) !important;
+}
+
+/* --- Тексты в мессенджере, которые Admin24 хардкодит --- */
+
+html[data-a24-theme] .v-card-text [style*="white-space"],
+html[data-a24-theme] .v-card-text span {
+  color: inherit;
+}
+
+/* --- Заголовки и подзаголовки виджетов (дашборд, отчёты) --- */
+
+html[data-a24-theme] .v-card-title,
+html[data-a24-theme] .v-card-subtitle,
+html[data-a24-theme] .v-card-text,
+html[data-a24-theme] .v-card-item,
+html[data-a24-theme] .v-card-item__content {
+  color: var(--a24-text);
+}
+
+html[data-a24-theme] .text-medium-emphasis,
+html[data-a24-theme] .text-secondary,
+html[data-a24-theme] .text-disabled {
+  color: var(--a24-text-muted) !important;
+}
+
+/* --- Иконки с inline "color: rgba(0,0,0,...)" --- */
+
+html[data-a24-theme] .v-icon[style*="color: rgba(0, 0, 0"],
+html[data-a24-theme] .v-icon[style*="color: rgba(0,0,0"] {
+  color: var(--a24-text-muted) !important;
+}
+
+/* --- Общая защита: любые "тёмные" inline-цвета в текстовых узлах --- 
+
+html[data-a24-theme] [style*="color: #2"],
+html[data-a24-theme] [style*="color: #3"],
+html[data-a24-theme] [style*="color: #4"],
+html[data-a24-theme] [style*="color: rgb(0, 0, 0)"],
+html[data-a24-theme] [style*="color: rgb(0,0,0)"] {
+  color: var(--a24-text) !important;
+}*/
+/* Перебиваем Vuetify-переменные с :root и !important,
+   чтобы победить vuetify-theme-stylesheet независимо от порядка вставки */
+html[data-a24-theme-kind="dark"] {
+  --v-theme-background: 18, 20, 23 !important;
+  --v-theme-surface: 30, 34, 38 !important;
+  --v-theme-surface-bright: 42, 49, 56 !important;
+  --v-theme-surface-light: 36, 42, 48 !important;
+  --v-theme-surface-variant: 44, 50, 56 !important;
+  --v-theme-on-background: 230, 232, 235 !important;
+  --v-theme-on-surface: 230, 232, 235 !important;
+  --v-theme-on-surface-bright: 230, 232, 235 !important;
+  --v-theme-on-surface-light: 230, 232, 235 !important;
+  --v-theme-on-surface-variant: 154, 161, 169 !important;
+  --v-theme-primary: 106, 169, 255 !important;
+  --v-border-color: 255, 255, 255 !important;
+  --v-border-opacity: 0.12 !important;
+  --v-high-emphasis-opacity: 1 !important;
+  --v-medium-emphasis-opacity: 0.75 !important;
+}
+/* Шапка над списком заявок (планшет/десктоп): toolbar-panel + toolbar-settings */
+html[data-a24-theme] .toolbar-panel,
+html[data-a24-theme] .toolbar-settings,
+html[data-a24-theme] .toolbar-panel .add-ticket-panel,
+html[data-a24-theme] .toolbar-panel .spacer,
+html[data-a24-theme] .toolbar-panel .v-input__control {
+  background: var(--a24-bg) !important;
+  color: var(--a24-text) !important;
+}
+
+/* «Добавить заявку» (bg-success) — оставляем зелёной, но чиним контраст текста */
+html[data-a24-theme] .toolbar-panel .v-btn.bg-success {
+  background: rgb(var(--v-theme-success)) !important;
+  color: #fff !important;
+}
+
+/* «Фильтр», «Поиск» и пр. — variant-elevated, перекрашиваем в surface-2 */
+html[data-a24-theme] .toolbar-panel .v-btn--variant-elevated:not([class*="bg-"]) {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border) !important;
+}
+
+/* Кнопка «очистить фильтр» с inline color: rgba(0,0,0,0.54) — перебиваем */
+html[data-a24-theme] .toolbar-panel .v-btn[style*="color: rgba(0, 0, 0"],
+html[data-a24-theme] .toolbar-panel .v-btn[style*="color: rgba(0,0,0"] {
+  color: var(--a24-text-muted) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+/* Подчёркнутые поля ввода (v-field--variant-underlined) в мессенджере */
+html[data-a24-theme] .v-field--variant-underlined .v-field__outline::before,
+html[data-a24-theme] .v-field--variant-underlined .v-field__outline::after,
+html[data-a24-theme] .v-field--variant-underlined .v-field__outline > .v-field__outline__start,
+html[data-a24-theme] .v-field--variant-underlined .v-field__outline > .v-field__outline__end,
+html[data-a24-theme] .v-field--variant-underlined .v-field__outline > .v-field__outline__notch {
+  border-color: var(--a24-border-strong) !important;
+}
+
+/* Фон под underlined-полем — прозрачный, не surface */
+html[data-a24-theme] .v-field--variant-underlined {
+  background: transparent !important;
+}
+
+html[data-a24-theme] .v-field--variant-underlined .v-field__field,
+html[data-a24-theme] .v-field--variant-underlined .v-field__input {
+  background: transparent !important;
+}
+
+/* НОВЫЙ: все цветные тональные карточки в области контента (комментарии) — серые */
+html[data-a24-theme] .v-card.v-card--variant-tonal,
+html[data-a24-theme] .v-card[class*="lighten-"],
+html[data-a24-theme] .v-card[class*="bg-"]:not(.bg-transparent):not(.bg-primary):not(.bg-success):not(.bg-error):not(.bg-warning):not(.bg-info) {
+  background: var(--a24-surface-2) !important;
+  background-image: none !important;
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-card.v-card--variant-tonal .v-card-text,
+html[data-a24-theme] .v-card[class*="lighten-"] .v-card-text {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-card.v-card--variant-tonal .v-card-text [style*="color:"],
+html[data-a24-theme] .v-card[class*="lighten-"] .v-card-text [style*="color:"] {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-card.v-card--variant-tonal .v-card-text [style*="color: rgb(119"],
+html[data-a24-theme] .v-card[class*="lighten-"] .v-card-text [style*="color: rgb(119"] {
+  color: var(--a24-text-dim) !important;
+}
+/* Underlined-поля (v-field--variant-underlined): нижняя линия */
+html[data-a24-theme] .v-field--variant-underlined > .v-field__outline {
+  border-bottom-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .v-field--variant-underlined > .v-field__outline::before,
+html[data-a24-theme] .v-field--variant-underlined > .v-field__outline::after {
+  border-color: var(--a24-border-strong) !important;
+}
+
+/* Focus — акцентная линия */
+html[data-a24-theme] .v-field--variant-underlined.v-field--focused > .v-field__outline {
+  border-bottom-color: var(--a24-accent) !important;
+}
+/* Quill-редактор в мессенджере Telegram */
+html[data-a24-theme] .quill-editor-tg-msg-input,
+html[data-a24-theme] .quill-editor-tg-msg-input .ql-container,
+html[data-a24-theme] .quill-editor-tg-msg-input .ql-editor {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .quill-editor-tg-msg-input .ql-editor.ql-blank::before {
+  color: var(--a24-text-dim) !important;
+}
+
+/* Нижняя граница у file-input рядом с редактором */
+html[data-a24-theme] .tg-msg-input-file .v-field__outline {
+  border-bottom-color: transparent !important;
+}
+
+/* Подписи и мелкий текст в виджетах дашборда/отчётов.
+   Admin24 использует .text-grey, .text-grey-darken-3 и т.п. (Vuetify-утилиты),
+   которые мы перебили через --v-theme-on-surface. Но есть ещё «bootstrap-like»
+   классы .text-muted и .text-secondary — их надо добить. */
+html[data-a24-theme] .text-grey,
+html[data-a24-theme] .text-grey-darken-1,
+html[data-a24-theme] .text-grey-darken-2,
+html[data-a24-theme] .text-grey-darken-3,
+html[data-a24-theme] .text-grey-darken-4,
+html[data-a24-theme] .text-grey-lighten-1,
+html[data-a24-theme] .text-gray,
+html[data-a24-theme] .text-muted,
+html[data-a24-theme] .text-medium-emphasis {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Крупные подписи ФИО и подобные — не должны быть серыми, делаем их
+   в основном цвете текста. Смотрим — у Admin24 это, скорее всего,
+   .text-body-2 или просто div без класса. */
+html[data-a24-theme] .dashboard .text-body-1,
+html[data-a24-theme] .dashboard .text-body-2,
+html[data-a24-theme] .dashboard .text-caption,
+html[data-a24-theme] .reports .text-body-1,
+html[data-a24-theme] .reports .text-body-2,
+html[data-a24-theme] .reports .text-caption {
+  color: var(--a24-text) !important;
+}
+
+/* Отдельно: подписи «по организации», «Александр Владимирович Феин» —
+   если внутри виджета они в .text-caption или div с мелким шрифтом */
+html[data-a24-theme] .dashboard [class*="caption"],
+html[data-a24-theme] .dashboard [style*="font-size: 11"],
+html[data-a24-theme] .dashboard [style*="font-size: 12"] {
+  color: var(--a24-text-muted) !important;
+}
+/* Панель уведомлений (right drawer) */
+html[data-a24-theme] .notifications-drawer,
+html[data-a24-theme] .notifications-drawer__content,
+html[data-a24-theme] .queue-drawer.notifications-drawer,
+html[data-a24-theme] .queue-drawer .notifications-list,
+html[data-a24-theme] .queue-drawer .notifications-list-items,
+html[data-a24-theme] .queue-drawer .a-container-title,
+html[data-a24-theme] .queue-drawer .a-container-title__left,
+html[data-a24-theme] .queue-drawer .a-container-title__right {
+  background: var(--a24-bg-elevated) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .notifications-drawer .v-list-item {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .notifications-drawer .v-list-item-title,
+html[data-a24-theme] .notifications-drawer .notification-list-item-title,
+html[data-a24-theme] .notifications-drawer .notification-list-item-title > div {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .notifications-drawer .text-caption,
+html[data-a24-theme] .notifications-drawer .text-body-2,
+html[data-a24-theme] .notifications-drawer .text-body-2 > span {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .notifications-drawer .text-body-2 b,
+html[data-a24-theme] .notifications-drawer .text-body-2 strong {
+  color: var(--a24-text) !important;
+}
+/* ============================================================
+   Шаг 4.8 — добиваем точечные недочёты.
+   ============================================================ */
+
+/* --- Дашборд: подписи внизу виджетов --- */
+/*
+ * Admin24 задаёт цвет подписи «Александр Владимирович Феин» и
+ * «по организации» либо через .text-caption, либо через div без класса
+ * внутри .dashboard-widget-bottom. Перебиваем оба варианта.
+ */
+html[data-a24-theme] .dashboard-widget-bottom,
+html[data-a24-theme] .dashboard-widget-bottom *,
+html[data-a24-theme] .dashboard-widget-bottom > div {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Заголовки виджетов «Не принятых», «В работе» и т.п. */
+html[data-a24-theme] .dashboard-widget-title,
+html[data-a24-theme] [class*="widget-title"],
+html[data-a24-theme] [class*="widget-header"] {
+  color: var(--a24-text) !important;
+}
+
+/* Крупные цифры в виджетах — акцентный цвет, они уже на тёмном фоне */
+html[data-a24-theme] [class*="widget"] .text-h1,
+html[data-a24-theme] [class*="widget"] .text-h2,
+html[data-a24-theme] [class*="widget"] .text-h3,
+html[data-a24-theme] [class*="widget"] .text-h4,
+html[data-a24-theme] [class*="widget"] .text-h5,
+html[data-a24-theme] [class*="widget"] .text-h6 {
+  color: var(--a24-text) !important;
+}
+
+/* Подписи «с опозданием», «просроченных» — серые */
+html[data-a24-theme] [class*="widget"] .text-caption,
+html[data-a24-theme] [class*="widget"] .text-body-2 {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Красные цифры «просрочено» — оставляем красными */
+html[data-a24-theme] [class*="widget"] .text-red,
+html[data-a24-theme] [class*="widget"] .text-error {
+  color: var(--a24-danger) !important;
+}
+
+/* ============================================================
+   Комментарии в детальной заявке.
+   Фон приходит inline: rgb(222, 250, 213) — системный/результат,
+   rgb(232, 255, 255) — свой, rgb(245, 245, 245) — чужой.
+   В тёмной теме перекрашиваем в тёмные оттенки соответствующих
+   ролей. В светлой — не трогаем (стоковые цвета Admin24).
+   ============================================================ */
+
+html[data-a24-theme] .comments-container .comment-container {
+  color: var(--a24-text) !important;
+  border: 1px solid var(--a24-border);
+  border-radius: 8px;
+  position: relative;
+}
+
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(222, 250, 213)"],
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(222,250,213)"] {
+  background: var(--a24-status-ok) !important;
+}
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(232, 255, 255)"],
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(232,255,255)"] {
+  background: var(--a24-status-own) !important;
+}
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(245, 245, 245)"],
+html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(245,245,245)"] {
+  background: var(--a24-status-neutral) !important;
+}
+
+/* Полоса слева — сохраняем семантику «свой / чужой / системный». */
+html[data-a24-theme] .comments-container .comment-container.left::before,
+html[data-a24-theme] .comments-container .comment-container.right::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 8px 0 0 8px;
+  pointer-events: none;
+}
+
+html[data-a24-theme] .comments-container .comment-container.left::before {
+  background: var(--a24-border-strong);
+}
+html[data-a24-theme] .comments-container .comment-container.right::before {
+  background: var(--a24-accent);
+}
+
+html[data-a24-theme] .comments-container .comment-text,
+html[data-a24-theme] .comments-container .comment-text p,
+html[data-a24-theme] .comments-container .comment-text i,
+html[data-a24-theme] .comments-container .comment-text span,
+html[data-a24-theme] .comments-container .comment-text b {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .comments-container .text-sm-caption,
+html[data-a24-theme] .comments-container .comment-text .text-sm-caption {
+  color: var(--a24-text-dim) !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container .v-chip {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container .v-chip.v-chip--variant-outlined {
+  background: transparent !important;
+  border: 1px solid var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container .ellipsis-chip,
+html[data-a24-theme] .comments-container .comment-container .v-chip__content,
+html[data-a24-theme] .comments-container .comment-container .v-chip__content > span {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container .v-avatar {
+  background: transparent !important;
+}
+html[data-a24-theme] .comments-container .comment-container .v-avatar .v-icon {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Чип с датой — оставляем синий фон Admin24, но текст белый. */
+html[data-a24-theme] .comments-container .comment-container .v-chip[style*="background-color"] {
+  color: #fff !important;
+}
+html[data-a24-theme] .comments-container .comment-container .v-chip[style*="background-color"] .v-chip__content,
+html[data-a24-theme] .comments-container .comment-container .v-chip[style*="background-color"] .v-chip__content > * {
+  color: #fff !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container .v-icon[style*="color: rgba(0, 0, 0"] {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .comments-container .comment-container i.mdi-menu-down {
+  color: var(--a24-text-muted) !important;
+}
+
+/* ============================================================
+   Форма нового комментария (Quill-редактор + получатели + файл).
+   ============================================================ */
+
+html[data-a24-theme] .messages-container .editor-container,
+html[data-a24-theme] .messages-container .admin-editor,
+html[data-a24-theme] .messages-container .container-stroke {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .admin-editor .ql-toolbar,
+html[data-a24-theme] .admin-editor .ql-container,
+html[data-a24-theme] .admin-editor .ql-editor {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .admin-editor .ql-editor.ql-blank::before {
+  color: var(--a24-text-dim) !important;
+}
+
+/* Иконки тулбара Quill */
+html[data-a24-theme] .admin-editor .ql-toolbar .ql-stroke {
+  stroke: var(--a24-text-muted);
+}
+
+html[data-a24-theme] .admin-editor .ql-toolbar .ql-fill {
+  fill: var(--a24-text-muted);
+}
+
+html[data-a24-theme] .admin-editor .ql-toolbar .ql-picker {
+  color: var(--a24-text-muted);
+}
+
+/* Подпись «Внутренний комментарий» */
+html[data-a24-theme] .messages-container .v-label,
+html[data-a24-theme] .messages-container .comment-limit-block {
+  color: var(--a24-text-muted) !important;
+}
+/* ============================================================
+   Детальная заявка: таблица .full-description.
+   Admin24 хардкодит цвет рамки ячеек как rgb(49, 67, 91) в
+   scoped-правиле .full-description > table > tbody > tr > td.
+   Перебиваем на нейтральный цвет темы.
+   ============================================================ */
+
+html[data-a24-theme] .full-description td {
+  border-color: var(--a24-border-strong) !important;
+}
+/* ============================================================
+   Правая колонка детальной заявки (Заявитель, Ответственный,
+   Статус, Крайний срок). Всё это лежит в .v-navigation-drawer
+   или в правом .v-sheet с классом .ticket-details-panel.
+   ============================================================ */
+
+html[data-a24-theme] .ticket-details-panel,
+html[data-a24-theme] .ticket-details-panel *,
+html[data-a24-theme] [class*="ticket-info-panel"],
+html[data-a24-theme] [class*="ticket-sidebar"] {
+  /* ничего не форсим — общий слой уже покрывает v-field */
+}
+
+/* «Перейти к задаче в Битрикс24» — ссылка */
+html[data-a24-theme] a[href*="bitrix"],
+html[data-a24-theme] a.text-primary {
+  color: var(--a24-accent) !important;
+}
+/* ============================================================
+   Шаг 4.9 — отчёты и шапка.
+   ============================================================ */
+
+/* --- Инфо-блоки в отчётах: «Завершены» / «9» / «14 35M» --- */
+
+html[data-a24-theme] .info-block,
+html[data-a24-theme] .info-block * {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .info-title {
+  color: var(--a24-text-muted) !important;
+  font-weight: 500;
+}
+
+html[data-a24-theme] .info-data {
+  color: var(--a24-text) !important;
+}
+
+/* Красные «Не вовремя: 0» — оставляем акцент, но гасим яркость под тему */
+html[data-a24-theme] .info-block .text-red,
+html[data-a24-theme] .info-block .text-error,
+html[data-a24-theme] .info-block [style*="color: rgb(244"],
+html[data-a24-theme] .info-block [style*="color: rgb(229"],
+html[data-a24-theme] .info-block [style*="color: rgb(255"] {
+  color: var(--a24-danger) !important;
+}
+
+/* --- Кастомные классы Admin24 в отчётах.
+   Ловим по префиксам, чтобы не привязываться к конкретным именам. --- */
+
+/* Заголовки виджетов отчётов */
+html[data-a24-theme] .reports-widget-title,
+html[data-a24-theme] [class*="report-title"],
+html[data-a24-theme] [class*="stat-title"],
+html[data-a24-theme] [class*="chart-title"] {
+  color: var(--a24-text) !important;
+}
+
+/* Подписи под заголовками отчётов */
+html[data-a24-theme] .reports-widget-subtitle,
+html[data-a24-theme] [class*="report-subtitle"],
+html[data-a24-theme] [class*="stat-label"],
+html[data-a24-theme] [class*="stat-caption"] {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Легенды графиков (круговые диаграммы, линейные графики) */
+html[data-a24-theme] [class*="legend"],
+html[data-a24-theme] [class*="legend-label"],
+html[data-a24-theme] [class*="chart-legend"] {
+  color: var(--a24-text) !important;
+}
+
+/* Значения в легенде (0%, 100% и т.п.) */
+html[data-a24-theme] [class*="legend"] [class*="value"],
+html[data-a24-theme] [class*="legend-value"] {
+  color: var(--a24-text-muted) !important;
+}
+
+/* --- Оси и подписи графиков (svg / canvas) --- */
+
+/*
+ * Chart.js часто рисует подписи осей прямо в canvas — их цвет не
+ * переопределяется через CSS. Если графики рендерятся в <svg>,
+ * тогда подписи — это <text> элементы, и мы можем их подкрасить.
+ */
+html[data-a24-theme] .reports svg text,
+html[data-a24-theme] .reports svg tspan {
+  fill: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .reports svg line,
+html[data-a24-theme] .reports svg .grid line {
+  stroke: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .reports svg polyline,
+html[data-a24-theme] .reports svg path {
+  /* не трогаем цвет линий — он кодирует данные */
+}
+
+/* --- Подпись «Дентал-Сервис» в шапке --- */
+
+/*
+ * Текст находится в .desktop-app-bar / .horizontal-menu-buttons
+ * (или в его соседе), Admin24 задаёт цвет либо через .text-grey,
+ * либо inline. Перебиваем все разумные варианты.
+ */
+html[data-a24-theme] .desktop-app-bar,
+html[data-a24-theme] .desktop-app-bar *,
+html[data-a24-theme] .v-app-bar .horizontal-menu-buttons,
+html[data-a24-theme] .v-app-bar .horizontal-menu-buttons * {
+  color: var(--a24-text) !important;
+}
+
+/* Отдельно: подпись с названием организации (обычно .text-grey или
+   элемент с inline color: rgba(0,0,0,...) в шапке) */
+html[data-a24-theme] .v-app-bar [class*="organization"],
+html[data-a24-theme] .v-app-bar [class*="company"],
+html[data-a24-theme] .v-app-bar .text-grey,
+html[data-a24-theme] .v-app-bar .text-grey-darken-1,
+html[data-a24-theme] .v-app-bar .text-grey-darken-2,
+html[data-a24-theme] .v-app-bar .text-grey-darken-3,
+html[data-a24-theme] .v-app-bar .text-medium-emphasis {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Подпись «ID Организации: 14251» — мелкая, тоже приглушённая */
+html[data-a24-theme] .v-app-bar .text-caption,
+html[data-a24-theme] .v-app-bar .text-body-2 {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Имя пользователя в шапке («Александр Владимирович Феин») — основной цвет */
+html[data-a24-theme] .v-app-bar .text-body-1,
+html[data-a24-theme] .v-app-bar .text-subtitle-1,
+html[data-a24-theme] .profile-button ~ * {
+  color: var(--a24-text) !important;
+}
+
+/* --- Поиск в шапке («Искать в Admin24») --- */
+
+html[data-a24-theme] .v-app-bar .v-field,
+html[data-a24-theme] .v-app-bar .v-field__field,
+html[data-a24-theme] .v-app-bar .v-field__input {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-app-bar .v-field__input::placeholder,
+html[data-a24-theme] .v-app-bar input::placeholder {
+  color: var(--a24-text-dim) !important;
+}
+
+html[data-a24-theme] .v-app-bar .v-field__outline,
+html[data-a24-theme] .v-app-bar .v-field__outline__start,
+html[data-a24-theme] .v-app-bar .v-field__outline__end,
+html[data-a24-theme] .v-app-bar .v-field__outline__notch {
+  color: var(--a24-border-strong) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+/* ============================================================
+   Дашборд: акцентная переменная Admin24 —a-primary-color.
+   Она задана в :root Admin24 и не связана с Vuetify-темами.
+   Перебиваем её на наш --p-accent, чтобы цифры-индикаторы
+   меняли цвет вместе с темой.
+   ============================================================ */
+
+html[data-a24-theme] {
+  --a-primary-color: var(--a24-accent) !important;
+}

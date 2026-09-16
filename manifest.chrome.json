@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Admin24 Enricher",
+  "version": "0.1.0",
+  "description": "Улучшения интерфейса Admin24: полное наименование заявок в мобильной вёрстке, поиск в поле «Ответственный», темы оформления",
+  "permissions": ["storage"],
+  "host_permissions": ["https://*.admin24.app/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Admin24 Enhancer",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["themes.json", "vue-bridge-injected.js"],
+      "matches": ["https://*.admin24.app/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.admin24.app/*"],
+      "js": ["content.js"],
+      "css": ["tickets-list.css", "theme.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

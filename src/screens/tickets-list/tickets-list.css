@@ -1,0 +1,48 @@
+/*
+ * Стили расширения Admin24 Ticket Enricher.
+ * Активируются атрибутом [data-a24-styles="on"] на <html>,
+ * который ставит content script. Так их можно включать/выключать
+ * из popup без перезагрузки страницы.
+ *
+ * !important здесь оправдан: правила Vuetify-утилиты .text-truncate
+ * имеют ту же специфичность (один класс), и мы не хотим зависеть
+ * от порядка подключения сторонних CSS.
+ */
+
+/* Разрешаем flex-родителю переносить строки и снимаем фиксированную ширину */
+html[data-a24-styles="on"] .tickets-list .ticket .ticket-header-top {
+  flex-wrap: wrap;
+  width: auto;
+  max-width: none;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Снимаем однострочную обрезку с самого заголовка */
+html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title {
+  display: block;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  width: auto !important;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Внутренний span не должен наследовать nowrap от Vuetify */
+html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title > span {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  display: inline;
+}
+
+/* Правая часть (дата) не должна сжиматься и ломаться */
+html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content {
+  align-items: flex-start;
+}
+
+html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content .right-content {
+  flex: 0 0 auto;
+}

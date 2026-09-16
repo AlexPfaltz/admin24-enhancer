@@ -1,0 +1,92 @@
+:root {
+  color-scheme: light dark;
+  --popup-bg: #ffffff;
+  --popup-fg: #1a1a1a;
+  --popup-hint: #666666;
+  --popup-border: #e0e0e0;
+  --popup-option-bg: #ffffff;
+  --popup-option-fg: #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --popup-bg: #1f1f1f;
+    --popup-fg: #eaeaea;
+    --popup-hint: #9a9a9a;
+    --popup-border: #333333;
+    --popup-option-bg: #2a2a2a;
+    --popup-option-fg: #eaeaea;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--popup-bg);
+  color: var(--popup-fg);
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.popup {
+  width: 300px;
+  padding: 12px 14px 14px;
+}
+
+.popup__title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.popup__row,
+.popup__radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.popup__fieldset {
+  margin: 12px 0 0;
+  padding: 8px 10px 10px;
+  border: 1px solid var(--popup-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popup__legend {
+  padding: 0 4px;
+  font-size: 12px;
+  color: var(--popup-hint);
+}
+
+.popup__theme-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.popup__theme-row select {
+  flex: 1 1 auto;
+  padding: 4px 6px;
+  font: inherit;
+  color: var(--popup-fg);
+  background: var(--popup-option-bg);
+  border: 1px solid var(--popup-border);
+  border-radius: 4px;
+}
+
+/* Фикс бледного текста в нативном выпадающем списке */
+.popup__theme-row select option {
+  color: var(--popup-option-fg);
+  background-color: var(--popup-option-bg);
+}
+
+.popup__hint {
+  margin: 10px 0 0;
+  color: var(--popup-hint);
+  font-size: 12px;
+}
