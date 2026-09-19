@@ -24,6 +24,47 @@ const STATUS_VAR_NAMES: Record<string, string> = {
   neutral: "--a24-status-neutral",
 };
 
+/**
+ * Преобразует "#1e2226" или "#1e2226ff" в "30, 34, 38".
+ * Возвращает как есть, если значение уже не hex (например,
+ * готовое "30, 34, 38" или rgba-выражение).
+ */
+function hexToRgb(value: string): string {
+  const hex = value.trim();
+  if (!hex.startsWith("#")) {
+    return hex.replace(/^rgba?\(|\)$/g, "");
+  }
+
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  if (hex.length === 4) {
+    r = parseInt(hex[1]! + hex[1], 16);
+    g = parseInt(hex[2]! + hex[2], 16);
+    b = parseInt(hex[3]! + hex[3], 16);
+  } else if (hex.length === 7 || hex.length === 9) {
+    r = parseInt(hex.slice(1, 3), 16);
+    g = parseInt(hex.slice(3, 5), 16);
+    b = parseInt(hex.slice(5, 7), 16);
+  }
+
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+    return "0, 0, 0";
+  }
+  return `${r}, ${g}, ${b}`;
+}
+
+/** CSS-имя переменной роли: accentOnSoft → --p-accent-on-soft. */
+function cssVarName(role: string): string {
+  return "--p-" + role.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+}
+
+/** То же, но для rgb-компонентов: --rgb-accent-on-soft. */
+function rgbVarName(role: string): string {
+  return "--rgb-" + role.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+}
+
 function resolveTheme(mode: ThemeMode, userThemeId: string): Theme | null {
   if (mode === "native") return null;
 
@@ -45,9 +86,17 @@ function applyPalette(theme: Theme): void {
   const root = document.documentElement;
 
   for (const [key, value] of Object.entries(theme.colors)) {
-    const cssVar = "--p-" + key.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+    if (!value) continue;
+
+    const cssVar = cssVarName(key);
     if (root.style.getPropertyValue(cssVar) !== value) {
       root.style.setProperty(cssVar, value);
+    }
+
+    const rgbVar = rgbVarName(key);
+    const rgb = hexToRgb(value);
+    if (root.style.getPropertyValue(rgbVar) !== rgb) {
+      root.style.setProperty(rgbVar, rgb);
     }
   }
 
@@ -76,7 +125,12 @@ function clearPalette(): void {
   const toRemove: string[] = [];
   for (let i = 0; i < style.length; i++) {
     const prop = style.item(i);
-    if (prop && (prop.startsWith("--p-") || prop.startsWith("--a24-status-"))) {
+    if (
+      prop &&
+      (prop.startsWith("--p-") ||
+        prop.startsWith("--rgb-") ||
+        prop.startsWith("--a24-status-"))
+    ) {
       toRemove.push(prop);
     }
   }

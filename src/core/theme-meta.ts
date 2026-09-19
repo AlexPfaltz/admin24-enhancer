@@ -17,6 +17,7 @@ export interface ThemeColors {
   accent: string;
   accentSoft: string;
   accentOnSoft: string;
+  accentOn: string;
   danger: string;
   success: string;
   warning: string;

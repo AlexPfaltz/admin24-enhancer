@@ -19,6 +19,7 @@
         "accent": "#1976d2",
         "accentSoft": "#e3edfa",
         "accentOnSoft": "#0d47a1",
+        "accentOn": "#ffffff",
         "danger": "#d32f2f",
         "success": "#2e7d32",
         "warning": "#ed6c02",
@@ -51,6 +52,7 @@
         "accent": "#4a8a9e",
         "accentSoft": "#dceaf0",
         "accentOnSoft": "#2c5666",
+        "accentOn": "#ffffff",
         "danger": "#b85656",
         "success": "#4d8a5f",
         "warning": "#b8823c",
@@ -83,10 +85,44 @@
         "accent": "#8a5a2b",
         "accentSoft": "#ecdcc4",
         "accentOnSoft": "#5a3818",
+        "accentOn": "#ffffff",
         "danger": "#b03030",
         "success": "#4a7030",
         "warning": "#b07020",
         "info": "#4a608a"
+      },
+      "statuses": {
+        "new": "#8EE7EB",
+        "warning": "#FDF304",
+        "ok": "#BDE2AC",
+        "own": "#E8FFFF",
+        "neutral": "#F5F5F5"
+      }
+    },
+
+    "light-warm": {
+      "label": "Светлая тёплая",
+      "kind": "light",
+      "colors": {
+        "bg": "#fefaf5",
+        "bgElevated": "#fbf3e8",
+        "bgSunken": "#f6ead9",
+        "surface": "#fffdf9",
+        "surface2": "#fbf3e8",
+        "surfaceHover": "#f5e9d6",
+        "border": "#ebdcc4",
+        "borderStrong": "#d4b896",
+        "text": "#3d2f23",
+        "textMuted": "#7a6552",
+        "textDim": "#a89380",
+        "accent": "#c44d1a",
+        "accentSoft": "#fbe4d4",
+        "accentOnSoft": "#8a3510",
+        "accentOn": "#ffffff",
+        "danger": "#c0392b",
+        "success": "#5a8a3d",
+        "warning": "#c47a1a",
+        "info": "#3a7a99"
       },
       "statuses": {
         "new": "#8EE7EB",
@@ -115,6 +151,7 @@
         "accent": "#6aa9ff",
         "accentSoft": "#2a3550",
         "accentOnSoft": "#b8c8e8",
+        "accentOn": "#121417",
         "danger": "#ff6b6b",
         "success": "#57c98a",
         "warning": "#f0a742",
@@ -147,6 +184,7 @@
         "accent": "#f0a742",
         "accentSoft": "#3d2f15",
         "accentOnSoft": "#ffd9a0",
+        "accentOn": "#17130d",
         "danger": "#ff7b5a",
         "success": "#8fbf6a",
         "warning": "#ffc46b",
@@ -179,6 +217,7 @@
         "accent": "#b6ff3a",
         "accentSoft": "#2a3d10",
         "accentOnSoft": "#d6ff8a",
+        "accentOn": "#0a0a0a",
         "danger": "#ff5a5a",
         "success": "#b6ff3a",
         "warning": "#ffcc33",
@@ -211,6 +250,7 @@
         "accent": "#3fd68f",
         "accentSoft": "#1a3a2c",
         "accentOnSoft": "#9eecc4",
+        "accentOn": "#0a1512",
         "danger": "#e86565",
         "success": "#3fd68f",
         "warning": "#d6a44a",
@@ -222,6 +262,72 @@
         "ok": "#1e3d2a",
         "own": "#152f3d",
         "neutral": "#182a22"
+      }
+    },
+
+    "dark-ocean": {
+      "label": "Тёмно-океанская",
+      "kind": "dark",
+      "colors": {
+        "bg": "#0a1420",
+        "bgElevated": "#0f1c2b",
+        "bgSunken": "#060e18",
+        "surface": "#122334",
+        "surface2": "#182d42",
+        "surfaceHover": "#1e3750",
+        "border": "#22394f",
+        "borderStrong": "#324d68",
+        "text": "#d8e6f0",
+        "textMuted": "#8ba4bb",
+        "textDim": "#5e7a92",
+        "accent": "#3fc9e0",
+        "accentSoft": "#153d4a",
+        "accentOnSoft": "#9ee8f2",
+        "accentOn": "#0a1420",
+        "danger": "#ff6b7a",
+        "success": "#4dcea0",
+        "warning": "#f0b54a",
+        "info": "#3fc9e0"
+      },
+      "statuses": {
+        "new": "#164552",
+        "warning": "#4a3a10",
+        "ok": "#164030",
+        "own": "#16405a",
+        "neutral": "#182d42"
+      }
+    },
+
+    "dark-purple": {
+      "label": "Тёмно-фиолетовая",
+      "kind": "dark",
+      "colors": {
+        "bg": "#120d1c",
+        "bgElevated": "#1a1328",
+        "bgSunken": "#0c0814",
+        "surface": "#1e1732",
+        "surface2": "#271e40",
+        "surfaceHover": "#31264e",
+        "border": "#332a52",
+        "borderStrong": "#4a3d72",
+        "text": "#e8e0f5",
+        "textMuted": "#a89bc4",
+        "textDim": "#746890",
+        "accent": "#c47aff",
+        "accentSoft": "#33204a",
+        "accentOnSoft": "#dfb8ff",
+        "accentOn": "#120d1c",
+        "danger": "#ff6b9e",
+        "success": "#7dce8a",
+        "warning": "#f0c04a",
+        "info": "#7ac4ff"
+      },
+      "statuses": {
+        "new": "#2f1f4a",
+        "warning": "#4a3a15",
+        "ok": "#1f3d2a",
+        "own": "#2a2050",
+        "neutral": "#271e40"
       }
     }
   }
