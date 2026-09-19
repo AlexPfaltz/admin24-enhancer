@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Admin24 Enricher",
-  "version": "0.1.0",
+  "name": "Admin24 Enhancer",
+  "version": "0.2.0",
   "description": "Улучшения интерфейса Admin24: полное наименование заявок в мобильной вёрстке, поиск в поле «Ответственный», темы оформления",
   "permissions": ["storage"],
   "host_permissions": ["https://*.admin24.app/*"],

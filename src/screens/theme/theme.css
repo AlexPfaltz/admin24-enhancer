@@ -1309,3 +1309,317 @@ html[data-a24-theme] .v-app-bar .v-field__outline__notch {
 html[data-a24-theme] {
   --a-primary-color: var(--a24-accent) !important;
 }
+/* ============================================================
+   Шаг 5.1 — доработка тёмной темы по итогам визуального аудита.
+   ============================================================ */
+
+/* --- 1. Графики (Chart.js): легенда и подписи --- */
+
+html[data-a24-theme] .custom-legend-item,
+html[data-a24-theme] .custom-legend-left-info,
+html[data-a24-theme] .custom-legend-left-text {
+  color: var(--a24-text) !important;
+}
+
+/* Vuetify-утилиты цвета текста — перебиваем под тёмную тему.
+   Admin24 массово использует .text-black в ссылках отчётов
+   и CRM-таблиц. В тёмной теме это нечитаемо. */
+html[data-a24-theme-kind="dark"] .text-black,
+html[data-a24-theme-kind="dark"] .text-black > *,
+html[data-a24-theme-kind="dark"] a.text-black,
+html[data-a24-theme-kind="dark"] a.text-black > span {
+  color: var(--a24-text) !important;
+}
+
+/* --- 2. Граница между меню и контентом --- */
+
+html[data-a24-theme] .v-navigation-drawer,
+html[data-a24-theme] .admin-vertical-menu,
+html[data-a24-theme] .admin-vertical-menu__main,
+html[data-a24-theme] .admin-vertical-menu__footer,
+html[data-a24-theme] .v-navigation-drawer__content {
+  border-color: var(--a24-border) !important;
+  border-right-color: var(--a24-border) !important;
+  border-left-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-main,
+html[data-a24-theme] .admin--main,
+html[data-a24-theme] .admin--content {
+  border-left-color: var(--a24-border) !important;
+  border-right-color: var(--a24-border) !important;
+}
+
+/* --- 3. CRM: карточки и фоны --- */
+
+html[data-a24-theme] [class*="crm"] .v-card,
+html[data-a24-theme] [class*="crm"] .v-sheet,
+html[data-a24-theme] [class*="crm"] .white,
+html[data-a24-theme] [class*="crm"] .bg-white,
+html[data-a24-theme] [class*="crm"] [class*="card"] {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] [class*="crm"] .v-card-title,
+html[data-a24-theme] [class*="crm"] .v-card-subtitle,
+html[data-a24-theme] [class*="crm"] .v-card-text,
+html[data-a24-theme] [class*="crm"] h1,
+html[data-a24-theme] [class*="crm"] h2,
+html[data-a24-theme] [class*="crm"] h3,
+html[data-a24-theme] [class*="crm"] h4 {
+  color: var(--a24-text) !important;
+}
+
+/* Заголовки таблиц на CRM-страницах */
+html[data-a24-theme] [class*="crm"] .v-data-table__th,
+html[data-a24-theme] [class*="crm"] .v-table__th,
+html[data-a24-theme] [class*="crm"] thead th,
+html[data-a24-theme] [class*="crm"] .table-header,
+html[data-a24-theme] [class*="crm"] [class*="header-row"] {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* --- 4. Инлайн-белые фоны: перехватываем через [style*=...] --- */
+
+html[data-a24-theme] [style*="background: white"],
+html[data-a24-theme] [style*="background:white"],
+html[data-a24-theme] [style*="background: #fff"],
+html[data-a24-theme] [style*="background:#fff"],
+html[data-a24-theme] [style*="background: rgb(255, 255, 255)"],
+html[data-a24-theme] [style*="background:rgb(255,255,255)"],
+html[data-a24-theme] [style*="background-color: white"],
+html[data-a24-theme] [style*="background-color:white"],
+html[data-a24-theme] [style*="background-color: #fff"],
+html[data-a24-theme] [style*="background-color:#fff"],
+html[data-a24-theme] [style*="background-color: rgb(255, 255, 255)"],
+html[data-a24-theme] [style*="background-color:rgb(255,255,255)"] {
+  background: var(--a24-surface) !important;
+}
+
+/* НО: наши бейджи/чипы с inline background-color не трогаем —
+   у них свой цвет кодирует данные (статус, приоритет, теги). */
+html[data-a24-theme] .ticket[style*="background"],
+html[data-a24-theme] .v-chip[style*="background"],
+html[data-a24-theme] .comment-container[style*="background"] {
+  /* оставляем как есть — сюда [style*=...] выше не должен достать,
+     но на всякий случай страхуемся */
+}
+/* --- 1. Ссылки отчётов с Vuetify-утилитой .text-black --- */
+
+html[data-a24-theme-kind="dark"] a.text-black,
+html[data-a24-theme-kind="dark"] a.text-black > span,
+html[data-a24-theme-kind="dark"] .text-black {
+  color: var(--a24-text) !important;
+}
+
+/* --- 2. Границы main / меню (belt-and-suspenders) --- */
+
+html[data-a24-theme] main.v-main,
+html[data-a24-theme] .admin--content,
+html[data-a24-theme] .admin-vertical-menu,
+html[data-a24-theme] .v-navigation-drawer,
+html[data-a24-theme] .v-navigation-drawer__content {
+  border-left-color: var(--a24-border) !important;
+  border-right-color: var(--a24-border) !important;
+  outline-color: var(--a24-border) !important;
+  box-shadow: none !important;
+}
+
+/* --- 3. Кастомные классы Admin24: таблицы, карточки, тулбар --- */
+
+/* Рамка вокруг таблицы */
+html[data-a24-theme] .a-table,
+html[data-a24-theme] .a-table-wrapper,
+html[data-a24-theme] .a-array-toolbar,
+html[data-a24-theme] .a-table-template {
+  border-color: var(--a24-border) !important;
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+/* Шапка таблицы */
+html[data-a24-theme] .a-table-head,
+html[data-a24-theme] .a-table-head > tr,
+html[data-a24-theme] .a-table-colum-header,
+html[data-a24-theme] .a-table-colum-header > div {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* Тело таблицы */
+html[data-a24-theme] .a-table-body,
+html[data-a24-theme] .a-table-body > tr,
+html[data-a24-theme] .a-table-row {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* Пустое состояние таблицы */
+html[data-a24-theme] .a-table-empty,
+html[data-a24-theme] .a-table-empty__text,
+html[data-a24-theme] .a-table-message {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text-muted) !important;
+}
+
+/* Круглая иконка в пустом состоянии */
+html[data-a24-theme] .a-circle-icon {
+  color: var(--a24-text-muted) !important;
+}
+
+/* --- 4. Кастомные карточки Admin24 (.a-card) --- */
+
+html[data-a24-theme] .a-card,
+html[data-a24-theme] .a-card__background,
+html[data-a24-theme] .a-card > .a-card__content {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .a-card .a-container-title,
+html[data-a24-theme] .a-card .a-container-title__text,
+html[data-a24-theme] .a-container-title {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+/* --- 5. Кнопки-иконки тулбара с text-gray3 --- */
+
+html[data-a24-theme] .a-array-toolbar .v-btn.text-gray3,
+html[data-a24-theme] .v-btn.text-gray3 {
+  color: var(--a24-text-muted) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+/* --- 6. Чипы-фильтры в .a-array-toolbar-filters-container --- */
+
+html[data-a24-theme] .a-array-toolbar-filters-container {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .a-array-toolbar-filters-container__groups,
+html[data-a24-theme] .a-array-toolbar-filters-container__settings {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .a-array-toolbar-filters-list-item {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .a-array-toolbar-filters-list-item.active,
+html[data-a24-theme] .a-array-toolbar-filters-list-item:hover {
+  background: var(--a24-surface-hover) !important;
+}
+
+/* --- 1. Границы всех контейнеров вокруг меню --- */
+
+html[data-a24-theme] .v-navigation-drawer__content,
+html[data-a24-theme] .admin-vertical-menu__wrapper,
+html[data-a24-theme] .admin-vertical-menu__main,
+html[data-a24-theme] .admin-vertical-menu__main-header,
+html[data-a24-theme] .admin-vertical-menu__main-content,
+html[data-a24-theme] .admin-vertical-menu__footer,
+html[data-a24-theme] .admin--container,
+html[data-a24-theme] .v-application__wrap {
+  border-color: var(--a24-border) !important;
+  border-right-color: var(--a24-border) !important;
+  border-left-color: var(--a24-border) !important;
+  outline-color: var(--a24-border) !important;
+  box-shadow: none !important;
+}
+
+/* --- 2. Карточки метрик в отчётах (.metric-item) --- */
+
+html[data-a24-theme] .metric-item,
+html[data-a24-theme] .metric-item.v-card,
+html[data-a24-theme] .metric-item.v-card.v-card--variant-elevated,
+html[data-a24-theme] .v-card.metric-item {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .metric-item .metric-title,
+html[data-a24-theme] .metric-item .metric-title span {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .metric-item .number-metric-value-data {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .metric-item .info-title {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .metric-item .info-data {
+  color: var(--a24-text) !important;
+}
+
+/* Легенда графиков (в отчётах, под canvas) */
+html[data-a24-theme] .custom-legend-item,
+html[data-a24-theme] .custom-legend-left-info,
+html[data-a24-theme] .custom-legend-left-text,
+html[data-a24-theme] .custom-legend-right-text {
+  color: var(--a24-text) !important;
+}
+
+/* --- 3. Виджеты CRM-дашборда --- */
+/* Три колонки "Сегодня / Завтра / Дела на будущее" */
+html[data-a24-theme] .crm-task-items-list {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .crm-task-items-list-header[data-v-d8372907],
+html[data-a24-theme] .crm-task-items-list-header[data-v-62b0db64] {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .crm-task-items-list-header > *,
+html[data-a24-theme] .crm-task-items-list-header__title,
+html[data-a24-theme] .crm-task-items-list-header__title > * {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .crm-task-items-list-header i.mdi {
+  color: var(--a24-text-muted) !important;
+}
+
+/* Тело колонки — список пустой */
+html[data-a24-theme] .crm-task-items-list__list {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .a-empty-list {
+  color: var(--a24-text-muted) !important;
+  background: transparent !important;
+}
+
+/* Заголовок страницы "Дашборд" */
+html[data-a24-theme] .dashboard-header-title {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .widget-title,
+html[data-a24-theme] .crm-task-items-list-header__title,
+html[data-a24-theme] .dashboard-header-title {
+  color: var(--a24-text) !important;
+}
+
+/* Кнопка "Создать" в шапке дашборда — оставляем зелёной */
+html[data-a24-theme] .dashboard-header-action .v-btn {
+  /* не трогаем inline background-color: rgb(102, 187, 106) */
+}
