@@ -72,6 +72,12 @@ const entries = [
     format: "iife",
     minify: false,
   },
+  {
+    ...common,
+    entryPoints: [path.join(SRC, "screens/atlas24/index.ts")],
+    outfile: path.join(OUT, "atlas24.js"),
+    format: "iife",
+  },
 ];
 
 async function copyStatic() {

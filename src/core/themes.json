@@ -34,71 +34,6 @@
       }
     },
 
-    "light-soft": {
-      "label": "Светлая спокойная",
-      "kind": "light",
-      "colors": {
-        "bg": "#f7f9fb",
-        "bgElevated": "#eef2f6",
-        "bgSunken": "#e4eaf0",
-        "surface": "#fbfcfd",
-        "surface2": "#eef2f6",
-        "surfaceHover": "#e2e8ee",
-        "border": "#d5dce3",
-        "borderStrong": "#b3bdc7",
-        "text": "#2a333d",
-        "textMuted": "#5c6873",
-        "textDim": "#8b97a3",
-        "accent": "#4a8a9e",
-        "accentSoft": "#dceaf0",
-        "accentOnSoft": "#2c5666",
-        "accentOn": "#ffffff",
-        "danger": "#b85656",
-        "success": "#4d8a5f",
-        "warning": "#b8823c",
-        "info": "#4a7fa8"
-      },
-      "statuses": {
-        "new": "#8EE7EB",
-        "warning": "#FDF304",
-        "ok": "#BDE2AC",
-        "own": "#E8FFFF",
-        "neutral": "#F5F5F5"
-      }
-    },
-
-    "light-sepia": {
-      "label": "Светлая сепия",
-      "kind": "light",
-      "colors": {
-        "bg": "#f8f3e7",
-        "bgElevated": "#f2ecdd",
-        "bgSunken": "#e8e0cc",
-        "surface": "#fbf7ec",
-        "surface2": "#f0e9d6",
-        "surfaceHover": "#e8dfc6",
-        "border": "#d8cdb0",
-        "borderStrong": "#b8a87e",
-        "text": "#3a2f1a",
-        "textMuted": "#6b5c40",
-        "textDim": "#9a8b6e",
-        "accent": "#8a5a2b",
-        "accentSoft": "#ecdcc4",
-        "accentOnSoft": "#5a3818",
-        "accentOn": "#ffffff",
-        "danger": "#b03030",
-        "success": "#4a7030",
-        "warning": "#b07020",
-        "info": "#4a608a"
-      },
-      "statuses": {
-        "new": "#8EE7EB",
-        "warning": "#FDF304",
-        "ok": "#BDE2AC",
-        "own": "#E8FFFF",
-        "neutral": "#F5F5F5"
-      }
-    },
 
     "light-warm": {
       "label": "Светлая тёплая",
@@ -232,102 +167,37 @@
       }
     },
 
-    "dark-emerald": {
-      "label": "Тёмно-изумрудная",
-      "kind": "dark",
-      "colors": {
-        "bg": "#0a1512",
-        "bgElevated": "#0f1c18",
-        "bgSunken": "#050d0b",
-        "surface": "#122019",
-        "surface2": "#182a22",
-        "surfaceHover": "#1e342b",
-        "border": "#22362d",
-        "borderStrong": "#324a3f",
-        "text": "#d6e8df",
-        "textMuted": "#8aa89b",
-        "textDim": "#5e7a6e",
-        "accent": "#3fd68f",
-        "accentSoft": "#1a3a2c",
-        "accentOnSoft": "#9eecc4",
-        "accentOn": "#0a1512",
-        "danger": "#e86565",
-        "success": "#3fd68f",
-        "warning": "#d6a44a",
-        "info": "#5ac0d4"
-      },
-      "statuses": {
-        "new": "#1a3a3a",
-        "warning": "#3f3815",
-        "ok": "#1e3d2a",
-        "own": "#152f3d",
-        "neutral": "#182a22"
-      }
-    },
-
-    "dark-ocean": {
-      "label": "Тёмно-океанская",
-      "kind": "dark",
-      "colors": {
-        "bg": "#0a1420",
-        "bgElevated": "#0f1c2b",
-        "bgSunken": "#060e18",
-        "surface": "#122334",
-        "surface2": "#182d42",
-        "surfaceHover": "#1e3750",
-        "border": "#22394f",
-        "borderStrong": "#324d68",
-        "text": "#d8e6f0",
-        "textMuted": "#8ba4bb",
-        "textDim": "#5e7a92",
-        "accent": "#3fc9e0",
-        "accentSoft": "#153d4a",
-        "accentOnSoft": "#9ee8f2",
-        "accentOn": "#0a1420",
-        "danger": "#ff6b7a",
-        "success": "#4dcea0",
-        "warning": "#f0b54a",
-        "info": "#3fc9e0"
-      },
-      "statuses": {
-        "new": "#164552",
-        "warning": "#4a3a10",
-        "ok": "#164030",
-        "own": "#16405a",
-        "neutral": "#182d42"
-      }
-    },
 
     "dark-purple": {
-      "label": "Тёмно-фиолетовая",
+      "label": "Тёмная фиолетовая",
       "kind": "dark",
       "colors": {
-        "bg": "#120d1c",
-        "bgElevated": "#1a1328",
-        "bgSunken": "#0c0814",
-        "surface": "#1e1732",
-        "surface2": "#271e40",
-        "surfaceHover": "#31264e",
-        "border": "#332a52",
-        "borderStrong": "#4a3d72",
-        "text": "#e8e0f5",
-        "textMuted": "#a89bc4",
-        "textDim": "#746890",
-        "accent": "#c47aff",
-        "accentSoft": "#33204a",
-        "accentOnSoft": "#dfb8ff",
-        "accentOn": "#120d1c",
+        "bg": "#131316",
+        "bgElevated": "#1b1b20",
+        "bgSunken": "#0e0e11",
+        "surface": "#1f1f25",
+        "surface2": "#26262e",
+        "surfaceHover": "#2d2d36",
+        "border": "#333340",
+        "borderStrong": "#45455a",
+        "text": "#e8e6f0",
+        "textMuted": "#a8a3b8",
+        "textDim": "#7a7488",
+        "accent": "#b48cff",
+        "accentSoft": "#2c2440",
+        "accentOnSoft": "#d9c8ff",
+        "accentOn": "#131316",
         "danger": "#ff6b9e",
         "success": "#7dce8a",
         "warning": "#f0c04a",
         "info": "#7ac4ff"
       },
       "statuses": {
-        "new": "#2f1f4a",
-        "warning": "#4a3a15",
-        "ok": "#1f3d2a",
-        "own": "#2a2050",
-        "neutral": "#271e40"
+        "new": "#3b2f5e",
+        "warning": "#5a4620",
+        "ok": "#2c4a3a",
+        "own": "#33285a",
+        "neutral": "#33303f"
       }
     }
   }

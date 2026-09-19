@@ -3,6 +3,31 @@
  * Цвета — только через var(--a24-*), определённые ниже.
  */
 
+/* ============================================================
+   Anti-FOUC для #loader внутри iframe app.atlas24.pro.
+   Правило применяется без ожидания data-a24-theme: тема всё равно
+   тёмная у большинства, а промежуточное состояние в светлой теме
+   всё равно перекрасится мгновенно. Приоритет — не дать мелькнуть белому.
+   ============================================================ */
+@supports (color: var(--x)) {
+  html #loader,
+  html body #loader {
+    background: #17130d; /* совпадает с dark-amber --p-bg по умолчанию */
+    color: #f0e8d8;
+    transition: none;
+  }
+  html #loader .message,
+  html #loader .message * {
+    color: #f0e8d8;
+    background: transparent;
+  }
+}
+
+/* ============================================================
+   Определения ролей. --p-* проставляет initTheme() через
+   applyPalette() для выбранной темы.
+   ============================================================ */
+
 html[data-a24-theme] {
   --a24-bg: var(--p-bg);
   --a24-bg-elevated: var(--p-bg-elevated);
@@ -133,6 +158,113 @@ html[data-a24-theme] .v-tooltip .v-overlay__content {
   border: 1px solid var(--a24-border-strong);
 }
 
+html[data-a24-theme] .v-progress-circular {
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .v-progress-circular__overlay {
+  stroke: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .v-progress-circular__underlay {
+  stroke: var(--a24-border-strong) !important;
+  color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .v-progress-circular[style*="color"] {
+  color: var(--a24-accent) !important;
+}
+
+/* ============================================================
+   Vuetify overlay-меню (автокомплиты «Заявитель», «Ответственный» и др.).
+   Меню живёт в body > .v-overlay-container вне .v-application, поэтому
+   у него свои Vuetify-переменные. Перебиваем.
+   ============================================================ */
+
+html[data-a24-theme] .v-overlay-container .v-overlay__content,
+html[data-a24-theme] .v-overlay-container .v-menu > .v-overlay__content,
+html[data-a24-theme] .v-overlay-container .v-overlay__content > .v-sheet,
+html[data-a24-theme] .v-overlay-container .v-overlay__content > .v-list,
+html[data-a24-theme] .v-overlay-container .v-overlay__content > div,
+html[data-a24-theme] .v-overlay-container .v-list,
+html[data-a24-theme] .v-overlay-container .v-sheet {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-overlay-container .v-list-item,
+html[data-a24-theme] .v-overlay-container .v-list-item__content,
+html[data-a24-theme] .v-overlay-container .v-list-item-title,
+html[data-a24-theme] .v-overlay-container .v-list-item-subtitle {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-overlay-container .v-list-item--active,
+html[data-a24-theme] .v-overlay-container .v-list-item:hover {
+  background: var(--a24-surface-hover) !important;
+}
+
+/* Чипы Т/Р/... в меню — сейчас белые квадратики. */
+html[data-a24-theme] .v-overlay-container .v-chip,
+html[data-a24-theme] .v-overlay-container .v-chip__content,
+html[data-a24-theme] .v-overlay-container .v-chip__underlay,
+html[data-a24-theme] .v-overlay-container .a-list-item .v-chip,
+html[data-a24-theme] .v-overlay-container .selectable-tag-item .v-chip,
+html[data-a24-theme] .v-overlay-container .v-chip.v-chip--variant-flat {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .v-overlay-container .v-chip.v-chip--variant-outlined {
+  background: transparent !important;
+  border: 1px solid var(--a24-border-strong) !important;
+  color: var(--a24-text) !important;
+}
+
+/* Кастомные строки внутри overlay-меню (Admin24 использует .a-list-item). */
+html[data-a24-theme] .v-overlay-container .a-list-item,
+html[data-a24-theme] .v-overlay-container .a-list-item.selectable-tag-item,
+html[data-a24-theme] .v-overlay-container .selectable-tag-item,
+html[data-a24-theme] .v-overlay-container .selectable-tag-item__inner {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .v-overlay-container .a-list-item:hover,
+html[data-a24-theme] .v-overlay-container .a-list-item.active,
+html[data-a24-theme] .v-overlay-container .a-list-item[class*="active"],
+html[data-a24-theme] .v-overlay-container .selectable-tag-item:hover {
+  background: var(--a24-surface-hover) !important;
+  color: var(--a24-text) !important;
+}
+
+/* Поля ввода внутри меню. */
+html[data-a24-theme] .v-overlay-container .v-field,
+html[data-a24-theme] .v-overlay-container .v-field__field,
+html[data-a24-theme] .v-overlay-container .v-field__input,
+html[data-a24-theme] .v-overlay-container input {
+  background: var(--a24-field-bg) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .v-overlay-container input::placeholder {
+  color: var(--a24-text-dim) !important;
+}
+
+/* Vuetify-переменные внутри overlay-контейнера в тёмных темах. */
+html[data-a24-theme-kind="dark"] .v-overlay-container {
+  --v-theme-surface: var(--rgb-surface);
+  --v-theme-surface-variant: var(--rgb-border-strong);
+  --v-theme-on-surface: var(--rgb-text);
+  --v-theme-on-surface-variant: var(--rgb-text-muted);
+  --v-theme-primary: var(--rgb-accent);
+  color-scheme: dark;
+}
+
 /* ============================================================
    Утилитарные фоны: bg-white, transparent
    ============================================================ */
@@ -232,7 +364,7 @@ html[data-a24-theme] .v-chip__content {
   color: inherit !important;
 }
 
-/* Бейджи со своими bg-* (status, priority, tariff) не трогаем. */
+/* Бейджи со своими bg-* не трогаем. */
 html[data-a24-theme] .v-chip.bg-primary,
 html[data-a24-theme] .v-chip.bg-success,
 html[data-a24-theme] .v-chip.bg-error,
@@ -292,7 +424,7 @@ html[data-a24-theme] .v-btn.bg-red {
   color: #fff !important;
 }
 
-/* Primary-кнопки: фон из accent, текст — accentOn (для контраста в тёмных темах). */
+/* Primary-кнопки: фон из accent, текст — accentOn. */
 html[data-a24-theme] .v-btn.bg-primary,
 html[data-a24-theme] .v-btn[style*="background-color: rgb(24, 103, 192)"],
 html[data-a24-theme] .v-btn[style*="background-color: rgb(25, 118, 210)"] {
@@ -378,9 +510,9 @@ html[data-a24-theme] .v-table__td {
 
 /* ============================================================
    Список заявок: семантика статусов.
-   Фон карточки приходит inline через --b*-переменную и кодирует статус.
-   В тёмных темах перекрашиваем её в тёмные аналоги известных цветов,
-   незнакомые — приглушаем. Текст и заголовки — светлые.
+   Фон приходит inline через --b*-переменную (имя меняется между
+   сборками Admin24, значение — hex). Матчимся по hex-подстроке.
+   В тёмных темах — приглушаем через color-mix, чтобы не «кричало».
    ============================================================ */
 
 html[data-a24-theme] .tickets-mobile-template,
@@ -394,21 +526,43 @@ html[data-a24-theme] .ticket {
   border-radius: 6px;
 }
 
-html[data-a24-theme-kind="dark"] .ticket[style*="#8EE7EB"] {
+/* --- ТЁМНЫЕ ТЕМЫ --- */
+
+/* Просроченные — приглушённый красный, не кислотный. */
+html[data-a24-theme-kind="dark"] .ticket[style*="#E79668"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#e79668"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#FF8A7A"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#ff8a7a"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#FF6656"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#ff6656"] {
+  background: color-mix(in srgb, var(--a24-danger) 35%, var(--a24-surface) 65%) !important;
+}
+
+/* Предупреждение — приглушённый жёлтый. */
+html[data-a24-theme-kind="dark"] .ticket[style*="#FDF304"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#fdf304"] {
+  background: color-mix(in srgb, var(--a24-warning) 35%, var(--a24-surface) 65%) !important;
+}
+
+/* «Новый» — на будущее, если Admin24 вернёт этот hex. */
+html[data-a24-theme-kind="dark"] .ticket[style*="#8EE7EB"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#8ee7eb"] {
   background: var(--a24-status-new) !important;
 }
-html[data-a24-theme-kind="dark"] .ticket[style*="#FDF304"] {
-  background: var(--a24-status-warning) !important;
-}
-html[data-a24-theme-kind="dark"] .ticket[style*="#BDE2AC"] {
+
+html[data-a24-theme-kind="dark"] .ticket[style*="#BDE2AC"],
+html[data-a24-theme-kind="dark"] .ticket[style*="#bde2ac"] {
   background: var(--a24-status-ok) !important;
 }
+
+/* Обычные. */
 html[data-a24-theme-kind="dark"] .ticket[style*="#FFFFFF"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#ffffff"] {
   background: var(--a24-surface) !important;
 }
 
-html[data-a24-theme-kind="dark"] .ticket[style*="--b"]:not([style*="#8EE7EB"]):not([style*="#FDF304"]):not([style*="#BDE2AC"]):not([style*="#FFFFFF"]):not([style*="#ffffff"]) {
+/* Незнакомые — глушим в surface-2. */
+html[data-a24-theme-kind="dark"] .ticket[style*="--b"]:not([style*="#E79668"]):not([style*="#e79668"]):not([style*="#FF8A7A"]):not([style*="#ff8a7a"]):not([style*="#FF6656"]):not([style*="#ff6656"]):not([style*="#FDF304"]):not([style*="#fdf304"]):not([style*="#8EE7EB"]):not([style*="#8ee7eb"]):not([style*="#BDE2AC"]):not([style*="#bde2ac"]):not([style*="#FFFFFF"]):not([style*="#ffffff"]) {
   background: var(--a24-surface-2) !important;
 }
 
@@ -422,6 +576,78 @@ html[data-a24-theme-kind="dark"] .ticket a.ticket-title > span,
 html[data-a24-theme-kind="dark"] .ticket a.ticket-number {
   color: var(--a24-accent) !important;
 }
+
+/* --- СВЕТЛЫЕ ТЕМЫ --- */
+
+html[data-a24-theme-kind="light"] .ticket[style*="#8EE7EB"],
+html[data-a24-theme-kind="light"] .ticket[style*="#8ee7eb"] {
+  background: color-mix(in srgb, #8EE7EB 40%, var(--a24-surface) 60%) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#FDF304"],
+html[data-a24-theme-kind="light"] .ticket[style*="#fdf304"] {
+  background: color-mix(in srgb, #FDF304 40%, var(--a24-surface) 60%) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#BDE2AC"],
+html[data-a24-theme-kind="light"] .ticket[style*="#bde2ac"] {
+  background: color-mix(in srgb, #BDE2AC 40%, var(--a24-surface) 60%) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#E8FFFF"],
+html[data-a24-theme-kind="light"] .ticket[style*="#e8ffff"] {
+  background: color-mix(in srgb, #E8FFFF 55%, var(--a24-surface) 45%) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#F5F5F5"],
+html[data-a24-theme-kind="light"] .ticket[style*="#f5f5f5"] {
+  background: var(--a24-status-neutral) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#FFFFFF"],
+html[data-a24-theme-kind="light"] .ticket[style*="#ffffff"] {
+  background: var(--a24-surface) !important;
+}
+html[data-a24-theme-kind="light"] .ticket[style*="#E79668"],
+html[data-a24-theme-kind="light"] .ticket[style*="#e79668"],
+html[data-a24-theme-kind="light"] .ticket[style*="#FF8A7A"],
+html[data-a24-theme-kind="light"] .ticket[style*="#ff8a7a"],
+html[data-a24-theme-kind="light"] .ticket[style*="#FF6656"],
+html[data-a24-theme-kind="light"] .ticket[style*="#ff6656"] {
+  background: color-mix(in srgb, var(--a24-danger) 30%, var(--a24-surface) 70%) !important;
+}
+
+/* --- ТЁПЛАЯ СВЕТЛАЯ: тёплая гамма статусов --- */
+
+html[data-a24-theme="light-warm"] .ticket[style*="#8EE7EB"],
+html[data-a24-theme="light-warm"] .ticket[style*="#8ee7eb"] {
+  background: #f3e9dc !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#FDF304"],
+html[data-a24-theme="light-warm"] .ticket[style*="#fdf304"] {
+  background: #f9e7b8 !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#BDE2AC"],
+html[data-a24-theme="light-warm"] .ticket[style*="#bde2ac"] {
+  background: #e4e6c6 !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#E8FFFF"],
+html[data-a24-theme="light-warm"] .ticket[style*="#e8ffff"] {
+  background: #f5efe4 !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#F5F5F5"],
+html[data-a24-theme="light-warm"] .ticket[style*="#f5f5f5"] {
+  background: #f6efe4 !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#FFFFFF"],
+html[data-a24-theme="light-warm"] .ticket[style*="#ffffff"] {
+  background: var(--a24-surface) !important;
+}
+html[data-a24-theme="light-warm"] .ticket[style*="#E79668"],
+html[data-a24-theme="light-warm"] .ticket[style*="#e79668"],
+html[data-a24-theme="light-warm"] .ticket[style*="#FF8A7A"],
+html[data-a24-theme="light-warm"] .ticket[style*="#ff8a7a"],
+html[data-a24-theme="light-warm"] .ticket[style*="#FF6656"],
+html[data-a24-theme="light-warm"] .ticket[style*="#ff6656"] {
+  background: #f7dcc4 !important; /* тёплый персиковый — «просрочено» */
+}
+
+/* --- ОБЩЕЕ ДЛЯ ВСЕХ ТЕМ --- */
 
 html[data-a24-theme] .ticket .ticket-date,
 html[data-a24-theme] .ticket .v-chip.ticket-date {
@@ -457,14 +683,11 @@ html[data-a24-theme] .dashboard-widget-header-title {
   color: var(--a24-text) !important;
 }
 
-/* Подписи "с опозданием", "просроченных" — Admin24 использует div.subtitle,
-   Vuetify-тема перебивает наш более слабый селектор. */
 html[data-a24-theme] .v-theme--myCustomLightTheme .subtitle,
 html[data-a24-theme] .subtitle {
   color: var(--a24-text-muted) !important;
 }
 
-/* Подписи внизу виджетов ("Александр Владимирович Феин", "по организации"). */
 html[data-a24-theme] .dashboard-widget-bottom,
 html[data-a24-theme] .dashboard-widget-bottom *,
 html[data-a24-theme] .dashboard-widget-bottom > div {
@@ -490,7 +713,6 @@ html[data-a24-theme] ::-webkit-scrollbar-track {
 
 /* ============================================================
    Vuetify-переменные: разводим поверхности на 4 роли.
-   Значения — из --rgb-*, которые проставляет applyPalette().
    ============================================================ */
 
 html[data-a24-theme-kind="dark"] {
@@ -598,7 +820,6 @@ html[data-a24-theme] [style*="color:#000"] {
   color: var(--a24-text) !important;
 }
 
-/* Vuetify-утилита .text-black в ссылках отчётов и CRM-таблиц. */
 html[data-a24-theme-kind="dark"] .text-black,
 html[data-a24-theme-kind="dark"] .text-black > *,
 html[data-a24-theme-kind="dark"] a.text-black,
@@ -606,7 +827,6 @@ html[data-a24-theme-kind="dark"] a.text-black > span {
   color: var(--a24-text) !important;
 }
 
-/* Inline-белые фоны в карточках и панелях. */
 html[data-a24-theme] [style*="background: white"],
 html[data-a24-theme] [style*="background:white"],
 html[data-a24-theme] [style*="background: #fff"],
@@ -622,7 +842,6 @@ html[data-a24-theme] [style*="background-color:rgb(255,255,255)"] {
   background: var(--a24-surface) !important;
 }
 
-/* Утилиты цвета текста Vuetify. */
 html[data-a24-theme] .text-grey,
 html[data-a24-theme] .text-grey-darken-1,
 html[data-a24-theme] .text-grey-darken-2,
@@ -667,7 +886,6 @@ html[data-a24-theme] .v-list-item__append .v-container div {
   color: var(--a24-text-dim) !important;
 }
 
-/* Quill-редактор. */
 html[data-a24-theme] .quill-editor-tg-msg-input,
 html[data-a24-theme] .quill-editor-tg-msg-input .ql-container,
 html[data-a24-theme] .quill-editor-tg-msg-input .ql-editor {
@@ -724,9 +942,6 @@ html[data-a24-theme] .notifications-drawer .text-body-2 strong {
 
 /* ============================================================
    Комментарии в детальной заявке.
-   Фон приходит inline: rgb(222,250,213) — системный/результат,
-   rgb(232,255,255) — свой, rgb(245,245,245) — чужой.
-   В тёмных темах — тёмные аналоги этих трёх оттенков.
    ============================================================ */
 
 html[data-a24-theme] .comments-container .comment-container {
@@ -809,7 +1024,6 @@ html[data-a24-theme] .comments-container .comment-container .v-avatar .v-icon {
   color: var(--a24-text-muted) !important;
 }
 
-/* Чип с датой — оставляем стоковый синий фон, текст белый. */
 html[data-a24-theme] .comments-container .comment-container .v-chip[style*="background-color"] {
   color: #fff !important;
 }
@@ -827,7 +1041,6 @@ html[data-a24-theme] .comments-container .comment-container i.mdi-menu-down {
   color: var(--a24-text-muted) !important;
 }
 
-/* Форма нового комментария (Quill + получатели + файл). */
 html[data-a24-theme] .messages-container .editor-container,
 html[data-a24-theme] .messages-container .admin-editor,
 html[data-a24-theme] .messages-container .container-stroke {
@@ -921,7 +1134,6 @@ html[data-a24-theme] .reports svg .grid line {
   stroke: var(--a24-border) !important;
 }
 
-/* Карточки метрик в отчётах. */
 html[data-a24-theme] .metric-item,
 html[data-a24-theme] .metric-item.v-card,
 html[data-a24-theme] .v-card.metric-item {
@@ -1047,11 +1259,7 @@ html[data-a24-theme] .comment-tab-actions .v-btn {
   border-color: var(--a24-border-strong) !important;
 }
 
-/* ============================================================
-   Vuetify-кнопки elevated без bg-* (ФИЛЬТР, ПОИСК, 100).
-   Исключаем кнопки с inline bg-success/primary/error.
-   ============================================================ */
-
+/* Vuetify-кнопки elevated без bg-* (ФИЛЬТР, ПОИСК, 100). */
 html[data-a24-theme] .v-btn--variant-elevated:not([class*="bg-"]):not([style*="background-color: rgb(102"]):not([style*="background-color: rgb(25"]):not([style*="background-color: rgb(176"]) {
   background: var(--a24-surface-2) !important;
   color: var(--a24-text) !important;
@@ -1142,9 +1350,7 @@ html[data-a24-theme] .a-array-toolbar-filters-list-item:hover {
 }
 
 /* ============================================================
-   CRM-дашборд: три колонки "Сегодня / Завтра / Дела на будущее".
-   Фон шапки Admin24 задаёт scoped-правилом с --a-white-color,
-   поэтому бьём по атрибуту data-v-*.
+   CRM-дашборд
    ============================================================ */
 
 html[data-a24-theme] .crm-task-items-list {
@@ -1182,10 +1388,6 @@ html[data-a24-theme] .a-empty-list {
 html[data-a24-theme] .dashboard-header-title {
   color: var(--a24-text) !important;
 }
-
-/* ============================================================
-   CRM: карточки, панели, таблицы
-   ============================================================ */
 
 html[data-a24-theme] [class*="crm"] .v-card,
 html[data-a24-theme] [class*="crm"] .v-sheet,
@@ -1245,14 +1447,13 @@ html[data-a24-theme] .v-main {
 }
 
 /* ============================================================
-   Прочее: акцентная переменная Admin24 и вкладки.
+   Акцентная переменная Admin24 и активная вкладка
    ============================================================ */
 
 html[data-a24-theme] {
   --a-primary-color: var(--a24-accent) !important;
 }
 
-/* Активная вкладка — акцентный текст + жирность, полоса снизу толще. */
 html[data-a24-theme] .v-tab.v-tab--selected,
 html[data-a24-theme] .v-tab-item--selected {
   color: var(--a24-accent) !important;
@@ -1264,4 +1465,390 @@ html[data-a24-theme] .v-tab__slider.text-primary {
   background: var(--a24-accent) !important;
   color: var(--a24-accent) !important;
   height: 3px !important;
+}
+
+/* ============================================================
+   Atlas24 Knowledge Base (iframe app.atlas24.pro).
+   Отдельное приложение (Bulma + TinyMCE), не Vuetify.
+   Классы: kb-*, .sidebar, .tree-node*, fa-иконки.
+   ============================================================ */
+
+/* ---- 1. Левое дерево + границы .sidebar ---- */
+
+html[data-a24-theme] .sidebar {
+  background: var(--a24-bg-elevated) !important;
+  color: var(--a24-text) !important;
+  border-left-color: var(--a24-border) !important;
+  border-right-color: var(--a24-border) !important;
+  border-top-color: var(--a24-border) !important;
+  border-bottom-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .sidebar::after,
+html[data-a24-theme] .sidebar::before {
+  border-color: var(--a24-border) !important;
+  background: transparent !important;
+}
+
+/* ---- 2. Дерево: строки и иконки ---- */
+
+html[data-a24-theme] .tree-node,
+html[data-a24-theme] .tree-node-title,
+html[data-a24-theme] .tree-node-title-buttons,
+html[data-a24-theme] .node-menu-btn {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .sidebar i,
+html[data-a24-theme] .sidebar svg,
+html[data-a24-theme] .sidebar .icon,
+html[data-a24-theme] .tree-node i,
+html[data-a24-theme] .tree-node svg,
+html[data-a24-theme] .tree-node-icon,
+html[data-a24-theme] .node-menu-btn i,
+html[data-a24-theme] .tree-node-title-buttons i,
+html[data-a24-theme] i.far,
+html[data-a24-theme] i.fas,
+html[data-a24-theme] i.fa {
+  color: var(--a24-text-muted) !important;
+  fill: var(--a24-text-muted) !important;
+  stroke: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .button.icon,
+html[data-a24-theme] .button.icon.add,
+html[data-a24-theme] .button.icon.red,
+html[data-a24-theme] .kb-tree-node-add,
+html[data-a24-theme] .kb-tree-node-delete {
+  background: transparent !important;
+  color: var(--a24-text-muted) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .button.icon:hover,
+html[data-a24-theme] .button.icon.red:hover,
+html[data-a24-theme] .kb-tree-node-add:hover,
+html[data-a24-theme] .kb-tree-node-delete:hover {
+  background: var(--a24-surface-hover) !important;
+  color: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .button.icon.red:hover i,
+html[data-a24-theme] .kb-tree-node-delete:hover i {
+  color: var(--a24-danger) !important;
+}
+
+html[data-a24-theme] .sidebar .tree-node-title,
+html[data-a24-theme] .sidebar .tree-node-title a,
+html[data-a24-theme] .sidebar .tree-node a {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .sidebar .tree-node-title i,
+html[data-a24-theme] .sidebar .tree-node-title i::before,
+html[data-a24-theme] .sidebar .tree-node-title i::after,
+html[data-a24-theme] .sidebar .tree-node i,
+html[data-a24-theme] .sidebar .tree-node i::before,
+html[data-a24-theme] .sidebar .tree-node i::after,
+html[data-a24-theme] .sidebar .tree-node-icon,
+html[data-a24-theme] .sidebar .tree-node-icon::before,
+html[data-a24-theme] .sidebar i.far,
+html[data-a24-theme] .sidebar i.far::before,
+html[data-a24-theme] .sidebar i.fas,
+html[data-a24-theme] .sidebar i.fas::before,
+html[data-a24-theme] .sidebar i.fa,
+html[data-a24-theme] .sidebar i.fa::before {
+  color: var(--a24-text-muted) !important;
+  fill: var(--a24-text-muted) !important;
+  stroke: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .sidebar .tree-node.active > .tree-node-title i,
+html[data-a24-theme] .sidebar .tree-node.active > .tree-node-title i::before,
+html[data-a24-theme] .sidebar .tree-node.open > .tree-node-title i,
+html[data-a24-theme] .sidebar .tree-node.open > .tree-node-title i::before {
+  color: var(--a24-text) !important;
+}
+
+/* Hover/active — только на строке пункта, не на контейнере. */
+html[data-a24-theme] .tree-node-title:hover,
+html[data-a24-theme] .tree-node.open > .tree-node-title,
+html[data-a24-theme] .tree-node.active > .tree-node-title,
+html[data-a24-theme] .tree-node.is-active > .tree-node-title {
+  background: var(--a24-surface-hover) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .tree-node-title:hover *,
+html[data-a24-theme] .tree-node.open > .tree-node-title *,
+html[data-a24-theme] .tree-node.active > .tree-node-title * {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .tree-node,
+html[data-a24-theme] .tree-node:hover,
+html[data-a24-theme] .tree-node > .tree-node {
+  background: transparent !important;
+}
+
+/* ---- 3. Кнопка «Наверх» ---- */
+
+html[data-a24-theme] .kb-goto-up,
+html[data-a24-theme] .goto-up {
+  background: var(--a24-accent-strong) !important;
+  color: var(--a24-accent-on) !important;
+  border-color: var(--a24-accent-strong) !important;
+}
+
+html[data-a24-theme] .kb-goto-up i,
+html[data-a24-theme] .kb-goto-up span,
+html[data-a24-theme] .kb-goto-up svg {
+  color: var(--a24-accent-on) !important;
+  fill: var(--a24-accent-on) !important;
+}
+
+/* ---- 4. Шапка статьи .header.kb-header ---- */
+
+html[data-a24-theme] .kb-header,
+html[data-a24-theme] .header.kb-header {
+  background: var(--a24-bg-elevated) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .kb-header * {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .kb-header-button,
+html[data-a24-theme] .kb-header-button .icon,
+html[data-a24-theme] .kb-header-button i,
+html[data-a24-theme] .kb-header-button svg {
+  background: transparent !important;
+  color: var(--a24-text-muted) !important;
+  fill: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .kb-header-button:hover,
+html[data-a24-theme] .kb-header-button:hover .icon,
+html[data-a24-theme] .kb-header-button:hover i,
+html[data-a24-theme] .kb-header-button:hover svg {
+  background: transparent !important;
+  color: var(--a24-accent) !important;
+  fill: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .kb-content-edit-button,
+html[data-a24-theme] .kb-content-edit-button i,
+html[data-a24-theme] .kb-content-edit-button svg,
+html[data-a24-theme] .kb-content-edit-button .button-icon {
+  color: var(--a24-accent) !important;
+  fill: var(--a24-accent) !important;
+}
+
+html[data-a24-theme] .kb-content-delete-button,
+html[data-a24-theme] .kb-content-delete-button i,
+html[data-a24-theme] .kb-content-delete-button svg {
+  color: var(--a24-danger) !important;
+  fill: var(--a24-danger) !important;
+}
+
+html[data-a24-theme] .kb-search-form input,
+html[data-a24-theme] .kb-search-form .input {
+  background: var(--a24-field-bg) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .kb-search-form input::placeholder {
+  color: var(--a24-text-dim) !important;
+}
+
+html[data-a24-theme] .kb-search-clear i,
+html[data-a24-theme] .kb-search-clear svg {
+  color: var(--a24-text-muted) !important;
+}
+
+/* ---- 5. Правый блок «читатели статьи» ---- */
+
+html[data-a24-theme] .kb-document-user-list,
+html[data-a24-theme] .document-view-content .kb-document-user-list {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* ---- 6. Навбар ---- */
+
+html[data-a24-theme] .navbar,
+html[data-a24-theme] .navbar-item,
+html[data-a24-theme] .navbar-avatar,
+html[data-a24-theme] .navbar-brand {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .navbar .icon,
+html[data-a24-theme] .navbar i,
+html[data-a24-theme] .navbar svg {
+  color: var(--a24-text-muted) !important;
+  fill: var(--a24-text-muted) !important;
+}
+
+/* ---- 7. Поле ввода комментария ---- */
+
+html[data-a24-theme] #content.textarea,
+html[data-a24-theme] .textarea,
+html[data-a24-theme] .textarea.is-collapsed-if-empty {
+  background: var(--a24-field-bg) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .textarea:empty::before,
+html[data-a24-theme] .textarea.is-collapsed-if-empty:empty::before {
+  color: var(--a24-text-dim) !important;
+}
+
+html[data-a24-theme] input.input,
+html[data-a24-theme] input.empty,
+html[data-a24-theme] input.tag-dropdown-search,
+html[data-a24-theme] .input,
+html[data-a24-theme] .form-control {
+  background: var(--a24-field-bg) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] input::placeholder,
+html[data-a24-theme] textarea::placeholder {
+  color: var(--a24-text-dim) !important;
+}
+
+/* ---- 8. Ссылки ---- */
+
+html[data-a24-theme] a,
+html[data-a24-theme] a:visited {
+  color: var(--a24-accent-link) !important;
+}
+
+html[data-a24-theme] a:hover {
+  color: var(--a24-accent) !important;
+}
+
+/* ---- 9. Bulma-кнопки ---- */
+
+html[data-a24-theme] .button,
+html[data-a24-theme] .btn {
+  background: var(--a24-surface-2) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border-strong) !important;
+}
+
+html[data-a24-theme] .button.is-info,
+html[data-a24-theme] .button.is-primary,
+html[data-a24-theme] button[class*="is-info"],
+html[data-a24-theme] button[class*="is-primary"] {
+  background: var(--a24-accent-strong) !important;
+  color: var(--a24-accent-on) !important;
+  border-color: var(--a24-accent-strong) !important;
+}
+
+html[data-a24-theme] .button.is-danger,
+html[data-a24-theme] button[class*="is-danger"] {
+  background: var(--a24-danger) !important;
+  color: #fff !important;
+  border-color: var(--a24-danger) !important;
+}
+
+/* ---- 10. Карточки, модалки ---- */
+
+html[data-a24-theme] .card,
+html[data-a24-theme] .panel,
+html[data-a24-theme] .modal-card,
+html[data-a24-theme] .modal-card-head,
+html[data-a24-theme] .modal-card-body,
+html[data-a24-theme] .modal-card-foot,
+html[data-a24-theme] .dropdown-menu,
+html[data-a24-theme] .dropdown-content {
+  background: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] .modal-card-head *,
+html[data-a24-theme] .modal-card-body *,
+html[data-a24-theme] .modal-card-foot * {
+  color: var(--a24-text) !important;
+}
+
+/* ---- 11. Утилиты ---- */
+
+html[data-a24-theme] .has-text-grey,
+html[data-a24-theme] .has-text-grey-dark,
+html[data-a24-theme] .has-text-grey-darker,
+html[data-a24-theme] .is-size-7,
+html[data-a24-theme] .subtitle,
+html[data-a24-theme] .help {
+  color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .title,
+html[data-a24-theme] .subtitle strong {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] hr,
+html[data-a24-theme] .divider {
+  border-color: var(--a24-border) !important;
+}
+
+html[data-a24-theme] table,
+html[data-a24-theme] th,
+html[data-a24-theme] td {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* ============================================================
+   Лоадер Atlas24
+   ============================================================ */
+
+html[data-a24-theme] #loader {
+  background: var(--a24-bg) !important;
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] #loader.hidden {
+  background: var(--a24-bg) !important;
+}
+
+html[data-a24-theme] #loader .message,
+html[data-a24-theme] #loader .message * {
+  background: transparent !important;
+  color: var(--a24-text) !important;
+}
+
+/* 6 точек .transition-loader-inner > label. */
+html[data-a24-theme] #loader .transition-loader-inner {
+  background: transparent !important;
+}
+
+html[data-a24-theme] #loader .transition-loader-inner label {
+  color: var(--a24-accent) !important;
+  background: transparent !important;
+  border-radius: 50% !important;
+  overflow: hidden;
+}
+
+html[data-a24-theme] #loader .transition-loader-inner label::after,
+html[data-a24-theme] #loader .transition-loader-inner label::before {
+  background-color: var(--a24-accent) !important;
+  color: var(--a24-accent) !important;
+  border-color: var(--a24-accent) !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
 }

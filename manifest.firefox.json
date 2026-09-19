@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Admin24 Enhancer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Улучшения интерфейса Admin24: полное наименование заявок в мобильной вёрстке, поиск в поле «Ответственный», темы оформления.",
   "browser_specific_settings": {
     "gecko": {
@@ -22,7 +22,9 @@
   "web_accessible_resources": [
     {
       "resources": ["themes.json", "vue-bridge-injected.js"],
-      "matches": ["https://*.admin24.app/*"]
+      "matches": ["https://*.admin24.app/*",
+                  "https://app.atlas24.pro/*"]
+      
     }
   ],
   "content_scripts": [
@@ -31,6 +33,13 @@
       "js": ["content.js"],
       "css": ["tickets-list.css", "theme.css"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://app.atlas24.pro/*"],
+      "js": ["atlas24.js"],
+      "css": ["theme.css"],
+      "run_at": "document_start",
+      "all_frames": true
     }
   ]
 }
