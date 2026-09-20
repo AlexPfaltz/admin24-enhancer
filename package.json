@@ -1,6 +1,6 @@
 {
   "name": "admin24-enhancer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Admin24 interface improvements: full ticket names in the mobile layout, search in the 'Assignee' field, and visual themes.",
   "type": "module",

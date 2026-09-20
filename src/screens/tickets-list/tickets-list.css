@@ -46,3 +46,49 @@ html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content {
 html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content .right-content {
   flex: 0 0 auto;
 }
+
+/* Скрываем аватар-иконку. */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-hidden {
+  display: none !important;
+}
+
+/* .left-content в мобильной карточке — вертикальный список.
+   Admin24 по умолчанию выстраивает содержимое .left-content в строку;
+   для наших двух подписей это даёт «Ответственный … Клиент …» в одну
+   строку. Явно переводим в колонку. */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .left-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  align-items: flex-start !important;
+}
+
+/* Блок с аватаром и именем. */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .ticket-property-with-avatar {
+  display: block !important;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Строка «Label: value». */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name {
+  display: block;
+  width: 100%;
+  color: var(--a24-text, #1a1d21);
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Label — приглушённый. */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name__label {
+  color: var(--a24-text-muted, #5a626c);
+  font-weight: 500;
+}
+
+/* Value — обычный. */
+html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name__value {
+  color: var(--a24-text, #1a1d21);
+}

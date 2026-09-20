@@ -1,6 +1,7 @@
 import { SELECTORS, MARKERS } from "../../core/selectors.js";
 import { findTicketCards } from "../../core/dom.js";
 import { simplifyTitle } from "./parse.js";
+import { enrichAvatarNames, refreshTicketLightCache } from "./enrich-avatars.js";
 
 interface EnrichOptions {
   simplifyTitles: boolean;
@@ -9,6 +10,9 @@ interface EnrichOptions {
 /**
  * Помечает каждую карточку заявки и (опционально) упрощает заголовок —
  * убирает служебный префикс «Заявка с формы [ Форма ]».
+ *
+ * Дополнительно: подписывает аватары «Ответственный» и «Клиент»
+ * именами в мобильной вёрстке (если кэш уже загружен).
  *
  * DOM не пересобираем: меняем textContent у существующего <span>,
  * чтобы не задеть обработчики кликов на <a>.
@@ -42,5 +46,15 @@ export function enrichTicketCards(
     }
   }
 
+  // Подписи под аватарами — только если кэш уже загружен.
+  // Если нет — просто пропуск; следующий вызов runEnrich подхватит.
+  enrichAvatarNames(list);
+
   return touched;
 }
+
+/**
+ * Инициализация кэша тикетов для подписей под аватарами.
+ * Асинхронная, вызывается один раз при активации.
+ */
+export { refreshTicketLightCache };

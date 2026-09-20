@@ -97,3 +97,64 @@ export async function closePerformerMenu(): Promise<boolean> {
   const result = await callBridge("closeMenu");
   return result.ok;
 }
+/** Минимальная запись тикета для подписей под аватарами. */
+export interface TicketLight {
+  id: number;
+  title: string | null;
+  responsibleName: string | null;
+  applicantName: string | null;
+}
+
+interface TicketsLightResponse {
+  source: "a24-enricher-bridge";
+  channel: string;
+  requestId: string;
+  ok: boolean;
+  tickets?: TicketLight[];
+}
+
+/**
+ * Запрашивает у bridge минимальный набор данных о тикетах текущей страницы:
+ * id, responsibleName, applicantName. Используется для подписей под
+ * аватарами в мобильной вёрстке списка заявок.
+ */
+export async function fetchTicketsLight(timeoutMs = 3000): Promise<TicketLight[]> {
+  injectScriptOnce();
+
+  return new Promise((resolve) => {
+    const requestId = `a24v-${Date.now()}-${++requestCounter}`;
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== window) return;
+      const data = event.data as TicketsLightResponse | undefined;
+      if (
+        !data ||
+        data.source !== "a24-enricher-bridge" ||
+        data.channel !== CHANNEL ||
+        data.requestId !== requestId
+      ) {
+        return;
+      }
+      window.removeEventListener("message", onMessage);
+      clearTimeout(timer);
+      resolve(data.tickets ?? []);
+    };
+
+    window.addEventListener("message", onMessage);
+
+    const timer = setTimeout(() => {
+      window.removeEventListener("message", onMessage);
+      resolve([]);
+    }, timeoutMs);
+
+    window.postMessage(
+      {
+        source: "a24-enricher-client",
+        channel: CHANNEL,
+        requestId,
+        action: "getTicketsLight",
+      },
+      location.origin
+    );
+  });
+}
