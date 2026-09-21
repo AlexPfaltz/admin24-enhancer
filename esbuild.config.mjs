@@ -106,6 +106,15 @@ async function copyStatic() {
     path.join(SRC, "core/themes.json"),
     path.join(OUT, "themes.json")
   );
+
+  const iconSizes = [16, 32, 48, 192, 512];
+  await mkdir(path.join(OUT, "icons"), { recursive: true });
+  for (const size of iconSizes) {
+    await copyFile(
+      path.join(SRC, `icons/icon-${size}.png`),
+      path.join(OUT, `icons/icon-${size}.png`)
+    );
+  }
 }
 
 async function run() {
