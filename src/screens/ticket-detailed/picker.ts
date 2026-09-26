@@ -19,17 +19,147 @@ export const PICKER_MARKER = "data-a24-picker";
 const MAX_VISIBLE = 40;
 
 const STYLES = `
-.a24-pk { display: grid; grid-template-rows: auto auto 1fr; height: 100%; max-height: inherit; overflow: hidden; }
-.a24-pk__search { padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,.08); }
-.a24-pk__search input { width: 100%; padding: 6px 10px; border: 1px solid rgba(0,0,0,.18); border-radius: 6px; font: inherit; color: inherit; background: transparent; box-sizing: border-box; }
-.a24-pk__search input:focus { outline: 2px solid var(--a24-accent, #1976d2); outline-offset: -1px; border-color: var(--a24-accent, #1976d2); }
-.a24-pk__count { padding: 4px 12px; color: inherit; opacity: .6; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,.06); }
-.a24-pk__list { overflow: auto; padding: 4px 0; }
-.a24-pk__item { display: block; width: 100%; padding: 8px 14px; border: 0; background: transparent; text-align: left; font: inherit; color: inherit; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.a24-pk__item:hover, .a24-pk__item:focus-visible { background: rgba(0,0,0,.05); outline: none; }
-.a24-pk__item[data-current="1"] { color: var(--a24-accent, #1976d2); font-weight: 600; }
-.a24-pk__empty { padding: 16px; text-align: center; opacity: .6; }
-.a24-pk__more { padding: 6px 14px; opacity: .6; font-size: 11px; }
+.a24-pk {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  height: 100%; max-height: inherit;
+  overflow: hidden;
+}
+.a24-pk__search {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.a24-pk__search input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 6px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  box-sizing: border-box;
+}
+.a24-pk__search input:focus {
+  outline: 2px solid var(--a24-accent, #1976d2);
+  outline-offset: -1px;
+  border-color: var(--a24-accent, #1976d2);
+}
+.a24-pk__count {
+  padding: 4px 12px;
+  color: inherit;
+  opacity: .6;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.a24-pk__list {
+  overflow: auto;
+  padding: 4px 0;
+}
+.a24-pk__item {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.a24-pk__item:hover,
+.a24-pk__item:focus-visible {
+  background: rgba(0,0,0,.05);
+  outline: none;
+}
+.a24-pk__item[data-current="1"] {
+  color: var(--a24-accent, #1976d2);
+  font-weight: 600;
+}
+.a24-pk__empty {
+  padding: 16px;
+  text-align: center;
+  opacity: .6;
+}
+.a24-pk__more {
+  padding: 6px 14px;
+  opacity: .6;
+  font-size: 11px;
+}
+.a24-pk {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  height: 100%;
+  max-height: inherit;
+  overflow: hidden;
+  background: var(--a24-surface, Canvas);
+  color: var(--a24-text, CanvasText);
+}
+.a24-pk__search {
+  padding: 8px 12px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+.a24-pk__search input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 6px;
+  font: inherit;
+  color: inherit;
+  background: var(--a24-field-bg, Field);
+  box-sizing: border-box;
+}
+.a24-pk__search input:focus {
+  outline: 2px solid var(--a24-accent, Highlight);
+  outline-offset: -1px;
+  border-color: var(--a24-accent, Highlight);
+}
+.a24-pk__count {
+  padding: 4px 12px;
+  color: inherit;
+  opacity: .6;
+  font-size: 11px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+}
+.a24-pk__list {
+  overflow: auto;
+  padding: 4px 0;
+}
+.a24-pk__item {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.a24-pk__item:hover,
+.a24-pk__item:focus-visible {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  outline: none;
+}
+.a24-pk__item[data-current="1"] {
+  color: var(--a24-accent, Highlight);
+  font-weight: 600;
+}
+.a24-pk__empty {
+  padding: 16px;
+  text-align: center;
+  opacity: .6;
+}
+.a24-pk__more {
+  padding: 6px 14px;
+  opacity: .6;
+  font-size: 11px;
+}
 `;
 
 
