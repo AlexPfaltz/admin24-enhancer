@@ -1,4 +1,3 @@
-/* Разрешаем flex-родителю переносить строки и снимаем фиксированную ширину */
 html[data-a24-full-title="on"] .tickets-list .ticket .ticket-header-top {
   flex-wrap: wrap;
   width: auto;
@@ -7,7 +6,6 @@ html[data-a24-full-title="on"] .tickets-list .ticket .ticket-header-top {
   min-width: 0;
 }
 
-/* Снимаем однострочную обрезку с самого заголовка */
 html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title {
   display: block;
   white-space: normal !important;
@@ -19,7 +17,6 @@ html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title {
   overflow-wrap: anywhere;
 }
 
-/* Внутренний span не должен наследовать nowrap от Vuetify */
 html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title > span {
   white-space: normal;
   overflow: visible;
@@ -27,7 +24,6 @@ html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title > span {
   display: inline;
 }
 
-/* Правая часть (дата) не должна сжиматься и ломаться */
 html[data-a24-full-title="on"] .tickets-list .ticket .ticket-top-content {
   align-items: flex-start;
 }
@@ -36,15 +32,10 @@ html[data-a24-full-title="on"] .tickets-list .ticket .ticket-top-content .right-
   flex: 0 0 auto;
 }
 
-/* --- Подписи «Отв.: Имя» / «Клиент: Имя» вместо аватара в мобильной вёрстке. --- */
-
-/* Скрываем аватар-иконку. */
 html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-hidden {
   display: none !important;
 }
 
-/* .left-content в мобильной карточке — вертикальный список: два блока
-   (Ответственный, Клиент) идут друг под другом, каждый на своей строке. */
 html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .left-content {
   display: flex !important;
   flex-direction: column !important;
@@ -52,15 +43,12 @@ html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .left-content 
   align-items: flex-start !important;
 }
 
-/* Блок с аватаром и именем. */
 html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .ticket-property-with-avatar {
   display: block !important;
   width: 100%;
   min-width: 0;
 }
 
-/* Строка «Label: value». Ширина ограничена, чтобы не наезжать на иконки
-   справа — те, что в правой части карточки (интеграции, статус). */
 html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-name {
   display: block;
   width: 100%;

@@ -1,18 +1,7 @@
-/*
- * Тема Admin24 Enhancer. Активируется [data-a24-theme] на <html>.
- * Цвета — только через var(--a24-*), определённые ниже.
- */
-
-/* ============================================================
-   Anti-FOUC для #loader внутри iframe app.atlas24.pro.
-   Правило применяется без ожидания data-a24-theme: тема всё равно
-   тёмная у большинства, а промежуточное состояние в светлой теме
-   всё равно перекрасится мгновенно. Приоритет — не дать мелькнуть белому.
-   ============================================================ */
 @supports (color: var(--x)) {
   html #loader,
   html body #loader {
-    background: #17130d; /* совпадает с dark-amber --p-bg по умолчанию */
+    background: #17130d;
     color: #f0e8d8;
     transition: none;
   }
@@ -22,11 +11,6 @@
     background: transparent;
   }
 }
-
-/* ============================================================
-   Определения ролей. --p-* проставляет initTheme() через
-   applyPalette() для выбранной темы.
-   ============================================================ */
 
 html[data-a24-theme] {
   --a24-bg: var(--p-bg);
@@ -51,9 +35,6 @@ html[data-a24-theme] {
   --a24-status-ok: var(--p-status-ok, #2d4a2c);
   --a24-status-own: var(--p-status-own, #1e3a55);
   --a24-status-neutral: var(--p-status-neutral, #242a30);
-
-  /* Семантические роли: производные от accent и surface через color-mix,
-     чтобы не хардкодить цвета в темах. */
   --a24-accent-link: color-mix(in srgb, var(--a24-accent) 88%, var(--a24-text) 12%);
   --a24-accent-strong: color-mix(in srgb, var(--a24-accent) 88%, var(--a24-bg) 12%);
   --a24-accent-soft-bg: color-mix(in srgb, var(--a24-accent) 18%, var(--a24-surface) 82%);
@@ -68,10 +49,6 @@ html[data-a24-theme-kind="dark"] {
   --a24-header-bg: color-mix(in srgb, var(--a24-surface) 80%, var(--a24-bg-elevated) 20%);
 }
 
-/* ============================================================
-   Базовые поверхности страницы
-   ============================================================ */
-
 html[data-a24-theme] body,
 html[data-a24-theme] .v-application,
 html[data-a24-theme] .v-application__wrap,
@@ -83,10 +60,6 @@ html[data-a24-theme] .admin--content {
   background: var(--a24-bg) !important;
   color: var(--a24-text);
 }
-
-/* ============================================================
-   Шапка, боковое меню, тулбар
-   ============================================================ */
 
 html[data-a24-theme] .v-toolbar,
 html[data-a24-theme] .v-app-bar,
@@ -111,10 +84,6 @@ html[data-a24-theme] .admin-vertical-menu__main,
 html[data-a24-theme] .admin-vertical-menu__footer {
   background: transparent !important;
 }
-
-/* ============================================================
-   Универсальные поверхности Vuetify
-   ============================================================ */
 
 html[data-a24-theme] .v-card,
 html[data-a24-theme] .v-sheet,
@@ -174,12 +143,6 @@ html[data-a24-theme] .v-progress-circular__underlay {
 html[data-a24-theme] .v-progress-circular[style*="color"] {
   color: var(--a24-accent) !important;
 }
-
-/* ============================================================
-   Vuetify overlay-меню (автокомплиты «Заявитель», «Ответственный» и др.).
-   Меню живёт в body > .v-overlay-container вне .v-application, поэтому
-   у него свои Vuetify-переменные. Перебиваем.
-   ============================================================ */
 
 html[data-a24-theme] .v-overlay-container .v-overlay__content,
 html[data-a24-theme] .v-overlay-container .v-menu > .v-overlay__content,
@@ -265,10 +228,6 @@ html[data-a24-theme-kind="dark"] .v-overlay-container {
   color-scheme: dark;
 }
 
-/* ============================================================
-   Утилитарные фоны: bg-white, transparent
-   ============================================================ */
-
 html[data-a24-theme] .bg-white,
 html[data-a24-theme] .v-field--has-background.bg-white,
 html[data-a24-theme] .v-card.bg-white,
@@ -284,10 +243,6 @@ html[data-a24-theme] .bg-transparent {
 html[data-a24-theme] .v-responsive.v-img {
   background: transparent;
 }
-
-/* ============================================================
-   Поля ввода, селекты, автокомплиты
-   ============================================================ */
 
 html[data-a24-theme] .v-field,
 html[data-a24-theme] .v-field__field,
@@ -337,10 +292,6 @@ html[data-a24-theme] .v-field--active .v-field-label {
   color: var(--a24-accent) !important;
 }
 
-/* ============================================================
-   Чипы
-   ============================================================ */
-
 html[data-a24-theme] .v-chip {
   background: var(--a24-surface-2) !important;
   color: var(--a24-text) !important;
@@ -364,7 +315,6 @@ html[data-a24-theme] .v-chip__content {
   color: inherit !important;
 }
 
-/* Бейджи со своими bg-* не трогаем. */
 html[data-a24-theme] .v-chip.bg-primary,
 html[data-a24-theme] .v-chip.bg-success,
 html[data-a24-theme] .v-chip.bg-error,
@@ -379,10 +329,6 @@ html[data-a24-theme] .v-chip.bg-orange {
 html[data-a24-theme] .v-chip[style*="background-color"] {
   color: inherit;
 }
-
-/* ============================================================
-   Кнопки
-   ============================================================ */
 
 html[data-a24-theme] .v-btn--variant-text,
 html[data-a24-theme] .v-btn--variant-plain {
@@ -424,17 +370,12 @@ html[data-a24-theme] .v-btn.bg-red {
   color: #fff !important;
 }
 
-/* Primary-кнопки: фон из accent, текст — accentOn. */
 html[data-a24-theme] .v-btn.bg-primary,
 html[data-a24-theme] .v-btn[style*="background-color: rgb(24, 103, 192)"],
 html[data-a24-theme] .v-btn[style*="background-color: rgb(25, 118, 210)"] {
   background: var(--a24-accent-strong) !important;
   color: var(--a24-accent-on) !important;
 }
-
-/* ============================================================
-   Аватары, дивайдеры, пункты меню
-   ============================================================ */
 
 html[data-a24-theme] .v-avatar {
   background: var(--a24-surface-2);
@@ -465,7 +406,6 @@ html[data-a24-theme] .admin-menu-settings__title {
   color: var(--a24-text);
 }
 
-/* Активный пункт меню — accent-soft фон + полоса слева. */
 html[data-a24-theme] .admin-menu-item--active .admin-menu-item__content--active,
 html[data-a24-theme] .a-list-item.active,
 html[data-a24-theme] .admin-link.active .admin-menu-item__content {
@@ -473,10 +413,6 @@ html[data-a24-theme] .admin-link.active .admin-menu-item__content {
   color: var(--a24-text) !important;
   border-left: 2px solid var(--a24-accent);
 }
-
-/* ============================================================
-   Чекбоксы / радио / свитчи
-   ============================================================ */
 
 html[data-a24-theme] .v-selection-control__input > .v-icon,
 html[data-a24-theme] .v-checkbox-btn .v-icon {
@@ -487,10 +423,6 @@ html[data-a24-theme] .v-selection-control--dirty .v-selection-control__input > .
 html[data-a24-theme] .v-checkbox-btn .v-selection-control--dirty .v-icon {
   color: var(--a24-accent) !important;
 }
-
-/* ============================================================
-   Таблицы
-   ============================================================ */
 
 html[data-a24-theme] .v-data-table__th,
 html[data-a24-theme] .v-data-table-header th,
@@ -508,13 +440,6 @@ html[data-a24-theme] .v-table__td {
   border-color: var(--a24-border) !important;
 }
 
-/* ============================================================
-   Список заявок: семантика статусов.
-   Фон приходит inline через --b*-переменную (имя меняется между
-   сборками Admin24, значение — hex). Матчимся по hex-подстроке.
-   В тёмных темах — приглушаем через color-mix, чтобы не «кричало».
-   ============================================================ */
-
 html[data-a24-theme] .tickets-mobile-template,
 html[data-a24-theme] .tickets-list {
   background: transparent;
@@ -526,9 +451,6 @@ html[data-a24-theme] .ticket {
   border-radius: 6px;
 }
 
-/* --- ТЁМНЫЕ ТЕМЫ --- */
-
-/* Просроченные — приглушённый красный, не кислотный. */
 html[data-a24-theme-kind="dark"] .ticket[style*="#E79668"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#e79668"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#FF8A7A"],
@@ -538,13 +460,11 @@ html[data-a24-theme-kind="dark"] .ticket[style*="#ff6656"] {
   background: color-mix(in srgb, var(--a24-danger) 35%, var(--a24-surface) 65%) !important;
 }
 
-/* Предупреждение — приглушённый жёлтый. */
 html[data-a24-theme-kind="dark"] .ticket[style*="#FDF304"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#fdf304"] {
   background: color-mix(in srgb, var(--a24-warning) 35%, var(--a24-surface) 65%) !important;
 }
 
-/* «Новый» — на будущее, если Admin24 вернёт этот hex. */
 html[data-a24-theme-kind="dark"] .ticket[style*="#8EE7EB"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#8ee7eb"] {
   background: var(--a24-status-new) !important;
@@ -555,13 +475,11 @@ html[data-a24-theme-kind="dark"] .ticket[style*="#bde2ac"] {
   background: var(--a24-status-ok) !important;
 }
 
-/* Обычные. */
 html[data-a24-theme-kind="dark"] .ticket[style*="#FFFFFF"],
 html[data-a24-theme-kind="dark"] .ticket[style*="#ffffff"] {
   background: var(--a24-surface) !important;
 }
 
-/* Незнакомые — глушим в surface-2. */
 html[data-a24-theme-kind="dark"] .ticket[style*="--b"]:not([style*="#E79668"]):not([style*="#e79668"]):not([style*="#FF8A7A"]):not([style*="#ff8a7a"]):not([style*="#FF6656"]):not([style*="#ff6656"]):not([style*="#FDF304"]):not([style*="#fdf304"]):not([style*="#8EE7EB"]):not([style*="#8ee7eb"]):not([style*="#BDE2AC"]):not([style*="#bde2ac"]):not([style*="#FFFFFF"]):not([style*="#ffffff"]) {
   background: var(--a24-surface-2) !important;
 }
@@ -576,8 +494,6 @@ html[data-a24-theme-kind="dark"] .ticket a.ticket-title > span,
 html[data-a24-theme-kind="dark"] .ticket a.ticket-number {
   color: var(--a24-accent) !important;
 }
-
-/* --- СВЕТЛЫЕ ТЕМЫ --- */
 
 html[data-a24-theme-kind="light"] .ticket[style*="#8EE7EB"],
 html[data-a24-theme-kind="light"] .ticket[style*="#8ee7eb"] {
@@ -612,8 +528,6 @@ html[data-a24-theme-kind="light"] .ticket[style*="#ff6656"] {
   background: color-mix(in srgb, var(--a24-danger) 30%, var(--a24-surface) 70%) !important;
 }
 
-/* --- ТЁПЛАЯ СВЕТЛАЯ: тёплая гамма статусов --- */
-
 html[data-a24-theme="light-warm"] .ticket[style*="#8EE7EB"],
 html[data-a24-theme="light-warm"] .ticket[style*="#8ee7eb"] {
   background: #f3e9dc !important;
@@ -647,8 +561,6 @@ html[data-a24-theme="light-warm"] .ticket[style*="#ff6656"] {
   background: #f7dcc4 !important; /* тёплый персиковый — «просрочено» */
 }
 
-/* --- ОБЩЕЕ ДЛЯ ВСЕХ ТЕМ --- */
-
 html[data-a24-theme] .ticket .ticket-date,
 html[data-a24-theme] .ticket .v-chip.ticket-date {
   background: transparent !important;
@@ -667,10 +579,6 @@ html[data-a24-theme] .ticket .ticket-property .property-text {
 html[data-a24-theme] .tickets-list-pagination {
   color: var(--a24-text-muted);
 }
-
-/* ============================================================
-   Дашборд Service Desk
-   ============================================================ */
 
 html[data-a24-theme] .dashboard-widget {
   background: var(--a24-surface) !important;
@@ -694,10 +602,6 @@ html[data-a24-theme] .dashboard-widget-bottom > div {
   color: var(--a24-text-muted) !important;
 }
 
-/* ============================================================
-   Скроллбар
-   ============================================================ */
-
 html[data-a24-theme] * {
   scrollbar-color: var(--a24-border-strong) transparent;
 }
@@ -710,10 +614,6 @@ html[data-a24-theme] ::-webkit-scrollbar-thumb {
 html[data-a24-theme] ::-webkit-scrollbar-track {
   background: transparent;
 }
-
-/* ============================================================
-   Vuetify-переменные: разводим поверхности на 4 роли.
-   ============================================================ */
 
 html[data-a24-theme-kind="dark"] {
   color-scheme: dark;
@@ -774,10 +674,6 @@ html[data-a24-theme-kind="dark"] .v-theme--light {
   --v-border-opacity: 0.12;
 }
 
-/* ============================================================
-   Панель инструментов списка заявок
-   ============================================================ */
-
 html[data-a24-theme] .tickets-mobile-template .toolbar,
 html[data-a24-theme] .tickets-mobile-template .toolbar-buttons,
 html[data-a24-theme] .tickets-mobile-template .toolbar-filters-panel {
@@ -794,11 +690,6 @@ html[data-a24-theme] .tickets-mobile-template .toolbar .v-btn--variant-elevated 
   color: var(--a24-text) !important;
   border: 1px solid var(--a24-border) !important;
 }
-
-/* ============================================================
-   Хардкод-переопределения: Admin24 задаёт цвета inline или
-   scoped-стилями без Vuetify-переменных.
-   ============================================================ */
 
 html[data-a24-theme] [style*="color: rgb(51, 51, 51)"],
 html[data-a24-theme] [style*="color: rgb(51,51,51)"] {
@@ -856,10 +747,6 @@ html[data-a24-theme] .text-disabled {
   color: var(--a24-text-muted) !important;
 }
 
-/* ============================================================
-   Telegram-мессенджер
-   ============================================================ */
-
 html[data-a24-theme] .v-card.text-blue.lighten-5,
 html[data-a24-theme] .v-card.text-grey.lighten-5 {
   background: var(--a24-surface-2) !important;
@@ -902,10 +789,6 @@ html[data-a24-theme] .tg-msg-input-file .v-field__outline {
   border-bottom-color: transparent !important;
 }
 
-/* ============================================================
-   Панель уведомлений (right drawer)
-   ============================================================ */
-
 html[data-a24-theme] .notifications-drawer,
 html[data-a24-theme] .notifications-drawer__content,
 html[data-a24-theme] .queue-drawer.notifications-drawer,
@@ -939,10 +822,6 @@ html[data-a24-theme] .notifications-drawer .text-body-2 b,
 html[data-a24-theme] .notifications-drawer .text-body-2 strong {
   color: var(--a24-text) !important;
 }
-
-/* ============================================================
-   Комментарии в детальной заявке.
-   ============================================================ */
 
 html[data-a24-theme] .comments-container .comment-container {
   color: var(--a24-text) !important;
@@ -1078,10 +957,6 @@ html[data-a24-theme] .messages-container .comment-limit-block {
   color: var(--a24-text-muted) !important;
 }
 
-/* ============================================================
-   Детальная заявка: правая колонка и таблица описания
-   ============================================================ */
-
 html[data-a24-theme] .full-description td {
   border-color: var(--a24-border-strong) !important;
 }
@@ -1090,10 +965,6 @@ html[data-a24-theme] a[href*="bitrix"],
 html[data-a24-theme] a.text-primary {
   color: var(--a24-accent-link) !important;
 }
-
-/* ============================================================
-   Отчёты: инфо-блоки, легенды, оси графиков
-   ============================================================ */
 
 html[data-a24-theme] .info-block,
 html[data-a24-theme] .info-block * {
@@ -1152,10 +1023,6 @@ html[data-a24-theme] .metric-item .info-data {
   color: var(--a24-text) !important;
 }
 
-/* ============================================================
-   Шапка приложения
-   ============================================================ */
-
 html[data-a24-theme] .desktop-app-bar,
 html[data-a24-theme] .desktop-app-bar *,
 html[data-a24-theme] .v-app-bar .horizontal-menu-buttons,
@@ -1203,10 +1070,6 @@ html[data-a24-theme] .v-app-bar .v-field__outline__notch {
   color: var(--a24-border-strong) !important;
   border-color: var(--a24-border-strong) !important;
 }
-
-/* ============================================================
-   Тулбар списка заявок и фильтры
-   ============================================================ */
 
 html[data-a24-theme] .toolbar-panel,
 html[data-a24-theme] .toolbar-settings,
@@ -1265,10 +1128,6 @@ html[data-a24-theme] .v-btn--variant-elevated:not([class*="bg-"]):not([style*="b
   color: var(--a24-text) !important;
   border: 1px solid var(--a24-border-strong) !important;
 }
-
-/* ============================================================
-   Кастомные классы Admin24 (.a-table, .a-card, .a-array-toolbar)
-   ============================================================ */
 
 html[data-a24-theme] .a-table,
 html[data-a24-theme] .a-table-wrapper,
@@ -1349,10 +1208,6 @@ html[data-a24-theme] .a-array-toolbar-filters-list-item:hover {
   background: var(--a24-surface-hover) !important;
 }
 
-/* ============================================================
-   CRM-дашборд
-   ============================================================ */
-
 html[data-a24-theme] .crm-task-items-list {
   background: var(--a24-surface) !important;
   color: var(--a24-text) !important;
@@ -1417,10 +1272,6 @@ html[data-a24-theme] [class*="crm"] thead th {
   border-color: var(--a24-border) !important;
 }
 
-/* ============================================================
-   Границы контейнеров вокруг меню
-   ============================================================ */
-
 html[data-a24-theme] .v-navigation-drawer,
 html[data-a24-theme] .admin-vertical-menu,
 html[data-a24-theme] .admin-vertical-menu__main,
@@ -1446,10 +1297,6 @@ html[data-a24-theme] .v-main {
   box-shadow: none !important;
 }
 
-/* ============================================================
-   Акцентная переменная Admin24 и активная вкладка
-   ============================================================ */
-
 html[data-a24-theme] {
   --a-primary-color: var(--a24-accent) !important;
 }
@@ -1467,14 +1314,6 @@ html[data-a24-theme] .v-tab__slider.text-primary {
   height: 3px !important;
 }
 
-/* ============================================================
-   Atlas24 Knowledge Base (iframe app.atlas24.pro).
-   Отдельное приложение (Bulma + TinyMCE), не Vuetify.
-   Классы: kb-*, .sidebar, .tree-node*, fa-иконки.
-   ============================================================ */
-
-/* ---- 1. Левое дерево + границы .sidebar ---- */
-
 html[data-a24-theme] .sidebar {
   background: var(--a24-bg-elevated) !important;
   color: var(--a24-text) !important;
@@ -1489,8 +1328,6 @@ html[data-a24-theme] .sidebar::before {
   border-color: var(--a24-border) !important;
   background: transparent !important;
 }
-
-/* ---- 2. Дерево: строки и иконки ---- */
 
 html[data-a24-theme] .tree-node,
 html[data-a24-theme] .tree-node-title,
@@ -1593,8 +1430,6 @@ html[data-a24-theme] .tree-node > .tree-node {
   background: transparent !important;
 }
 
-/* ---- 3. Кнопка «Наверх» ---- */
-
 html[data-a24-theme] .kb-goto-up,
 html[data-a24-theme] .goto-up {
   background: var(--a24-accent-strong) !important;
@@ -1608,8 +1443,6 @@ html[data-a24-theme] .kb-goto-up svg {
   color: var(--a24-accent-on) !important;
   fill: var(--a24-accent-on) !important;
 }
-
-/* ---- 4. Шапка статьи .header.kb-header ---- */
 
 html[data-a24-theme] .kb-header,
 html[data-a24-theme] .header.kb-header {
@@ -1671,16 +1504,12 @@ html[data-a24-theme] .kb-search-clear svg {
   color: var(--a24-text-muted) !important;
 }
 
-/* ---- 5. Правый блок «читатели статьи» ---- */
-
 html[data-a24-theme] .kb-document-user-list,
 html[data-a24-theme] .document-view-content .kb-document-user-list {
   background: var(--a24-surface) !important;
   color: var(--a24-text) !important;
   border-color: var(--a24-border) !important;
 }
-
-/* ---- 6. Навбар ---- */
 
 html[data-a24-theme] .navbar,
 html[data-a24-theme] .navbar-item,
@@ -1696,8 +1525,6 @@ html[data-a24-theme] .navbar svg {
   color: var(--a24-text-muted) !important;
   fill: var(--a24-text-muted) !important;
 }
-
-/* ---- 7. Поле ввода комментария ---- */
 
 html[data-a24-theme] #content.textarea,
 html[data-a24-theme] .textarea,
@@ -1727,8 +1554,6 @@ html[data-a24-theme] textarea::placeholder {
   color: var(--a24-text-dim) !important;
 }
 
-/* ---- 8. Ссылки ---- */
-
 html[data-a24-theme] a,
 html[data-a24-theme] a:visited {
   color: var(--a24-accent-link) !important;
@@ -1737,8 +1562,6 @@ html[data-a24-theme] a:visited {
 html[data-a24-theme] a:hover {
   color: var(--a24-accent) !important;
 }
-
-/* ---- 9. Bulma-кнопки ---- */
 
 html[data-a24-theme] .button,
 html[data-a24-theme] .btn {
@@ -1763,7 +1586,6 @@ html[data-a24-theme] button[class*="is-danger"] {
   border-color: var(--a24-danger) !important;
 }
 
-/* ---- 10. Карточки, модалки ---- */
 
 html[data-a24-theme] .card,
 html[data-a24-theme] .panel,
@@ -1784,7 +1606,6 @@ html[data-a24-theme] .modal-card-foot * {
   color: var(--a24-text) !important;
 }
 
-/* ---- 11. Утилиты ---- */
 
 html[data-a24-theme] .has-text-grey,
 html[data-a24-theme] .has-text-grey-dark,
@@ -1812,10 +1633,6 @@ html[data-a24-theme] td {
   color: var(--a24-text) !important;
   border-color: var(--a24-border) !important;
 }
-
-/* ============================================================
-   Лоадер Atlas24
-   ============================================================ */
 
 html[data-a24-theme] #loader {
   background: var(--a24-bg) !important;
@@ -1853,13 +1670,6 @@ html[data-a24-theme] #loader .transition-loader-inner label::before {
   box-shadow: none !important;
 }
 
-/* ============================================================
-   Пикер даты и времени внутри .admin-date-time-picker.
-   Это не Vuetify-компоненты — а сторонняя библиотека
-   vue-persian-datetime-picker (.vpd-*). У неё свои цвета,
-   жёстко зашитые. Перебиваем.
-   ============================================================ */
-
 html[data-a24-theme] .admin-date-time-picker .vpd-content,
 html[data-a24-theme] .admin-date-time-picker .vpd-body,
 html[data-a24-theme] .admin-date-time-picker .vpd-addon-list,
@@ -1887,7 +1697,6 @@ html[data-a24-theme] .admin-date-time-picker .vpd-input-wrapper {
   border-color: var(--a24-border) !important;
 }
 
-/* Заголовок vpd-header — акцентный, как у v-picker__title. */
 html[data-a24-theme] .admin-date-time-picker .vpd-header {
   background-color: var(--a24-accent-strong) !important;
   color: var(--a24-accent-on, #fff) !important;
@@ -1899,7 +1708,6 @@ html[data-a24-theme] .admin-date-time-picker .vpd-date > span {
   color: var(--a24-accent-on, #fff) !important;
 }
 
-/* Стрелки вверх/вниз (svg) в колонках часов/минут. */
 html[data-a24-theme] .admin-date-time-picker .vpd-up-arrow-btn,
 html[data-a24-theme] .admin-date-time-picker .vpd-down-arrow-btn,
 html[data-a24-theme] .admin-date-time-picker .vpd-up-arrow-btn svg,
@@ -1914,7 +1722,6 @@ html[data-a24-theme] .admin-date-time-picker .vpd-down-arrow-btn:hover {
   background-color: var(--a24-surface-hover) !important;
 }
 
-/* Кнопки «ВЫБРАТЬ» и «Отмена». */
 html[data-a24-theme] .admin-date-time-picker .vpd-submit-btn,
 html[data-a24-theme] .admin-date-time-picker .vpd-submit-btn * {
   color: var(--a24-accent) !important;
@@ -1927,7 +1734,6 @@ html[data-a24-theme] .admin-date-time-picker .vpd-cancel-btn * {
   background-color: transparent !important;
 }
 
-/* Активная дата / выбранное время. */
 html[data-a24-theme] .admin-date-time-picker .vpd-day.is-selected,
 html[data-a24-theme] .admin-date-time-picker .vpd-day.is-today,
 html[data-a24-theme] .admin-date-time-picker .vpd-day.is-selected * {
@@ -1939,13 +1745,11 @@ html[data-a24-theme] .admin-date-time-picker .vpd-day:hover {
   background-color: var(--a24-surface-hover) !important;
 }
 
-/* Текст в колонках часов и минут. */
 html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content,
 html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content * {
   color: var(--a24-text) !important;
 }
 
-/* Разделитель «:» между часами и минутами. */
 html[data-a24-theme] .admin-date-time-picker .vpd-time-separator,
 html[data-a24-theme] .admin-date-time-picker .vpd-time-separator * {
   color: var(--a24-text-muted) !important;

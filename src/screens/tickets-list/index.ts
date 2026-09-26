@@ -21,24 +21,12 @@ import { initTicketDetailed } from "../ticket-detailed/index.js";
 
 let appRoot: HTMLElement | null = null;
 let appObserver: MutationObserver | null = null;
-
 let listObserver: MutationObserver | null = null;
 let currentList: HTMLElement | null = null;
-
 let mobileListObserver: MutationObserver | null = null;
 let currentMobileList: HTMLElement | null = null;
-
-/**
- * Локальная копия флага «упрощать названия» — чтобы не читать
- * storage на каждую мутацию DOM.
- */
 let simplifyTitles = true;
 
-/**
- * Прогоняет обогащение по обоим спискам — десктопному и мобильному.
- * Если список отсутствует (например, на узком экране десктопного нет) —
- * просто пропускается.
- */
 function runEnrich(): void {
   if (document.visibilityState !== "visible") return;
 
@@ -142,9 +130,6 @@ async function activate(): Promise<void> {
   }
 
   syncWithDom();
-
-  // Кэш тикетов нужен для подписей под аватарами. Прогоняем
-  // обогащение по обоим спискам, когда кэш придёт.
   void refreshTicketLightCache().then(() => runEnrich());
 }
 

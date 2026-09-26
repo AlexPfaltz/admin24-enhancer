@@ -24,11 +24,6 @@ const STATUS_VAR_NAMES: Record<string, string> = {
   neutral: "--a24-status-neutral",
 };
 
-/**
- * Преобразует "#1e2226" или "#1e2226ff" в "30, 34, 38".
- * Возвращает как есть, если значение уже не hex (например,
- * готовое "30, 34, 38" или rgba-выражение).
- */
 function hexToRgb(value: string): string {
   const hex = value.trim();
   if (!hex.startsWith("#")) {

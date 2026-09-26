@@ -45,10 +45,6 @@ interface ThemesConfig {
   themes: Record<string, Omit<Theme, "id">>;
 }
 
-/**
- * Кэш загруженного конфига. Заполняется один раз через loadThemes().
- * null — конфиг не загружен или загрузка провалилась.
- */
 let cachedConfig: ThemesConfig | null = null;
 let loadPromise: Promise<ThemesConfig | null> | null = null;
 
@@ -63,11 +59,6 @@ function parseConfig(raw: unknown): ThemesConfig | null {
   return raw as ThemesConfig;
 }
 
-/**
- * Загружает themes.json через fetch(browser.runtime.getURL(...)).
- * Идемпотентно: повторный вызов возвращает тот же промис.
- * При ошибке — лог + null в кэше.
- */
 export function loadThemes(): Promise<ThemesConfig | null> {
   if (loadPromise) return loadPromise;
 

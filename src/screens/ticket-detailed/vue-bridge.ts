@@ -1,12 +1,5 @@
 import browser from "webextension-polyfill";
 
-/**
- * Клиент к инжектнутому в page world мосту (vue-bridge-injected.ts).
- * Из content script у нас нет доступа к _vnode и props Vue — они
- * в page world. Поэтому мы инжектим тег <script> в documentElement,
- * он исполняется в page world и слушает postMessage от нас.
- */
-
 const CHANNEL = "a24-enricher-vue-bridge";
 const INJECTED_PATH = "vue-bridge-injected.js";
 const SCRIPT_MARKER = "data-a24-vue-bridge";
@@ -97,7 +90,7 @@ export async function closePerformerMenu(): Promise<boolean> {
   const result = await callBridge("closeMenu");
   return result.ok;
 }
-/** Минимальная запись тикета для подписей под аватарами. */
+
 export interface TicketLight {
   id: number;
   title: string | null;
@@ -113,12 +106,9 @@ interface TicketsLightResponse {
   tickets?: TicketLight[];
 }
 
-/**
- * Запрашивает у bridge минимальный набор данных о тикетах текущей страницы:
- * id, responsibleName, applicantName. Используется для подписей под
- * аватарами в мобильной вёрстке списка заявок.
- */
-export async function fetchTicketsLight(timeoutMs = 3000): Promise<TicketLight[]> {
+export async function fetchTicketsLight(
+  timeoutMs = 3000
+): Promise<TicketLight[]> {
   injectScriptOnce();
 
   return new Promise((resolve) => {
@@ -153,6 +143,65 @@ export async function fetchTicketsLight(timeoutMs = 3000): Promise<TicketLight[]
         channel: CHANNEL,
         requestId,
         action: "getTicketsLight",
+      },
+      location.origin
+    );
+  });
+}
+
+export interface ResponsiblePerson {
+  id: number;
+  name: string;
+  fullName: string;
+  email: string | null;
+  photoUrl: string | null;
+}
+
+interface ResponsibleListResponse {
+  source: "a24-enricher-bridge";
+  channel: string;
+  requestId: string;
+  ok: boolean;
+  responsibleList?: ResponsiblePerson[];
+}
+
+export async function fetchResponsibleList(
+  timeoutMs = 3000
+): Promise<ResponsiblePerson[]> {
+  injectScriptOnce();
+
+  return new Promise((resolve) => {
+    const requestId = `a24v-${Date.now()}-${++requestCounter}`;
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== window) return;
+      const data = event.data as ResponsibleListResponse | undefined;
+      if (
+        !data ||
+        data.source !== "a24-enricher-bridge" ||
+        data.channel !== CHANNEL ||
+        data.requestId !== requestId
+      ) {
+        return;
+      }
+      window.removeEventListener("message", onMessage);
+      clearTimeout(timer);
+      resolve(data.responsibleList ?? []);
+    };
+
+    window.addEventListener("message", onMessage);
+
+    const timer = setTimeout(() => {
+      window.removeEventListener("message", onMessage);
+      resolve([]);
+    }, timeoutMs);
+
+    window.postMessage(
+      {
+        source: "a24-enricher-client",
+        channel: CHANNEL,
+        requestId,
+        action: "getResponsibleList",
       },
       location.origin
     );
