@@ -1,12 +1,11 @@
-/**
- * Чтение данных Admin24 из Inertia-props (<div data-page="app">).
- * Смена исполнителя идёт через Vue-инстанс — см. vue-bridge.ts.
- */
+import {
+  fetchResponsibleList,
+  type ResponsiblePerson,
+} from "../screens/ticket-detailed/vue-bridge.js";
 
 export interface Admin24Person {
   id: number;
   name: string;
-  /** Admin24 кладёт в props поле `name`, не `fullName`. */
   fullName: string;
   email?: string;
   photoUrl?: string;
@@ -45,12 +44,6 @@ export function readPageProps(): DataPagePayload["props"] | null {
   }
 }
 
-/**
- * Приводим «сырой» элемент списка к нашему типу. Admin24 кладёт
- * разные наборы полей: где-то `name` = полное имя, где-то разбито
- * на `secondName`/`firstName`/`lastName`. Собираем `fullName` из того,
- * что есть.
- */
 function normalizePerson(raw: RawResponsible): Admin24Person | null {
   if (typeof raw.id !== "number") return null;
 
@@ -71,7 +64,8 @@ function normalizePerson(raw: RawResponsible): Admin24Person | null {
   return person;
 }
 
-export function readResponsibleList(): Admin24Person[] {
+/** Fallback-источник: data-page="app" (только если bridge не ответил). */
+function readResponsibleListFromDataPage(): Admin24Person[] {
   const list = readPageProps()?.responsibleList;
   if (!Array.isArray(list)) return [];
   const result: Admin24Person[] = [];
@@ -82,12 +76,50 @@ export function readResponsibleList(): Admin24Person[] {
   return result;
 }
 
-export function readCurrentTicketUuid(): string | null {
-  const uuid = readPageProps()?.ticket?.uuid;
-  return typeof uuid === "string" && uuid.length > 0 ? uuid : null;
+/** Преобразует запись из bridge в наш Admin24Person. */
+function bridgeToPerson(p: ResponsiblePerson): Admin24Person {
+  const person: Admin24Person = {
+    id: p.id,
+    name: p.name,
+    fullName: p.fullName,
+  };
+  if (p.email) person.email = p.email;
+  if (p.photoUrl) person.photoUrl = p.photoUrl;
+  return person;
 }
 
 export function readViewerEmail(): string {
   const props = readPageProps();
   return props?.auth?.user?.email ?? props?.currentUser?.email ?? "";
+}
+
+let responsibleCache: Admin24Person[] = [];
+let loadPromise: Promise<void> | null = null;
+
+export function loadResponsibleList(): Promise<void> {
+  if (loadPromise) return loadPromise;
+
+  loadPromise = (async () => {
+    const fromDataPage = readResponsibleListFromDataPage();
+    if (fromDataPage.length > 0) {
+      responsibleCache = fromDataPage;
+      return;
+    }
+
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const fromBridge = await fetchResponsibleList();
+      if (fromBridge.length > 0) {
+        responsibleCache = fromBridge.map(bridgeToPerson);
+        return;
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    loadPromise = null;
+  })();
+
+  return loadPromise;
+}
+
+export function readResponsibleList(): Admin24Person[] {
+  return responsibleCache;
 }

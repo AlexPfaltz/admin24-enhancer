@@ -3,8 +3,8 @@ import type { Admin24Person } from "../../core/admin24-api.js";
 export interface PickerHandle {
   mount(overlayContent: HTMLElement): void;
   unmount(): void;
-  /** Смонтирован ли UI именно в этот узел и жив ли root. */
   isMountedFor(overlayContent: HTMLElement): boolean;
+  refresh(): void;
 }
 
 export interface PickerCallbacks {
@@ -12,6 +12,7 @@ export interface PickerCallbacks {
   getCurrentId: () => number | null;
   getViewerEmail: () => string;
   onPick: (person: Admin24Person) => void | Promise<void>;
+  onNeedPeople?: () => void;
 }
 
 export const PICKER_MARKER = "data-a24-picker";
@@ -30,6 +31,7 @@ const STYLES = `
 .a24-pk__empty { padding: 16px; text-align: center; opacity: .6; }
 .a24-pk__more { padding: 6px 14px; opacity: .6; font-size: 11px; }
 `;
+
 
 function sortPeople(people: Admin24Person[], viewerEmail: string): Admin24Person[] {
   const viewer = viewerEmail.toLocaleLowerCase();
@@ -59,6 +61,18 @@ export function createPicker(cb: PickerCallbacks): PickerHandle {
     if (!list || !countLine) return;
 
     const all = cb.getPeople();
+
+    if (all.length === 0) {
+      countLine.textContent = "Загрузка…";
+      list.replaceChildren();
+      const loading = document.createElement("div");
+      loading.className = "a24-pk__empty";
+      loading.textContent = "Загрузка списка…";
+      list.append(loading);
+      cb.onNeedPeople?.();
+      return;
+    }
+
     const currentId = cb.getCurrentId();
     const viewer = cb.getViewerEmail();
     const sorted = sortPeople(all, viewer);
@@ -73,64 +87,63 @@ export function createPicker(cb: PickerCallbacks): PickerHandle {
           });
 
     countLine.textContent =
-      tokens.length === 0 ? `Всего: ${filtered.length}` : `Найдено: ${filtered.length}`;
+    tokens.length === 0
+      ? `Всего: ${filtered.length}`
+      : `Найдено: ${filtered.length}`;
 
-    list.replaceChildren();
+  list.replaceChildren();
 
-    if (filtered.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "a24-pk__empty";
-      empty.textContent = "Никого не найдено";
-      list.append(empty);
-      return;
-    }
-
-    const slice = filtered.slice(0, MAX_VISIBLE);
-    for (const person of slice) {
-      const item = document.createElement("button");
-      item.type = "button";
-      item.className = "a24-pk__item";
-      item.setAttribute("role", "option");
-      item.textContent = person.fullName;
-      if (currentId != null && person.id === currentId) {
-        item.setAttribute("data-current", "1");
-        item.setAttribute("aria-selected", "true");
-      } else {
-        item.setAttribute("aria-selected", "false");
-      }
-
-      item.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        void Promise.resolve(cb.onPick(person)).catch((err) => {
-          console.error("[a24-enricher] picker onPick failed:", err);
-        });
-      });
-
-      list.append(item);
-    }
-
-    if (filtered.length > MAX_VISIBLE) {
-      const more = document.createElement("div");
-      more.className = "a24-pk__more";
-      more.textContent = `Показаны первые ${MAX_VISIBLE} из ${filtered.length}. Уточните запрос.`;
-      list.append(more);
-    }
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "a24-pk__empty";
+    empty.textContent = "Никого не найдено";
+    list.append(empty);
+    return;
   }
+
+  const slice = filtered.slice(0, MAX_VISIBLE);
+  for (const person of slice) {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "a24-pk__item";
+    item.setAttribute("role", "option");
+    item.textContent = person.fullName;
+    if (currentId != null && person.id === currentId) {
+      item.setAttribute("data-current", "1");
+      item.setAttribute("aria-selected", "true");
+    } else {
+      item.setAttribute("aria-selected", "false");
+    }
+
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      void Promise.resolve(cb.onPick(person)).catch((err) => {
+        console.error("[a24-enricher] picker onPick failed:", err);
+      });
+    });
+
+    list.append(item);
+  }
+
+  if (filtered.length > MAX_VISIBLE) {
+    const more = document.createElement("div");
+    more.className = "a24-pk__more";
+    more.textContent = `Показаны первые ${MAX_VISIBLE} из ${filtered.length}. Уточните запрос.`;
+    list.append(more);
+  }
+}
 
   function onInputKeydown(e: KeyboardEvent): void {
     if (e.key === "Escape") {
       e.preventDefault();
-      // Закроем нативное меню — пусть Vue сделает скрытие.
       input?.blur();
     }
     e.stopPropagation();
   }
 
   function mount(overlayContent: HTMLElement): void {
-    // Если уже смонтирован в другой узел — сначала снять.
     if (overlayEl && overlayEl !== overlayContent) unmount();
-    // Если уже смонтирован в этот же и root жив — ничего не делаем.
     if (overlayEl === overlayContent && root?.isConnected) return;
 
     overlayEl = overlayContent;
@@ -196,6 +209,7 @@ export function createPicker(cb: PickerCallbacks): PickerHandle {
     mount,
     unmount,
     isMountedFor: (el: HTMLElement) =>
-      overlayEl === el && !!root && root.isConnected,
+    overlayEl === el && !!root && root.isConnected,
+    refresh: render,
   };
 }

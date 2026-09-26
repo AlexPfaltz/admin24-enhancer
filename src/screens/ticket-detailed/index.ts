@@ -1,4 +1,5 @@
 import {
+  loadResponsibleList,
   readResponsibleList,
   readViewerEmail,
   type Admin24Person,
@@ -19,6 +20,38 @@ let picker: PickerHandle | null = null;
 let appObserver: MutationObserver | null = null;
 let overlayObserver: MutationObserver | null = null;
 let cachedCurrentId: number | null = null;
+let appSyncTimer: number | null = null;
+
+function scheduleAppSync(): void {
+  if (appSyncTimer != null) return;
+  appSyncTimer = window.setTimeout(() => {
+    appSyncTimer = null;
+
+    // Ответственного опрашиваем только если меню открыто (picker смонтирован).
+    const anyMounted = !!picker && scanOverlayFindPerformerMenu() != null;
+    if (anyMounted) {
+      void getCurrentPerformerId().then((id) => {
+        if (id != null) cachedCurrentId = id;
+      });
+    }
+
+    if (readResponsibleList().length === 0) {
+      void loadResponsibleList();
+    }
+  }, 150);
+}
+
+function scanOverlayFindPerformerMenu(): HTMLElement | null {
+  const overlay = document.querySelector("body > .v-overlay-container");
+  if (!overlay) return null;
+  const menus = overlay.querySelectorAll<HTMLElement>(
+    ".v-overlay__content.v-select__content"
+  );
+  for (const menu of menus) {
+    if (isPerformerMenu(menu) && isVisible(menu)) return menu;
+  }
+  return null;
+}
 
 function findExecutorLabelId(): string | null {
   const labels = document.querySelectorAll<HTMLLabelElement>(".v-label");
@@ -50,22 +83,27 @@ function ensurePicker(): PickerHandle {
     getCurrentId: () => cachedCurrentId,
     getViewerEmail: () => readViewerEmail(),
     onPick: pickPerson,
+    onNeedPeople: () => {
+      if (readResponsibleList().length === 0) {
+        void loadResponsibleList().then(() => picker?.refresh());
+      }
+    },
   });
   return picker;
 }
 
-/**
- * Проход по всем .v-select__content в overlay-container.
- * - Видимое меню «Ответственного» без живого root → mount.
- * - Скрытое/удалённое → unmount.
- */
 function scanOverlayContainer(): void {
   if (!fixEnabled) return;
 
   const overlay = document.querySelector("body > .v-overlay-container");
   if (!overlay) {
-    // Контейнер исчез — снимаем UI.
     picker?.unmount();
+    return;
+  }
+
+  const labelId = findExecutorLabelId();
+  if (!labelId) {
+    if (picker) picker.unmount();
     return;
   }
 
@@ -76,26 +114,28 @@ function scanOverlayContainer(): void {
   let anyPerformerMenuVisible = false;
 
   for (const menu of menus) {
-    if (!isPerformerMenu(menu)) continue;
+    if (!menu.classList.contains("v-select__content")) continue;
+    const list = menu.querySelector<HTMLElement>(".v-list");
+    if (list?.getAttribute("aria-labelledby") !== labelId) continue;
 
     const visible = isVisible(menu);
     if (!visible) {
-      // Скрытое меню «Ответственного» — снимаем UI, если он там висел.
       if (picker?.isMountedFor(menu)) picker.unmount();
       continue;
     }
 
     anyPerformerMenuVisible = true;
-    const p = ensurePicker();
 
-    // Если UI уже живой в этом узле — ничего не делаем.
+    if (readResponsibleList().length === 0) {
+      void loadResponsibleList().then(() => picker?.refresh());
+    }
+
+    const p = ensurePicker();
     if (p.isMountedFor(menu)) continue;
 
-    // Либо UI нет вообще, либо Vuetify перерисовал контейнер и наш root выпал.
     p.unmount();
     p.mount(menu);
 
-    // Обновляем currentId на случай свежей карточки.
     void getCurrentPerformerId().then((id) => {
       if (id != null) cachedCurrentId = id;
     });
@@ -103,7 +143,6 @@ function scanOverlayContainer(): void {
   }
 
   if (!anyPerformerMenuVisible) {
-    // Ни одного видимого меню «Ответственного» — страхуемся.
     if (picker) picker.unmount();
   }
 }
@@ -116,20 +155,17 @@ async function pickPerson(person: Admin24Person): Promise<void> {
     console.error("[a24-enricher] vue-bridge не подтвердил смену исполнителя");
   }
 
-  // Закрываем меню через Vue.
   await closePerformerMenu();
 
-  // Гарантированно скрываем нативное меню и снимаем наш UI:
-  // после смены ответственного Admin24 через Inertia перезагружает
-  // карточку, Vue-инстанс v-select уничтожается, и emit может не дойти.
-  // Поэтому вручную скрываем .v-overlay__content и очищаем наш DOM.
+  const labelId = findExecutorLabelId();
   const overlay = document.querySelector("body > .v-overlay-container");
-  if (overlay) {
+  if (overlay && labelId) {
     const menus = overlay.querySelectorAll<HTMLElement>(
       ".v-overlay__content.v-select__content"
     );
     for (const menu of menus) {
-      if (!isPerformerMenu(menu)) continue;
+      const list = menu.querySelector<HTMLElement>(".v-list");
+      if (list?.getAttribute("aria-labelledby") !== labelId) continue;
       menu.style.display = "none";
     }
   }
@@ -138,7 +174,6 @@ async function pickPerson(person: Admin24Person): Promise<void> {
 
 function ensureOverlayObserver(): void {
   if (overlayObserver) return;
-  // Следим за body целиком — сам .v-overlay-container может появиться позже.
   overlayObserver = new MutationObserver(() => {
     scanOverlayContainer();
   });
@@ -167,16 +202,16 @@ export async function initTicketDetailed(): Promise<void> {
   fixEnabled = await isExecutorSearchFixEnabled();
   if (!fixEnabled) return;
 
+  void loadResponsibleList();
+
   const appRoot = document.getElementById("app");
   if (!appRoot) {
     console.warn("[a24-enricher] #app not found; executor picker disabled");
     return;
   }
 
-  appObserver = new MutationObserver(() => {
-    void getCurrentPerformerId().then((id) => {
-      if (id != null) cachedCurrentId = id;
-    });
+ appObserver = new MutationObserver(() => {
+    scheduleAppSync();
   });
   appObserver.observe(appRoot, { childList: true, subtree: true });
 
