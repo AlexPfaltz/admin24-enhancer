@@ -8,31 +8,19 @@ const AVATAR_NAME_CLASS = "a24e-avatar-name";
 const AVATAR_NAME_MARKER = "data-a24e-avatar-name";
 const AVATAR_HIDDEN_CLASS = "a24e-avatar-hidden";
 
-/**
- * Кэш тикетов. Заполняется через refreshTicketLightCache() и
- * переиспользуется. Порядок вставки сохраняется (Map), поэтому
- * Array.from(cache.values())[i] соответствует cards[i] в DOM.
- */
 let cache: Map<string, TicketLight> = new Map();
 let cacheLoaded = false;
 let loadingPromise: Promise<void> | null = null;
 
-/** Включена ли функция в popup. Обновляется через setAvatarNamesEnabled(). */
 let enabled = true;
 let initialised = false;
 
-/** Инициализация подписки на флаг (один раз). */
 async function ensureInitialised(): Promise<void> {
   if (initialised) return;
   initialised = true;
   enabled = await isAvatarNamesEnabled();
 }
 
-/**
- * Обновляет кэш через bridge. Идемпотентно: параллельные вызовы
- * ждут один промис. До 10 попыток с паузой 200мс, если Vue ещё
- * не отрендерил props.tickets.
- */
 export function refreshTicketLightCache(): Promise<void> {
   if (loadingPromise) return loadingPromise;
 
@@ -52,13 +40,14 @@ export function refreshTicketLightCache(): Promise<void> {
       }
       await new Promise((r) => setTimeout(r, 200));
     }
+    cache = new Map();
+    cacheLoaded = false;
     loadingPromise = null;
   })();
 
   return loadingPromise;
 }
 
-/** Синхронизирует флаг с хранилищем. Вызывается из index.ts. */
 export function setAvatarNamesEnabledLocal(value: boolean): void {
   enabled = value;
   if (!value) {
@@ -66,10 +55,6 @@ export function setAvatarNamesEnabledLocal(value: boolean): void {
   }
 }
 
-/**
- * Убирает все наши подписи и возвращает аватарки на место.
- * Используется при выключении фичи в popup.
- */
 function removeAllNames(): void {
   document
     .querySelectorAll<HTMLElement>(`[${AVATAR_NAME_MARKER}]`)
@@ -83,10 +68,6 @@ function removeAllNames(): void {
     });
 }
 
-/**
- * Строит строку «Label: value».
- * label сокращаем: «Ответственный» → «Отв.».
- */
 function buildNameRow(label: string, name: string): HTMLElement {
   const span = document.createElement("span");
   span.className = AVATAR_NAME_CLASS;
@@ -104,15 +85,6 @@ function buildNameRow(label: string, name: string): HTMLElement {
   return span;
 }
 
-/**
- * Подставляет имена в блоки .ticket-property-with-avatar карточки.
- * Порядок блоков в .left-content:
- *   [0] — Ответственный
- *   [1] — Клиент
- * (проверено на живом Admin24).
- *
- * Идемпотентно: если уже подписано — не дублирует.
- */
 function attachNames(card: HTMLElement, ticket: TicketLight): void {
   const blocks = card.querySelectorAll<HTMLElement>(
     ".ticket-property-with-avatar"
@@ -138,14 +110,17 @@ function attachNames(card: HTMLElement, ticket: TicketLight): void {
   }
 }
 
-/**
- * Подписывает аватары именами в мобильной вёрстке списка заявок.
- * Сопоставление карточки с тикетом — по позиции: cards[i] ↔ tickets[i],
- * потому что Admin24 рендерит список в том же порядке, что и props.tickets.
- *
- * Идемпотентно — повторный проход не дублирует подписи.
- * Работает только если кэш загружен и функция включена; иначе — no-op.
- */
+function readTicketIdFromCard(card: HTMLElement): number | null {
+  const raw = card.getAttribute("data-ticket-id");
+  if (raw && /^\d+$/.test(raw)) return Number(raw);
+
+  const idEl = card.querySelector<HTMLElement>("[data-id]");
+  const dataId = idEl?.getAttribute("data-id");
+  if (dataId && /^\d+$/.test(dataId)) return Number(dataId);
+
+  return null;
+}
+
 export function enrichAvatarNames(list: HTMLElement): number {
   if (!enabled) return 0;
   if (!cacheLoaded) return 0;
@@ -157,7 +132,8 @@ export function enrichAvatarNames(list: HTMLElement): number {
   cards.forEach((card, i) => {
     if (!card.closest(".tickets-mobile-template")) return;
 
-    const ticket = ordered[i];
+    const id = readTicketIdFromCard(card);
+    const ticket = id != null ? cache.get(String(id)) ?? ordered[i] : ordered[i];
     if (!ticket) return;
 
     const before = card.querySelectorAll(`[${AVATAR_NAME_MARKER}]`).length;
