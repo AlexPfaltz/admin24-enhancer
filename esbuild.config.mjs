@@ -51,21 +51,11 @@ const entries = [
   },
   {
     ...common,
-    entryPoints: [path.join(SRC, "background/service-worker.ts")],
-    outfile: path.join(OUT, "background.js"),
-    format: "esm",
-  },
-  {
-    ...common,
     entryPoints: [path.join(SRC, "popup/popup.ts")],
     outfile: path.join(OUT, "popup.js"),
     format: "iife",
   },
   {
-    // Инжектится в page world. Собирается как IIFE — на странице
-    // Admin24 нет модульной системы, import-ы не сработают.
-    // Не минифицируется: хотим видеть осмысленные ошибки в консоли
-    // страницы (её пользователь видит через DevTools).
     ...common,
     entryPoints: [path.join(SRC, "screens/ticket-detailed/vue-bridge-injected.ts")],
     outfile: path.join(OUT, "vue-bridge-injected.js"),

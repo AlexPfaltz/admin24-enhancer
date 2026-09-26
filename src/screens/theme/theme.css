@@ -1852,3 +1852,101 @@ html[data-a24-theme] #loader .transition-loader-inner label::before {
   border-radius: 50% !important;
   box-shadow: none !important;
 }
+
+/* ============================================================
+   Пикер даты и времени внутри .admin-date-time-picker.
+   Это не Vuetify-компоненты — а сторонняя библиотека
+   vue-persian-datetime-picker (.vpd-*). У неё свои цвета,
+   жёстко зашитые. Перебиваем.
+   ============================================================ */
+
+html[data-a24-theme] .admin-date-time-picker .vpd-content,
+html[data-a24-theme] .admin-date-time-picker .vpd-body,
+html[data-a24-theme] .admin-date-time-picker .vpd-addon-list,
+html[data-a24-theme] .admin-date-time-picker .vpd-addon-list-content,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-column,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content,
+html[data-a24-theme] .admin-date-time-picker .vpd-date,
+html[data-a24-theme] .admin-date-time-picker .vpd-days,
+html[data-a24-theme] .admin-date-time-picker .vpd-days-header,
+html[data-a24-theme] .admin-date-time-picker .vpd-months,
+html[data-a24-theme] .admin-date-time-picker .vpd-years,
+html[data-a24-theme] .admin-date-time-picker .vpd-time,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-h,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-m,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-s,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-am-pm,
+html[data-a24-theme] .admin-date-time-picker .vpd-addon,
+html[data-a24-theme] .admin-date-time-picker .vpd-submit-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-cancel-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-input,
+html[data-a24-theme] .admin-date-time-picker .vpd-input-wrapper {
+  background-color: var(--a24-surface) !important;
+  color: var(--a24-text) !important;
+  border-color: var(--a24-border) !important;
+}
+
+/* Заголовок vpd-header — акцентный, как у v-picker__title. */
+html[data-a24-theme] .admin-date-time-picker .vpd-header {
+  background-color: var(--a24-accent-strong) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
+
+html[data-a24-theme] .admin-date-time-picker .vpd-header *,
+html[data-a24-theme] .admin-date-time-picker .vpd-date,
+html[data-a24-theme] .admin-date-time-picker .vpd-date > span {
+  color: var(--a24-accent-on, #fff) !important;
+}
+
+/* Стрелки вверх/вниз (svg) в колонках часов/минут. */
+html[data-a24-theme] .admin-date-time-picker .vpd-up-arrow-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-down-arrow-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-up-arrow-btn svg,
+html[data-a24-theme] .admin-date-time-picker .vpd-down-arrow-btn svg {
+  color: var(--a24-text-muted) !important;
+  fill: var(--a24-text-muted) !important;
+  stroke: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .admin-date-time-picker .vpd-up-arrow-btn:hover,
+html[data-a24-theme] .admin-date-time-picker .vpd-down-arrow-btn:hover {
+  background-color: var(--a24-surface-hover) !important;
+}
+
+/* Кнопки «ВЫБРАТЬ» и «Отмена». */
+html[data-a24-theme] .admin-date-time-picker .vpd-submit-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-submit-btn * {
+  color: var(--a24-accent) !important;
+  background-color: transparent !important;
+}
+
+html[data-a24-theme] .admin-date-time-picker .vpd-cancel-btn,
+html[data-a24-theme] .admin-date-time-picker .vpd-cancel-btn * {
+  color: var(--a24-text-muted) !important;
+  background-color: transparent !important;
+}
+
+/* Активная дата / выбранное время. */
+html[data-a24-theme] .admin-date-time-picker .vpd-day.is-selected,
+html[data-a24-theme] .admin-date-time-picker .vpd-day.is-today,
+html[data-a24-theme] .admin-date-time-picker .vpd-day.is-selected * {
+  background-color: var(--a24-accent) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
+
+html[data-a24-theme] .admin-date-time-picker .vpd-day:hover {
+  background-color: var(--a24-surface-hover) !important;
+}
+
+/* Текст в колонках часов и минут. */
+html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content * {
+  color: var(--a24-text) !important;
+}
+
+/* Разделитель «:» между часами и минутами. */
+html[data-a24-theme] .admin-date-time-picker .vpd-time-separator,
+html[data-a24-theme] .admin-date-time-picker .vpd-time-separator * {
+  color: var(--a24-text-muted) !important;
+}

@@ -2,42 +2,59 @@ import {
   findTicketsList,
   waitForAppRoot,
 } from "../../core/dom.js";
-import { setStylesEnabled } from "../../core/styles.js";
 import {
-  isEnabled,
+  setAvatarNamesStylesEnabled,
+  setFullTitleStylesEnabled,
+} from "../../core/styles.js";
+import {
+  isFullTitleEnabled,
   isSimplifyTitlesEnabled,
-  onEnabledChanged,
+  isAvatarNamesEnabled,
+  onFullTitleChanged,
   onSimplifyTitlesChanged,
+  onAvatarNamesChanged,
 } from "../../core/storage.js";
 import { enrichTicketCards, refreshTicketLightCache } from "./enrich.js";
+import { setAvatarNamesEnabledLocal } from "./enrich-avatars.js";
 import { initTheme } from "../theme/index.js";
 import { initTicketDetailed } from "../ticket-detailed/index.js";
 
-
 let appRoot: HTMLElement | null = null;
 let appObserver: MutationObserver | null = null;
+
 let listObserver: MutationObserver | null = null;
 let currentList: HTMLElement | null = null;
 
-let enabled = true;
+let mobileListObserver: MutationObserver | null = null;
+let currentMobileList: HTMLElement | null = null;
+
+/**
+ * Локальная копия флага «упрощать названия» — чтобы не читать
+ * storage на каждую мутацию DOM.
+ */
 let simplifyTitles = true;
 
+/**
+ * Прогоняет обогащение по обоим спискам — десктопному и мобильному.
+ * Если список отсутствует (например, на узком экране десктопного нет) —
+ * просто пропускается.
+ */
 function runEnrich(): void {
-  if (!enabled) return;
-  if (!currentList || !currentList.isConnected) return;
   if (document.visibilityState !== "visible") return;
-  enrichTicketCards(currentList, { simplifyTitles });
+
+  if (currentList && currentList.isConnected) {
+    enrichTicketCards(currentList, { simplifyTitles });
+  }
+  if (currentMobileList && currentMobileList.isConnected) {
+    enrichTicketCards(currentMobileList, { simplifyTitles });
+  }
 }
 
 function attachToList(list: HTMLElement): void {
-  if (listObserver) {
-    listObserver.disconnect();
-  }
+  if (listObserver) listObserver.disconnect();
   currentList = list;
 
-  listObserver = new MutationObserver(() => {
-    runEnrich();
-  });
+  listObserver = new MutationObserver(() => runEnrich());
   listObserver.observe(list, { childList: true, subtree: true });
 
   runEnrich();
@@ -49,17 +66,43 @@ function detachFromList(): void {
     listObserver = null;
   }
   currentList = null;
-  setStylesEnabled(false);
+}
+
+function attachToMobileList(list: HTMLElement): void {
+  if (mobileListObserver) mobileListObserver.disconnect();
+  currentMobileList = list;
+
+  mobileListObserver = new MutationObserver(() => runEnrich());
+  mobileListObserver.observe(list, { childList: true, subtree: true });
+
+  runEnrich();
+}
+
+function detachFromMobileList(): void {
+  if (mobileListObserver) {
+    mobileListObserver.disconnect();
+    mobileListObserver = null;
+  }
+  currentMobileList = null;
+}
+
+function findMobileTicketsList(
+  root: ParentNode = document
+): HTMLElement | null {
+  const m = root.querySelector<HTMLElement>(".tickets-mobile-template");
+  if (!m) return null;
+  return m.querySelector<HTMLElement>(".tickets-list");
 }
 
 function syncWithDom(): void {
-  if (!enabled) return;
-
   // Десктопный список.
   const list = findTicketsList(appRoot ?? document);
-  if (list && !list.closest(".tickets-mobile-template") && list !== currentList) {
+  if (
+    list &&
+    !list.closest(".tickets-mobile-template") &&
+    list !== currentList
+  ) {
     attachToList(list);
-    setStylesEnabled(true);
   } else if (!list && currentList) {
     detachFromList();
   }
@@ -68,21 +111,20 @@ function syncWithDom(): void {
   const mobile = findMobileTicketsList(appRoot ?? document);
   if (mobile && mobile !== currentMobileList) {
     attachToMobileList(mobile);
-    setStylesEnabled(true);
   } else if (!mobile && currentMobileList) {
     detachFromMobileList();
   }
 }
 
 async function activate(): Promise<void> {
-  enabled = await isEnabled();
-
-  if (!enabled) {
-    deactivate();
-    return;
-  }
+  // Читаем флаги и сразу включаем/выключаем соответствующие CSS-блоки.
+  const fullTitleOn = await isFullTitleEnabled();
+  setFullTitleStylesEnabled(fullTitleOn);
 
   simplifyTitles = await isSimplifyTitlesEnabled();
+
+  const avatarNamesOn = await isAvatarNamesEnabled();
+  setAvatarNamesStylesEnabled(avatarNamesOn);
 
   if (!appRoot) {
     appRoot = await waitForAppRoot();
@@ -95,85 +137,33 @@ async function activate(): Promise<void> {
   }
 
   if (!appObserver) {
-    appObserver = new MutationObserver(() => {
-      syncWithDom();
-    });
+    appObserver = new MutationObserver(() => syncWithDom());
     appObserver.observe(appRoot, { childList: true, subtree: true });
   }
 
   syncWithDom();
 
-  // Загружаем кэш тикетов для подписей под аватарами.
-  void refreshTicketLightCache().then(() => {
-    runEnrich();
-  });
+  // Кэш тикетов нужен для подписей под аватарами. Прогоняем
+  // обогащение по обоим спискам, когда кэш придёт.
+  void refreshTicketLightCache().then(() => runEnrich());
 }
 
-function deactivate(): void {
-  setStylesEnabled(false);
-  if (listObserver) { listObserver.disconnect(); listObserver = null; }
-  if (mobileListObserver) { mobileListObserver.disconnect(); mobileListObserver = null; }
-  currentList = null;
-  currentMobileList = null;
-}
-
-function findMobileTicketsList(
-  root: ParentNode = document
-): HTMLElement | null {
-  const m = root.querySelector<HTMLElement>(".tickets-mobile-template");
-  if (!m) return null;
-  return m.querySelector<HTMLElement>(".tickets-list");
-}
-
-let currentMobileList: HTMLElement | null = null;
-let mobileListObserver: MutationObserver | null = null;
-
-function runMobileEnrich(): void {
-  if (!enabled) return;
-  if (!currentMobileList || !currentMobileList.isConnected) return;
-  if (document.visibilityState !== "visible") return;
-  // Только подписи под аватарами — заголовки в мобильной вёрстке
-  // мы уже трогаем через CSS, JS для них не нужен.
-  enrichTicketCards(currentMobileList, { simplifyTitles });
-}
-
-function attachToMobileList(list: HTMLElement): void {
-  if (mobileListObserver) mobileListObserver.disconnect();
-  currentMobileList = list;
-
-  mobileListObserver = new MutationObserver(() => {
-    runMobileEnrich();
-  });
-  mobileListObserver.observe(list, { childList: true, subtree: true });
-
-  runMobileEnrich();
-}
-
-function detachFromMobileList(): void {
-  if (mobileListObserver) {
-    mobileListObserver.disconnect();
-    mobileListObserver = null;
-  }
-  currentMobileList = null;
-}
-
-onEnabledChanged((value) => {
-  enabled = value;
-  if (value) {
-    void activate();
-  } else {
-    deactivate();
-  }
+onFullTitleChanged((value) => {
+  setFullTitleStylesEnabled(value);
 });
 
 onSimplifyTitlesChanged((value) => {
   simplifyTitles = value;
-  if (value) runEnrich();
+  runEnrich();
+});
+
+onAvatarNamesChanged((value) => {
+  setAvatarNamesEnabledLocal(value);
+  setAvatarNamesStylesEnabled(value);
+  runEnrich();
 });
 
 void activate();
 
-// Тема и фикс «Исполнителя» не зависят от обогащения списка —
-// инициализируются параллельно.
 void initTheme();
 void initTicketDetailed();

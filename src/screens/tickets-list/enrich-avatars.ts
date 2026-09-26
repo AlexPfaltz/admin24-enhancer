@@ -1,20 +1,31 @@
-import { fetchTicketsLight, type TicketLight } from "../ticket-detailed/vue-bridge.js";
+import {
+  fetchTicketsLight,
+  type TicketLight,
+} from "../ticket-detailed/vue-bridge.js";
+import { isAvatarNamesEnabled } from "../../core/storage.js";
 
 const AVATAR_NAME_CLASS = "a24e-avatar-name";
 const AVATAR_NAME_MARKER = "data-a24e-avatar-name";
+const AVATAR_HIDDEN_CLASS = "a24e-avatar-hidden";
 
 /**
- * Кэш тикетов по id. Заполняется один раз при первом вызове
- * refreshTicketLightCache() и переиспользуется.
+ * Кэш тикетов. Заполняется через refreshTicketLightCache() и
+ * переиспользуется. Порядок вставки сохраняется (Map), поэтому
+ * Array.from(cache.values())[i] соответствует cards[i] в DOM.
  */
 let cache: Map<string, TicketLight> = new Map();
 let cacheLoaded = false;
 let loadingPromise: Promise<void> | null = null;
 
-/** "000 012 155" → "12155". */
-function normalizeNumber(s: string): string {
-  const digits = s.replace(/\D/g, "");
-  return digits.replace(/^0+/, "") || "0";
+/** Включена ли функция в popup. Обновляется через setAvatarNamesEnabled(). */
+let enabled = true;
+let initialised = false;
+
+/** Инициализация подписки на флаг (один раз). */
+async function ensureInitialised(): Promise<void> {
+  if (initialised) return;
+  initialised = true;
+  enabled = await isAvatarNamesEnabled();
 }
 
 /**
@@ -26,6 +37,7 @@ export function refreshTicketLightCache(): Promise<void> {
   if (loadingPromise) return loadingPromise;
 
   loadingPromise = (async () => {
+    await ensureInitialised();
     for (let attempt = 0; attempt < 10; attempt++) {
       const list = await fetchTicketsLight();
       if (list.length > 0) {
@@ -46,43 +58,69 @@ export function refreshTicketLightCache(): Promise<void> {
   return loadingPromise;
 }
 
-function lookupTicket(card: HTMLElement): TicketLight | null {
-  if (!cacheLoaded) return null;
-
-  // 1) По номеру заявки.
-  const numEl = card.querySelector<HTMLElement>("a.ticket-number");
-  if (numEl) {
-    const num = normalizeNumber((numEl.textContent ?? "").trim());
-    if (num) {
-      const hit = cache.get(num);
-      if (hit) return hit;
-    }
+/** Синхронизирует флаг с хранилищем. Вызывается из index.ts. */
+export function setAvatarNamesEnabledLocal(value: boolean): void {
+  enabled = value;
+  if (!value) {
+    removeAllNames();
   }
-
-  // 2) Fallback — по заголовку.
-  const titleEl = card.querySelector<HTMLElement>("a.ticket-title");
-  const title = (titleEl?.textContent ?? "").trim().replace(/\s+/g, " ");
-  if (!title) return null;
-
-  for (const t of cache.values()) {
-    if (!t.title) continue;
-    if (t.title.includes(title)) return t;
-  }
-  return null;
 }
 
+/**
+ * Убирает все наши подписи и возвращает аватарки на место.
+ * Используется при выключении фичи в popup.
+ */
+function removeAllNames(): void {
+  document
+    .querySelectorAll<HTMLElement>(`[${AVATAR_NAME_MARKER}]`)
+    .forEach((span) => {
+      const block = span.parentElement;
+      span.remove();
+      const avatar = block?.querySelector<HTMLElement>(
+        `.${AVATAR_HIDDEN_CLASS}`
+      );
+      if (avatar) avatar.classList.remove(AVATAR_HIDDEN_CLASS);
+    });
+}
+
+/**
+ * Строит строку «Label: value».
+ * label сокращаем: «Ответственный» → «Отв.».
+ */
+function buildNameRow(label: string, name: string): HTMLElement {
+  const span = document.createElement("span");
+  span.className = AVATAR_NAME_CLASS;
+  span.setAttribute(AVATAR_NAME_MARKER, "1");
+
+  const labelEl = document.createElement("span");
+  labelEl.className = `${AVATAR_NAME_CLASS}__label`;
+  labelEl.textContent = label + ": ";
+
+  const valueEl = document.createElement("span");
+  valueEl.className = `${AVATAR_NAME_CLASS}__value`;
+  valueEl.textContent = name;
+
+  span.append(labelEl, valueEl);
+  return span;
+}
+
+/**
+ * Подставляет имена в блоки .ticket-property-with-avatar карточки.
+ * Порядок блоков в .left-content:
+ *   [0] — Ответственный
+ *   [1] — Клиент
+ * (проверено на живом Admin24).
+ *
+ * Идемпотентно: если уже подписано — не дублирует.
+ */
 function attachNames(card: HTMLElement, ticket: TicketLight): void {
   const blocks = card.querySelectorAll<HTMLElement>(
     ".ticket-property-with-avatar"
   );
   if (blocks.length === 0) return;
 
-  // [label, value] в порядке следования блоков в .left-content:
-  //   [0] — Ответственный
-  //   [1] — Клиент
-  // (проверено на живом Admin24).
   const entries: Array<{ label: string; name: string | null }> = [
-    { label: "Ответственный", name: ticket.responsibleName },
+    { label: "Отв.", name: ticket.responsibleName },
     { label: "Клиент", name: ticket.applicantName },
   ];
 
@@ -93,54 +131,41 @@ function attachNames(card: HTMLElement, ticket: TicketLight): void {
     const block = blocks[i]!;
     if (block.querySelector(`[${AVATAR_NAME_MARKER}]`)) continue;
 
-    // Скрываем сам аватар — внутренний d-flex с иконкой.
     const avatar = block.querySelector<HTMLElement>(":scope > .d-flex");
-    if (avatar) avatar.classList.add("a24e-avatar-hidden");
+    if (avatar) avatar.classList.add(AVATAR_HIDDEN_CLASS);
 
-    // Внешний span — единая строка «Label: value».
-    const span = document.createElement("span");
-    span.className = AVATAR_NAME_CLASS;
-    span.setAttribute(AVATAR_NAME_MARKER, "1");
-
-    const label = document.createElement("span");
-    label.className = `${AVATAR_NAME_CLASS}__label`;
-    label.textContent = entry.label + ": ";
-
-    const value = document.createElement("span");
-    value.className = `${AVATAR_NAME_CLASS}__value`;
-    value.textContent = entry.name;
-
-    span.append(label, value);
-    block.append(span);
+    block.append(buildNameRow(entry.label, entry.name));
   }
 }
 
 /**
- * Обходит все карточки мобильной вёрстки и подписывает аватары именами.
- * Работает только если кэш загружен; иначе — no-op.
+ * Подписывает аватары именами в мобильной вёрстке списка заявок.
+ * Сопоставление карточки с тикетом — по позиции: cards[i] ↔ tickets[i],
+ * потому что Admin24 рендерит список в том же порядке, что и props.tickets.
  *
- * Возвращает число карточек, в которых что-то изменилось.
+ * Идемпотентно — повторный проход не дублирует подписи.
+ * Работает только если кэш загружен и функция включена; иначе — no-op.
  */
 export function enrichAvatarNames(list: HTMLElement): number {
+  if (!enabled) return 0;
   if (!cacheLoaded) return 0;
 
+  const ordered = Array.from(cache.values());
   const cards = list.querySelectorAll<HTMLElement>(".ticket");
   let touched = 0;
 
-  for (const card of cards) {
-    // Только карточки мобильной вёрстки. На десктопе Admin24 сам
-    // показывает имя рядом с аватаром — туда лезть не надо.
-    if (!card.closest(".tickets-mobile-template")) continue;
+  cards.forEach((card, i) => {
+    if (!card.closest(".tickets-mobile-template")) return;
 
-    const ticket = lookupTicket(card);
-    if (!ticket) continue;
+    const ticket = ordered[i];
+    if (!ticket) return;
 
     const before = card.querySelectorAll(`[${AVATAR_NAME_MARKER}]`).length;
     attachNames(card, ticket);
     const after = card.querySelectorAll(`[${AVATAR_NAME_MARKER}]`).length;
 
     if (after > before) touched++;
-  }
+  });
 
   return touched;
 }

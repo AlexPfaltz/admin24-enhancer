@@ -9,10 +9,9 @@
   <body>
     <main class="popup">
       <h1 class="popup__title">Admin24 Enhancer</h1>
-
       <label class="popup__row">
-        <input type="checkbox" id="enabled" />
-        <span>Включить перенос текста на бейдже</span>
+        <input type="checkbox" id="executor-fix" />
+        <span>Добавить поиск в поле «Ответственный»</span>
       </label>
 
       <label class="popup__row">
@@ -21,8 +20,13 @@
       </label>
 
       <label class="popup__row">
-        <input type="checkbox" id="executor-fix" />
-        <span>Добавить поиск в поле «Ответственный»</span>
+        <input type="checkbox" id="full-title" />
+        <span>Отображение полный заголовка в мобильной вёрстке (без обрезки)</span>
+      </label>
+
+      <label class="popup__row">
+        <input type="checkbox" id="avatar-names" />
+        <span>Имена вместо аватарок (мобильная вёрстка)</span>
       </label>
 
       <fieldset class="popup__fieldset">
@@ -48,7 +52,7 @@
       </fieldset>
 
       <p class="popup__hint" id="hint">
-        Изменения применяются на открытых вкладках Admin24 сразу.
+        Для корректной работы, желательно перезагрузить страницу Admin24.
       </p>
     </main>
     <script type="module" src="popup.js"></script>

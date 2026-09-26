@@ -1,22 +1,12 @@
 import { SELECTORS, MARKERS } from "../../core/selectors.js";
 import { findTicketCards } from "../../core/dom.js";
 import { simplifyTitle } from "./parse.js";
-import { enrichAvatarNames, refreshTicketLightCache } from "./enrich-avatars.js";
+import { enrichAvatarNames } from "./enrich-avatars.js";
 
 interface EnrichOptions {
   simplifyTitles: boolean;
 }
 
-/**
- * Помечает каждую карточку заявки и (опционально) упрощает заголовок —
- * убирает служебный префикс «Заявка с формы [ Форма ]».
- *
- * Дополнительно: подписывает аватары «Ответственный» и «Клиент»
- * именами в мобильной вёрстке (если кэш уже загружен).
- *
- * DOM не пересобираем: меняем textContent у существующего <span>,
- * чтобы не задеть обработчики кликов на <a>.
- */
 export function enrichTicketCards(
   list: HTMLElement,
   options: EnrichOptions
@@ -32,12 +22,18 @@ export function enrichTicketCards(
     const text = textNode.textContent?.trim();
     if (!text) continue;
 
-    if (options.simplifyTitles && !card.hasAttribute(MARKERS.titleCleaned)) {
-      const simplified = simplifyTitle(text);
-      if (simplified !== text) {
-        textNode.textContent = simplified;
+    const lastSimplified = card.getAttribute(MARKERS.titleOriginal);
+
+    if (options.simplifyTitles) {
+      // Упрощение включено.
+      if (text !== lastSimplified) {
+        const simplified = simplifyTitle(text);
+        if (simplified !== text) {
+          textNode.textContent = simplified;
+        }
+        card.setAttribute(MARKERS.titleOriginal, simplified);
       }
-      card.setAttribute(MARKERS.titleCleaned, "1");
+    } else {
     }
 
     if (!card.hasAttribute(MARKERS.enriched)) {
@@ -46,15 +42,9 @@ export function enrichTicketCards(
     }
   }
 
-  // Подписи под аватарами — только если кэш уже загружен.
-  // Если нет — просто пропуск; следующий вызов runEnrich подхватит.
   enrichAvatarNames(list);
 
   return touched;
 }
 
-/**
- * Инициализация кэша тикетов для подписей под аватарами.
- * Асинхронная, вызывается один раз при активации.
- */
-export { refreshTicketLightCache };
+export { refreshTicketLightCache } from "./enrich-avatars.js";

@@ -1,23 +1,22 @@
 import { MARKERS } from "./selectors.js";
 
-/**
- * Включает/выключает стили расширения одним переключателем на <html>.
- * Сами правила лежат в tickets-list.css и подключаются манифестом —
- * здесь только флаг, чтобы не вставлять <style> вручную и не бороться
- * с CSP страницы.
- */
-export function setStylesEnabled(enabled: boolean): void {
+function setAttr(name: string, value: string, on: boolean): void {
   const html = document.documentElement;
-  if (enabled) {
-    html.setAttribute(MARKERS.stylesOn, MARKERS.stylesOnValue);
-  } else {
-    html.removeAttribute(MARKERS.stylesOn);
-  }
+  if (on) html.setAttribute(name, value);
+  else html.removeAttribute(name);
 }
 
-export function areStylesEnabled(): boolean {
-  return (
-    document.documentElement.getAttribute(MARKERS.stylesOn) ===
-    MARKERS.stylesOnValue
-  );
+/** Включает/выключает перенос длинного заголовка в мобильной вёрстке. */
+export function setFullTitleStylesEnabled(enabled: boolean): void {
+  setAttr(MARKERS.fullTitleOn, MARKERS.fullTitleOnValue, enabled);
+}
+
+/** Включает/выключает стили для имён вместо аватарок. */
+export function setAvatarNamesStylesEnabled(enabled: boolean): void {
+  setAttr(MARKERS.avatarNamesOn, MARKERS.avatarNamesOnValue, enabled);
+}
+
+/** Включает/выключает стили, связанные с упрощением заголовков. */
+export function setSimplifyTitlesStylesEnabled(enabled: boolean): void {
+  setAttr(MARKERS.simplifyTitlesOn, MARKERS.simplifyTitlesOnValue, enabled);
 }

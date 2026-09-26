@@ -6,37 +6,12 @@ import {
   type ThemeMode,
 } from "./theme-meta.js";
 
-const KEY_ENRICH = "enrichTicketsListEnabled";
+const KEY_FULL_TITLE = "fullTitleEnabled";
 const KEY_SIMPLIFY = "simplifyTitlesEnabled";
 const KEY_EXECUTOR_FIX = "executorSearchFixEnabled";
 const KEY_THEME_MODE = "themeMode";
 const KEY_THEME_ID = "themeId";
 
-export async function isEnabled(): Promise<boolean> {
-  const data = await browser.storage.local.get(KEY_ENRICH);
-  const value = data[KEY_ENRICH];
-  return value === undefined ? true : value === true;
-}
-
-export async function setEnabled(enabled: boolean): Promise<void> {
-  await browser.storage.local.set({ [KEY_ENRICH]: enabled });
-}
-
-export function onEnabledChanged(
-  handler: (enabled: boolean) => void
-): () => void {
-  const listener = (
-    changes: Record<string, browser.Storage.StorageChange>,
-    area: string
-  ) => {
-    if (area !== "local") return;
-    const change = changes[KEY_ENRICH];
-    if (!change) return;
-    handler(change.newValue === true);
-  };
-  browser.storage.onChanged.addListener(listener);
-  return () => browser.storage.onChanged.removeListener(listener);
-}
 
 export async function isSimplifyTitlesEnabled(): Promise<boolean> {
   const data = await browser.storage.local.get(KEY_SIMPLIFY);
@@ -144,6 +119,61 @@ export function onUserThemeIdChanged(
     if (!change) return;
     const v = change.newValue;
     handler(isUserThemeId(v) ? v : DEFAULT_USER_THEME_ID);
+  };
+  browser.storage.onChanged.addListener(listener);
+  return () => browser.storage.onChanged.removeListener(listener);
+}
+
+const KEY_AVATAR_NAMES = "avatarNamesEnabled";
+
+export async function isAvatarNamesEnabled(): Promise<boolean> {
+  const data = await browser.storage.local.get(KEY_AVATAR_NAMES);
+  const value = data[KEY_AVATAR_NAMES];
+  return value === undefined ? true : value === true;
+}
+
+export async function setAvatarNamesEnabled(enabled: boolean): Promise<void> {
+  await browser.storage.local.set({ [KEY_AVATAR_NAMES]: enabled });
+}
+
+export function onAvatarNamesChanged(
+  handler: (enabled: boolean) => void
+): () => void {
+  const listener = (
+    changes: Record<string, browser.Storage.StorageChange>,
+    area: string
+  ) => {
+    if (area !== "local") return;
+    const change = changes[KEY_AVATAR_NAMES];
+    if (!change) return;
+    handler(change.newValue === true);
+  };
+  browser.storage.onChanged.addListener(listener);
+  return () => browser.storage.onChanged.removeListener(listener);
+}
+
+
+export async function isFullTitleEnabled(): Promise<boolean> {
+  const data = await browser.storage.local.get(KEY_FULL_TITLE);
+  const value = data[KEY_FULL_TITLE];
+  return value === undefined ? true : value === true;
+}
+
+export async function setFullTitleEnabled(enabled: boolean): Promise<void> {
+  await browser.storage.local.set({ [KEY_FULL_TITLE]: enabled });
+}
+
+export function onFullTitleChanged(
+  handler: (enabled: boolean) => void
+): () => void {
+  const listener = (
+    changes: Record<string, browser.Storage.StorageChange>,
+    area: string
+  ) => {
+    if (area !== "local") return;
+    const change = changes[KEY_FULL_TITLE];
+    if (!change) return;
+    handler(change.newValue === true);
   };
   browser.storage.onChanged.addListener(listener);
   return () => browser.storage.onChanged.removeListener(listener);

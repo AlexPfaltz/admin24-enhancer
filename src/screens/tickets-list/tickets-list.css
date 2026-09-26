@@ -1,16 +1,5 @@
-/*
- * Стили расширения Admin24 Ticket Enricher.
- * Активируются атрибутом [data-a24-styles="on"] на <html>,
- * который ставит content script. Так их можно включать/выключать
- * из popup без перезагрузки страницы.
- *
- * !important здесь оправдан: правила Vuetify-утилиты .text-truncate
- * имеют ту же специфичность (один класс), и мы не хотим зависеть
- * от порядка подключения сторонних CSS.
- */
-
 /* Разрешаем flex-родителю переносить строки и снимаем фиксированную ширину */
-html[data-a24-styles="on"] .tickets-list .ticket .ticket-header-top {
+html[data-a24-full-title="on"] .tickets-list .ticket .ticket-header-top {
   flex-wrap: wrap;
   width: auto;
   max-width: none;
@@ -19,7 +8,7 @@ html[data-a24-styles="on"] .tickets-list .ticket .ticket-header-top {
 }
 
 /* Снимаем однострочную обрезку с самого заголовка */
-html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title {
+html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title {
   display: block;
   white-space: normal !important;
   overflow: visible !important;
@@ -31,7 +20,7 @@ html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title {
 }
 
 /* Внутренний span не должен наследовать nowrap от Vuetify */
-html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title > span {
+html[data-a24-full-title="on"] .tickets-list .ticket a.ticket-title > span {
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
@@ -39,24 +28,24 @@ html[data-a24-styles="on"] .tickets-list .ticket a.ticket-title > span {
 }
 
 /* Правая часть (дата) не должна сжиматься и ломаться */
-html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content {
+html[data-a24-full-title="on"] .tickets-list .ticket .ticket-top-content {
   align-items: flex-start;
 }
 
-html[data-a24-styles="on"] .tickets-list .ticket .ticket-top-content .right-content {
+html[data-a24-full-title="on"] .tickets-list .ticket .ticket-top-content .right-content {
   flex: 0 0 auto;
 }
 
+/* --- Подписи «Отв.: Имя» / «Клиент: Имя» вместо аватара в мобильной вёрстке. --- */
+
 /* Скрываем аватар-иконку. */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-hidden {
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-hidden {
   display: none !important;
 }
 
-/* .left-content в мобильной карточке — вертикальный список.
-   Admin24 по умолчанию выстраивает содержимое .left-content в строку;
-   для наших двух подписей это даёт «Ответственный … Клиент …» в одну
-   строку. Явно переводим в колонку. */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .left-content {
+/* .left-content в мобильной карточке — вертикальный список: два блока
+   (Ответственный, Клиент) идут друг под другом, каждый на своей строке. */
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .left-content {
   display: flex !important;
   flex-direction: column !important;
   gap: 4px !important;
@@ -64,16 +53,18 @@ html[data-a24-styles="on"] .tickets-mobile-template .ticket .left-content {
 }
 
 /* Блок с аватаром и именем. */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .ticket-property-with-avatar {
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .ticket-property-with-avatar {
   display: block !important;
   width: 100%;
   min-width: 0;
 }
 
-/* Строка «Label: value». */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name {
+/* Строка «Label: value». Ширина ограничена, чтобы не наезжать на иконки
+   справа — те, что в правой части карточки (интеграции, статус). */
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-name {
   display: block;
   width: 100%;
+  min-width: 0;
   color: var(--a24-text, #1a1d21);
   font-size: 13px;
   line-height: 1.4;
@@ -82,13 +73,11 @@ html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name {
   text-overflow: ellipsis;
 }
 
-/* Label — приглушённый. */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name__label {
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-name__label {
   color: var(--a24-text-muted, #5a626c);
   font-weight: 500;
 }
 
-/* Value — обычный. */
-html[data-a24-styles="on"] .tickets-mobile-template .ticket .a24e-avatar-name__value {
+html[data-a24-avatar-names="on"] .tickets-mobile-template .ticket .a24e-avatar-name__value {
   color: var(--a24-text, #1a1d21);
 }

@@ -1,12 +1,14 @@
 import {
   getThemeMode,
   getUserThemeId,
-  isEnabled,
   isExecutorSearchFixEnabled,
+  isFullTitleEnabled,
   isSimplifyTitlesEnabled,
-  setEnabled,
+  isAvatarNamesEnabled,
   setExecutorSearchFixEnabled,
+  setFullTitleEnabled,
   setSimplifyTitlesEnabled,
+  setAvatarNamesEnabled,
   setThemeMode,
   setUserThemeId,
 } from "../core/storage.js";
@@ -18,8 +20,9 @@ import {
   type ThemeMode,
 } from "../core/theme-meta.js";
 
-const enabledCheckbox = document.getElementById("enabled") as HTMLInputElement | null;
+const fullTitleCheckbox = document.getElementById("full-title") as HTMLInputElement | null;
 const simplifyCheckbox = document.getElementById("simplify-titles") as HTMLInputElement | null;
+const avatarNamesCheckbox = document.getElementById("avatar-names") as HTMLInputElement | null;
 const executorFixCheckbox = document.getElementById("executor-fix") as HTMLInputElement | null;
 const hint = document.getElementById("hint") as HTMLParagraphElement | null;
 const themeIdSelect = document.getElementById("theme-id") as HTMLSelectElement | null;
@@ -34,11 +37,15 @@ function syncSelectVisibility(mode: ThemeMode): void {
 }
 
 async function init(): Promise<void> {
-  if (enabledCheckbox) {
-    enabledCheckbox.checked = await isEnabled();
-    enabledCheckbox.addEventListener("change", async () => {
-      await setEnabled(enabledCheckbox.checked);
-      setHint(enabledCheckbox.checked ? "Обогащение включено." : "Обогащение выключено.");
+  if (fullTitleCheckbox) {
+    fullTitleCheckbox.checked = await isFullTitleEnabled();
+    fullTitleCheckbox.addEventListener("change", async () => {
+      await setFullTitleEnabled(fullTitleCheckbox.checked);
+      setHint(
+        fullTitleCheckbox.checked
+          ? "Полный заголовок включён."
+          : "Полный заголовок выключен."
+      );
     });
   }
 
@@ -48,8 +55,20 @@ async function init(): Promise<void> {
       await setSimplifyTitlesEnabled(simplifyCheckbox.checked);
       setHint(
         simplifyCheckbox.checked
-          ? "Упрощение названий включено (применится к новым карточкам)."
-          : "Упрощение названий выключено (уже упрощённые заголовки вернутся после перезагрузки)."
+          ? "Упрощение названий включено."
+          : "Упрощение названий выключено."
+      );
+    });
+  }
+
+  if (avatarNamesCheckbox) {
+    avatarNamesCheckbox.checked = await isAvatarNamesEnabled();
+    avatarNamesCheckbox.addEventListener("change", async () => {
+      await setAvatarNamesEnabled(avatarNamesCheckbox.checked);
+      setHint(
+        avatarNamesCheckbox.checked
+          ? "Имена вместо аватарок включены."
+          : "Имена вместо аватарок выключены."
       );
     });
   }
@@ -60,8 +79,8 @@ async function init(): Promise<void> {
       await setExecutorSearchFixEnabled(executorFixCheckbox.checked);
       setHint(
         executorFixCheckbox.checked
-          ? "Поиск в «Исполнителе»: исправлен (нужен ввод в поле)."
-          : "Поиск в «Исполнителе»: стоковое поведение Admin24."
+          ? "Поиск в «Ответственном»: исправлен."
+          : "Поиск в «Ответственном»: стоковое поведение."
       );
     });
   }
@@ -71,9 +90,7 @@ async function init(): Promise<void> {
     setHint("Не удалось загрузить список тем (themes.json).");
     syncSelectVisibility("fixed");
     if (themeIdSelect) themeIdSelect.disabled = true;
-    for (const radio of themeModeRadios) {
-      radio.disabled = true;
-    }
+    for (const radio of themeModeRadios) radio.disabled = true;
     return;
   }
 
