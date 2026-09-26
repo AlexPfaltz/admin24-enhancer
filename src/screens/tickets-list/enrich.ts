@@ -18,22 +18,24 @@ export function enrichTicketCards(
     const title = card.querySelector<HTMLAnchorElement>(SELECTORS.title);
     if (!title) continue;
 
-    const textNode = title.querySelector<HTMLElement>(SELECTORS.titleText) ?? title;
-    const text = textNode.textContent?.trim();
-    if (!text) continue;
-
-    const lastSimplified = card.getAttribute(MARKERS.titleOriginal);
+    const textNode =
+      title.querySelector<HTMLElement>(SELECTORS.titleText) ?? title;
+    const currentText = textNode.textContent?.trim();
+    if (!currentText) continue;
+    if (!card.hasAttribute(MARKERS.titleSource)) {
+      card.setAttribute(MARKERS.titleSource, currentText);
+    }
+    const source = card.getAttribute(MARKERS.titleSource) ?? currentText;
 
     if (options.simplifyTitles) {
-      // Упрощение включено.
-      if (text !== lastSimplified) {
-        const simplified = simplifyTitle(text);
-        if (simplified !== text) {
-          textNode.textContent = simplified;
-        }
-        card.setAttribute(MARKERS.titleOriginal, simplified);
+      const simplified = simplifyTitle(source);
+      if (currentText !== simplified) {
+        textNode.textContent = simplified;
       }
     } else {
+      if (currentText !== source) {
+        textNode.textContent = source;
+      }
     }
 
     if (!card.hasAttribute(MARKERS.enriched)) {

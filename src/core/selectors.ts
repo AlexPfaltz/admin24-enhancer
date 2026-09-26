@@ -11,8 +11,6 @@ export const MARKERS = {
   fullTitleOnValue: "on",
   avatarNamesOn: "data-a24-avatar-names",
   avatarNamesOnValue: "on",
-  simplifyTitlesOn: "data-a24-simplify-titles",
-  simplifyTitlesOnValue: "on",
   enriched: "data-a24-enriched",
-  titleOriginal: "data-a24-title-original"
+  titleSource: "data-a24-title-source",
 } as const;
