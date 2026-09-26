@@ -37,3 +37,23 @@ Admin24. Делает интерфейс удобнее: полные назва
 ```bash
 npm install
 npm run build
+```
+
+## Скриншоты
+
+### Десктоп
+
+![Список заявок](screenshots/desktop-tickets.png)
+![Дашборд](screenshots/desktop-dashboard.png)
+
+### Мобильная вёрстка
+
+<p align="center">
+  <img src="screenshots/mobile-tickets.png" width="300" alt="Список заявок (мобильная вёрстка)">
+  <img src="screenshots/android-menu1.png" width="300" alt="Меню расширения на Android">
+  <img src="screenshots/android-menu2.png" width="300" alt="Выбор тем в меню расширения на Android">
+</p>
+
+### Общие для всех платформ
+
+![Выпадающий список для выбора ответственного](screenshots/piker.png)
