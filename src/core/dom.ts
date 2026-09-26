@@ -56,33 +56,3 @@ export function waitForAppRoot(
     const timer = setTimeout(() => finish(null), timeoutMs);
   });
 }
-
-/**
- * Дождаться, пока в DOM появится контейнер списка заявок.
- */
-export function waitForTicketsList(
-  root: ParentNode = document.body,
-  timeoutMs = 15000
-): Promise<HTMLElement | null> {
-  const existing = findTicketsList(root);
-  if (existing) return Promise.resolve(existing);
-
-  return new Promise((resolve) => {
-    let done = false;
-    const finish = (el: HTMLElement | null) => {
-      if (done) return;
-      done = true;
-      observer.disconnect();
-      clearTimeout(timer);
-      resolve(el);
-    };
-
-    const observer = new MutationObserver(() => {
-      const el = findTicketsList(root);
-      if (el) finish(el);
-    });
-    observer.observe(root as Node, { childList: true, subtree: true });
-
-    const timer = setTimeout(() => finish(null), timeoutMs);
-  });
-}

@@ -88,7 +88,7 @@ async function init(): Promise<void> {
   const loaded = await loadThemes();
   if (!loaded) {
     setHint("Не удалось загрузить список тем (themes.json).");
-    syncSelectVisibility("fixed");
+    syncSelectVisibility("native");
     if (themeIdSelect) themeIdSelect.disabled = true;
     for (const radio of themeModeRadios) radio.disabled = true;
     return;

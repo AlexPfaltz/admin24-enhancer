@@ -15,8 +15,3 @@ export function setFullTitleStylesEnabled(enabled: boolean): void {
 export function setAvatarNamesStylesEnabled(enabled: boolean): void {
   setAttr(MARKERS.avatarNamesOn, MARKERS.avatarNamesOnValue, enabled);
 }
-
-/** Включает/выключает стили, связанные с упрощением заголовков. */
-export function setSimplifyTitlesStylesEnabled(enabled: boolean): void {
-  setAttr(MARKERS.simplifyTitlesOn, MARKERS.simplifyTitlesOnValue, enabled);
-}
