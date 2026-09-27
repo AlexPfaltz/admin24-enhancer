@@ -14,6 +14,7 @@ let loadingPromise: Promise<void> | null = null;
 
 let enabled = true;
 let initialised = false;
+let lastTicketIdsSignature = "";
 
 async function ensureInitialised(): Promise<void> {
   if (initialised) return;
@@ -29,6 +30,14 @@ export function refreshTicketLightCache(): Promise<void> {
     for (let attempt = 0; attempt < 10; attempt++) {
       const list = await fetchTicketsLight();
       if (list.length > 0) {
+        const sig = list.map((t) => t.id).sort((a, b) => a - b).join(",");
+
+        if (sig === lastTicketIdsSignature && cacheLoaded) {
+          loadingPromise = null;
+          return;
+        }
+        lastTicketIdsSignature = sig;
+
         const next = new Map<string, TicketLight>();
         for (const t of list) {
           if (typeof t.id === "number") next.set(String(t.id), t);
@@ -42,10 +51,18 @@ export function refreshTicketLightCache(): Promise<void> {
     }
     cache = new Map();
     cacheLoaded = false;
+    lastTicketIdsSignature = "";
     loadingPromise = null;
   })();
 
   return loadingPromise;
+}
+
+export function invalidateTicketLightCache(): void {
+  cache = new Map();
+  cacheLoaded = false;
+  lastTicketIdsSignature = "";
+  loadingPromise = null;
 }
 
 export function setAvatarNamesEnabledLocal(value: boolean): void {
@@ -56,16 +73,7 @@ export function setAvatarNamesEnabledLocal(value: boolean): void {
 }
 
 function removeAllNames(): void {
-  document
-    .querySelectorAll<HTMLElement>(`[${AVATAR_NAME_MARKER}]`)
-    .forEach((span) => {
-      const block = span.parentElement;
-      span.remove();
-      const avatar = block?.querySelector<HTMLElement>(
-        `.${AVATAR_HIDDEN_CLASS}`
-      );
-      if (avatar) avatar.classList.remove(AVATAR_HIDDEN_CLASS);
-    });
+  document.querySelectorAll<HTMLElement>(".ticket").forEach(clearAvatarNames);
 }
 
 function buildNameRow(label: string, name: string): HTMLElement {
@@ -110,13 +118,27 @@ function attachNames(card: HTMLElement, ticket: TicketLight): void {
   }
 }
 
-function readTicketIdFromCard(card: HTMLElement): number | null {
-  const raw = card.getAttribute("data-ticket-id");
-  if (raw && /^\d+$/.test(raw)) return Number(raw);
+export function readTicketIdFromCard(card: HTMLElement): number | null {
+  // 1. ПК-вёрстка — .ticket-number.
+  const num = card.querySelector<HTMLElement>(".ticket-number");
+  if (num) {
+    const digits = (num.textContent ?? "").replace(/\D/g, "");
+    if (digits) {
+      const id = Number(digits);
+      if (Number.isFinite(id)) return id;
+    }
+  }
 
-  const idEl = card.querySelector<HTMLElement>("[data-id]");
-  const dataId = idEl?.getAttribute("data-id");
-  if (dataId && /^\d+$/.test(dataId)) return Number(dataId);
+  // 2. Мобильная вёрстка — id в начале текста заголовка.
+  const title = card.querySelector<HTMLAnchorElement>("a.ticket-title");
+  if (title) {
+    const text = title.textContent?.trim() ?? "";
+    const m = /^(\d+)\s*:/.exec(text);
+    if (m) {
+      const id = Number(m[1]);
+      if (Number.isFinite(id)) return id;
+    }
+  }
 
   return null;
 }
@@ -125,16 +147,17 @@ export function enrichAvatarNames(list: HTMLElement): number {
   if (!enabled) return 0;
   if (!cacheLoaded) return 0;
 
-  const ordered = Array.from(cache.values());
   const cards = list.querySelectorAll<HTMLElement>(".ticket");
   let touched = 0;
 
-  cards.forEach((card, i) => {
-    if (!card.closest(".tickets-mobile-template")) return;
-
-    const id = readTicketIdFromCard(card);
-    const ticket = id != null ? cache.get(String(id)) ?? ordered[i] : ordered[i];
-    if (!ticket) return;
+  cards.forEach((card) => {
+  if (!card.closest(".tickets-mobile-template")) return;
+  const id = readTicketIdFromCard(card);
+  if (id == null) return;
+  const ticket = cache.get(String(id));
+  if (!ticket) {
+    return;
+  }
 
     const before = card.querySelectorAll(`[${AVATAR_NAME_MARKER}]`).length;
     attachNames(card, ticket);
@@ -144,4 +167,13 @@ export function enrichAvatarNames(list: HTMLElement): number {
   });
 
   return touched;
+}
+
+export function clearAvatarNames(card: HTMLElement): void {
+  card.querySelectorAll<HTMLElement>(`[${AVATAR_NAME_MARKER}]`).forEach((span) => {
+    const block = span.parentElement;
+    span.remove();
+    const avatar = block?.querySelector<HTMLElement>(`.${AVATAR_HIDDEN_CLASS}`);
+    if (avatar) avatar.classList.remove(AVATAR_HIDDEN_CLASS);
+  });
 }

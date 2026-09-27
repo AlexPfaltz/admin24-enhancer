@@ -26,6 +26,15 @@ let currentList: HTMLElement | null = null;
 let mobileListObserver: MutationObserver | null = null;
 let currentMobileList: HTMLElement | null = null;
 let simplifyTitles = true;
+let refreshDebounceTimer: number | null = null;
+
+function scheduleTicketCacheRefresh(): void {
+  if (refreshDebounceTimer != null) return;
+  refreshDebounceTimer = window.setTimeout(() => {
+    refreshDebounceTimer = null;
+    void refreshTicketLightCache().then(() => runEnrich());
+  }, 300);
+}
 
 function runEnrich(): void {
   if (document.visibilityState !== "visible") return;
@@ -42,10 +51,14 @@ function attachToList(list: HTMLElement): void {
   if (listObserver) listObserver.disconnect();
   currentList = list;
 
-  listObserver = new MutationObserver(() => runEnrich());
+  listObserver = new MutationObserver(() => {
+    runEnrich();
+    scheduleTicketCacheRefresh();
+  });
   listObserver.observe(list, { childList: true, subtree: true });
 
   runEnrich();
+  scheduleTicketCacheRefresh();
 }
 
 function detachFromList(): void {
@@ -60,10 +73,14 @@ function attachToMobileList(list: HTMLElement): void {
   if (mobileListObserver) mobileListObserver.disconnect();
   currentMobileList = list;
 
-  mobileListObserver = new MutationObserver(() => runEnrich());
+  mobileListObserver = new MutationObserver(() => {
+    runEnrich();
+    scheduleTicketCacheRefresh();
+  });
   mobileListObserver.observe(list, { childList: true, subtree: true });
 
   runEnrich();
+  scheduleTicketCacheRefresh();
 }
 
 function detachFromMobileList(): void {
@@ -105,7 +122,6 @@ function syncWithDom(): void {
 }
 
 async function activate(): Promise<void> {
-  // Читаем флаги и сразу включаем/выключаем соответствующие CSS-блоки.
   const fullTitleOn = await isFullTitleEnabled();
   setFullTitleStylesEnabled(fullTitleOn);
 

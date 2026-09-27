@@ -119,10 +119,8 @@ async function run() {
       const ctx = await context(cfg);
       await ctx.watch();
     }
-    console.log(`[${TARGET}] watching...`);
   } else {
     await Promise.all(entries.map((cfg) => build(cfg)));
-    console.log(`[${TARGET}] build done → dist/${TARGET}`);
   }
 }
 
