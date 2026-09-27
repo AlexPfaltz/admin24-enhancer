@@ -2,7 +2,7 @@
   "name": "admin24-enhancer",
   "version": "0.5.3",
   "private": true,
-  "description": "Admin24 interface improvements: full ticket names in the mobile layout, search in the 'Assignee' field, and visual themes.",
+  "description": "Admin24 interface improvements: readable ticket titles, names instead of avatars, assignee search, and visual themes.",
   "type": "module",
   "scripts": {
     "clean": "rimraf dist",
