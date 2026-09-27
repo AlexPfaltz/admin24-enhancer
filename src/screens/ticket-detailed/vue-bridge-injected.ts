@@ -70,7 +70,7 @@
     return el?._vnode?.component ?? null;
   }
 
-   function collectBigSelects(root: VueInstance): VSelectMatch[] {
+   function collectPerformerSelects(root: VueInstance): VSelectMatch[] {
     const found: VSelectMatch[] = [];
     const seen = new Set<VueVNode>();
 
@@ -113,7 +113,7 @@
     const root = getRootInstance();
     if (!root) return null;
 
-    const all = collectBigSelects(root);
+    const all = collectPerformerSelects(root);
     return (
       all.find((s) => s.label === "Ответственный" && !Array.isArray(s.modelValue)) ??
       all.find((s) => s.label === "Ответственный") ??
