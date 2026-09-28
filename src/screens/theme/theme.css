@@ -360,14 +360,14 @@ html[data-a24-theme] .v-btn--variant-flat:not([class*="bg-"]) {
 }
 
 html[data-a24-theme] .v-btn.bg-success {
-  background: rgb(var(--v-theme-success)) !important;
-  color: #fff !important;
+  background: var(--a24-success) !important;
+  color: var(--a24-accent-on, #fff) !important;
 }
 
 html[data-a24-theme] .v-btn.bg-error,
 html[data-a24-theme] .v-btn.bg-red {
-  background: rgb(var(--v-theme-error, 229, 57, 53)) !important;
-  color: #fff !important;
+  background: var(--a24-danger) !important;
+  color: var(--a24-accent-on, #fff) !important;
 }
 
 html[data-a24-theme] .v-btn.bg-primary,
@@ -566,11 +566,13 @@ html[data-a24-theme-kind="dark"] {
   --v-activated-opacity: 0.12 !important;
   --v-pressed-opacity: 0.16 !important;
   --v-dragged-opacity: 0.08 !important;
+}
 
-  --v-theme-kbd: 66, 66, 66;
-  --v-theme-on-kbd: 255, 255, 255;
-  --v-theme-code: 52, 52, 52;
-  --v-theme-on-code: 204, 204, 204;
+html[data-a24-theme] {
+  --v-theme-kbd: var(--rgb-surface-2);
+  --v-theme-on-kbd: var(--rgb-text);
+  --v-theme-code: var(--rgb-surface-2);
+  --v-theme-on-code: var(--rgb-text);
 }
 
 html[data-a24-theme-kind="dark"] .v-theme--myCustomLightTheme,
@@ -632,10 +634,10 @@ html[data-a24-theme] [style*="color:#000"] {
   color: var(--a24-text) !important;
 }
 
-html[data-a24-theme-kind="dark"] .text-black,
-html[data-a24-theme-kind="dark"] .text-black > *,
-html[data-a24-theme-kind="dark"] a.text-black,
-html[data-a24-theme-kind="dark"] a.text-black > span {
+html[data-a24-theme] .text-black,
+html[data-a24-theme] .text-black > *,
+html[data-a24-theme] a.text-black,
+html[data-a24-theme] a.text-black > span {
   color: var(--a24-text) !important;
 }
 
@@ -751,19 +753,14 @@ html[data-a24-theme] .comments-container .comment-container {
   position: relative;
 }
 
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(222, 250, 213)"],
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(222,250,213)"] {
-  background: var(--a24-status-ok) !important;
+html[data-a24-theme] .comments-container .comment-container[style*="rgb(222, 250, 213)"] {
+  background: color-mix(in srgb, var(--a24-success) 15%, var(--a24-bg) 85%) !important;
 }
-
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(232, 255, 255)"],
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(232,255,255)"] {
-  background: var(--a24-status-own) !important;
+html[data-a24-theme] .comments-container .comment-container[style*="rgb(232, 255, 255)"] {
+  background: color-mix(in srgb, var(--a24-accent) 12%, var(--a24-bg) 88%) !important;
 }
-
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(245, 245, 245)"],
-html[data-a24-theme-kind="dark"] .comments-container .comment-container[style*="rgb(245,245,245)"] {
-  background: var(--a24-status-neutral) !important;
+html[data-a24-theme] .comments-container .comment-container[style*="rgb(245, 245, 245)"] {
+  background: var(--a24-bg-elevated) !important;
 }
 
 html[data-a24-theme] .comments-container .comment-container.left::before,
