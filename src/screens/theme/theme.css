@@ -446,119 +446,40 @@ html[data-a24-theme] .tickets-list {
 }
 
 html[data-a24-theme] .ticket {
+  --card-bg: var(--a24-surface);
+  background: var(--card-bg) !important;
   color: var(--a24-text);
-  border: 1px solid var(--a24-border);
-  border-radius: 6px;
+  border: 1px solid var(--a24-border) !important;
+  border-radius: 6px !important;
 }
 
-html[data-a24-theme-kind="dark"] .ticket[style*="#E79668"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#e79668"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#FF8A7A"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#ff8a7a"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#FF6656"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#ff6656"] {
-  background: color-mix(in srgb, var(--a24-danger) 35%, var(--a24-surface) 65%) !important;
+html[data-a24-theme] .ticket[style*="#8EE7EB"] { 
+  --card-bg: color-mix(in srgb, #8EE7EB 32%, var(--a24-bg) 68%); 
+}
+html[data-a24-theme] .ticket[style*="#FDF304"] { 
+  --card-bg: color-mix(in srgb, var(--a24-warning) 20%, var(--a24-bg) 80%); 
+}
+html[data-a24-theme] .ticket[style*="#BDE2AC"] { 
+  --card-bg: color-mix(in srgb, var(--a24-success) 18%, var(--a24-bg) 82%); 
+}
+html[data-a24-theme] .ticket[style*="#E8FFFF"] { 
+  --card-bg: color-mix(in srgb, var(--a24-accent) 10%, var(--a24-bg) 90%); 
+}
+html[data-a24-theme] .ticket[style*="#F5F5F5"] { 
+  --card-bg: var(--a24-bg-elevated); 
+}
+html[data-a24-theme] .ticket[style*="#FFFFFF"] { 
+  --card-bg: var(--a24-surface); 
+}
+html[data-a24-theme] .ticket[style*="#E79668"],
+html[data-a24-theme] .ticket[style*="#FF8A7A"],
+html[data-a24-theme] .ticket[style*="#FF6656"] { 
+  --card-bg: color-mix(in srgb, var(--a24-danger) 18%, var(--a24-bg) 82%); 
 }
 
-html[data-a24-theme-kind="dark"] .ticket[style*="#FDF304"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#fdf304"] {
-  background: color-mix(in srgb, var(--a24-warning) 35%, var(--a24-surface) 65%) !important;
-}
-
-html[data-a24-theme-kind="dark"] .ticket[style*="#8EE7EB"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#8ee7eb"] {
-  background: var(--a24-status-new) !important;
-}
-
-html[data-a24-theme-kind="dark"] .ticket[style*="#BDE2AC"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#bde2ac"] {
-  background: var(--a24-status-ok) !important;
-}
-
-html[data-a24-theme-kind="dark"] .ticket[style*="#FFFFFF"],
-html[data-a24-theme-kind="dark"] .ticket[style*="#ffffff"] {
-  background: var(--a24-surface) !important;
-}
-
-html[data-a24-theme-kind="dark"] .ticket[style*="--b"]:not([style*="#E79668"]):not([style*="#e79668"]):not([style*="#FF8A7A"]):not([style*="#ff8a7a"]):not([style*="#FF6656"]):not([style*="#ff6656"]):not([style*="#FDF304"]):not([style*="#fdf304"]):not([style*="#8EE7EB"]):not([style*="#8ee7eb"]):not([style*="#BDE2AC"]):not([style*="#bde2ac"]):not([style*="#FFFFFF"]):not([style*="#ffffff"]) {
-  background: var(--a24-surface-2) !important;
-}
-
-html[data-a24-theme-kind="dark"] .ticket,
-html[data-a24-theme-kind="dark"] .ticket * {
-  color: var(--a24-text);
-}
-
-html[data-a24-theme-kind="dark"] .ticket a.ticket-title,
-html[data-a24-theme-kind="dark"] .ticket a.ticket-title > span,
-html[data-a24-theme-kind="dark"] .ticket a.ticket-number {
-  color: var(--a24-accent) !important;
-}
-
-html[data-a24-theme-kind="light"] .ticket[style*="#8EE7EB"],
-html[data-a24-theme-kind="light"] .ticket[style*="#8ee7eb"] {
-  background: color-mix(in srgb, #8EE7EB 40%, var(--a24-surface) 60%) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#FDF304"],
-html[data-a24-theme-kind="light"] .ticket[style*="#fdf304"] {
-  background: color-mix(in srgb, #FDF304 40%, var(--a24-surface) 60%) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#BDE2AC"],
-html[data-a24-theme-kind="light"] .ticket[style*="#bde2ac"] {
-  background: color-mix(in srgb, #BDE2AC 40%, var(--a24-surface) 60%) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#E8FFFF"],
-html[data-a24-theme-kind="light"] .ticket[style*="#e8ffff"] {
-  background: color-mix(in srgb, #E8FFFF 55%, var(--a24-surface) 45%) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#F5F5F5"],
-html[data-a24-theme-kind="light"] .ticket[style*="#f5f5f5"] {
-  background: var(--a24-status-neutral) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#FFFFFF"],
-html[data-a24-theme-kind="light"] .ticket[style*="#ffffff"] {
-  background: var(--a24-surface) !important;
-}
-html[data-a24-theme-kind="light"] .ticket[style*="#E79668"],
-html[data-a24-theme-kind="light"] .ticket[style*="#e79668"],
-html[data-a24-theme-kind="light"] .ticket[style*="#FF8A7A"],
-html[data-a24-theme-kind="light"] .ticket[style*="#ff8a7a"],
-html[data-a24-theme-kind="light"] .ticket[style*="#FF6656"],
-html[data-a24-theme-kind="light"] .ticket[style*="#ff6656"] {
-  background: color-mix(in srgb, var(--a24-danger) 30%, var(--a24-surface) 70%) !important;
-}
-
-html[data-a24-theme="light-warm"] .ticket[style*="#8EE7EB"],
-html[data-a24-theme="light-warm"] .ticket[style*="#8ee7eb"] {
-  background: #f3e9dc !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#FDF304"],
-html[data-a24-theme="light-warm"] .ticket[style*="#fdf304"] {
-  background: #f9e7b8 !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#BDE2AC"],
-html[data-a24-theme="light-warm"] .ticket[style*="#bde2ac"] {
-  background: #e4e6c6 !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#E8FFFF"],
-html[data-a24-theme="light-warm"] .ticket[style*="#e8ffff"] {
-  background: #f5efe4 !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#F5F5F5"],
-html[data-a24-theme="light-warm"] .ticket[style*="#f5f5f5"] {
-  background: #f6efe4 !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#FFFFFF"],
-html[data-a24-theme="light-warm"] .ticket[style*="#ffffff"] {
-  background: var(--a24-surface) !important;
-}
-html[data-a24-theme="light-warm"] .ticket[style*="#E79668"],
-html[data-a24-theme="light-warm"] .ticket[style*="#e79668"],
-html[data-a24-theme="light-warm"] .ticket[style*="#FF8A7A"],
-html[data-a24-theme="light-warm"] .ticket[style*="#ff8a7a"],
-html[data-a24-theme="light-warm"] .ticket[style*="#FF6656"],
-html[data-a24-theme="light-warm"] .ticket[style*="#ff6656"] {
-  background: #f7dcc4 !important; /* тёплый персиковый — «просрочено» */
+html[data-a24-theme] .ticket .v-chip--variant-tonal,
+html[data-a24-theme] .ticket .v-chip--variant-flat {
+  background: color-mix(in srgb, var(--card-bg) 92%, black 8%) !important;
 }
 
 html[data-a24-theme] .ticket .ticket-date,
