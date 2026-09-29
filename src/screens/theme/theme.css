@@ -315,15 +315,28 @@ html[data-a24-theme] .v-chip__content {
   color: inherit !important;
 }
 
-html[data-a24-theme] .v-chip.bg-primary,
+html[data-a24-theme] .v-chip.bg-primary {
+  background: var(--a24-accent-strong) !important;
+  color: var(--a24-accent-on) !important;
+}
 html[data-a24-theme] .v-chip.bg-success,
+html[data-a24-theme] .v-chip.bg-green {
+  background: var(--a24-success) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
 html[data-a24-theme] .v-chip.bg-error,
+html[data-a24-theme] .v-chip.bg-red {
+  background: var(--a24-danger) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
 html[data-a24-theme] .v-chip.bg-warning,
-html[data-a24-theme] .v-chip.bg-info,
-html[data-a24-theme] .v-chip.bg-red,
-html[data-a24-theme] .v-chip.bg-green,
 html[data-a24-theme] .v-chip.bg-orange {
-  color: #fff;
+  background: var(--a24-warning) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
+html[data-a24-theme] .v-chip.bg-info {
+  background: var(--a24-info) !important;
+  color: var(--a24-accent-on, #fff) !important;
 }
 
 html[data-a24-theme] .v-chip[style*="background-color"] {
@@ -367,6 +380,16 @@ html[data-a24-theme] .v-btn.bg-success {
 html[data-a24-theme] .v-btn.bg-error,
 html[data-a24-theme] .v-btn.bg-red {
   background: var(--a24-danger) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
+
+html[data-a24-theme] .v-btn.bg-warning {
+  background: var(--a24-warning) !important;
+  color: var(--a24-accent-on, #fff) !important;
+}
+
+html[data-a24-theme] .v-btn.bg-info {
+  background: var(--a24-info) !important;
   color: var(--a24-accent-on, #fff) !important;
 }
 
@@ -999,8 +1022,8 @@ html[data-a24-theme] .toolbar-panel .v-input__control {
 }
 
 html[data-a24-theme] .toolbar-panel .v-btn.bg-success {
-  background: rgb(var(--v-theme-success)) !important;
-  color: #fff !important;
+  background: var(--a24-success) !important;
+  color: var(--a24-accent-on, #fff) !important;
 }
 
 html[data-a24-theme] .toolbar-panel .v-btn--variant-elevated:not([class*="bg-"]) {
@@ -1671,4 +1694,14 @@ html[data-a24-theme] .admin-date-time-picker .vpd-time-column-content * {
 html[data-a24-theme] .admin-date-time-picker .vpd-time-separator,
 html[data-a24-theme] .admin-date-time-picker .vpd-time-separator * {
   color: var(--a24-text-muted) !important;
+}
+
+html[data-a24-theme] .bg-primary {
+  background: var(--a24-accent) !important;
+  color: var(--a24-accent-on) !important;
+}
+
+html[data-a24-theme] .bg-red {
+  background: var(--a24-danger) !important;
+  color: var(--a24-accent-on, #fff) !important;
 }
