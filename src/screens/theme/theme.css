@@ -454,7 +454,7 @@ html[data-a24-theme] .ticket {
 }
 
 html[data-a24-theme] .ticket[style*="#8EE7EB"] { 
-  --card-bg: color-mix(in srgb, #8EE7EB 32%, var(--a24-bg) 68%); 
+  --card-bg: color-mix(in srgb, #8EE7EB 20%, var(--a24-bg) 80%); 
 }
 html[data-a24-theme] .ticket[style*="#FDF304"] { 
   --card-bg: color-mix(in srgb, var(--a24-warning) 20%, var(--a24-bg) 80%); 
