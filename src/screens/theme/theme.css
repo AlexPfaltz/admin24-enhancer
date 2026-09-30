@@ -144,18 +144,6 @@ html[data-a24-theme] .v-progress-circular[style*="color"] {
   color: var(--a24-accent) !important;
 }
 
-html[data-a24-theme] .v-overlay-container .v-overlay__content,
-html[data-a24-theme] .v-overlay-container .v-menu > .v-overlay__content,
-html[data-a24-theme] .v-overlay-container .v-overlay__content > .v-sheet,
-html[data-a24-theme] .v-overlay-container .v-overlay__content > .v-list,
-html[data-a24-theme] .v-overlay-container .v-overlay__content > div,
-html[data-a24-theme] .v-overlay-container .v-list,
-html[data-a24-theme] .v-overlay-container .v-sheet {
-  background: var(--a24-surface) !important;
-  color: var(--a24-text) !important;
-  border-color: var(--a24-border) !important;
-}
-
 html[data-a24-theme] .v-overlay-container .v-list-item,
 html[data-a24-theme] .v-overlay-container .v-list-item__content,
 html[data-a24-theme] .v-overlay-container .v-list-item-title,
@@ -1709,4 +1697,13 @@ html[data-a24-theme] .bg-red {
 html[data-a24-theme-kind="dark"] .reports canvas,
 html[data-a24-theme-kind="dark"] canvas {
   filter: invert(1) hue-rotate(180deg) brightness(1.3) contrast(1.1);
+}
+
+html[data-a24-theme] .v-overlay__content.v-overlay__content:has(.v-progress-circular) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
