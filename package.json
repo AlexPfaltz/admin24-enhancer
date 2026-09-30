@@ -1,6 +1,6 @@
 {
   "name": "admin24-enhancer",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "private": true,
   "description": "Admin24 interface improvements: readable ticket titles, names instead of avatars, assignee search, and visual themes.",
   "type": "module",
