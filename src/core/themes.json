@@ -68,36 +68,69 @@
       }
     },
 
-    "dark": {
-      "label": "Тёмная",
-      "kind": "dark",
+    "light-grey": {
+      "label": "Светлая серая",
+      "kind": "light",
       "colors": {
-        "bg": "#121417",
-        "bgElevated": "#1a1d21",
-        "bgSunken": "#0e1013",
-        "surface": "#1e2226",
-        "surface2": "#242a30",
-        "surfaceHover": "#2a3138",
-        "border": "#2c3238",
-        "borderStrong": "#3a4149",
-        "text": "#e6e8eb",
-        "textMuted": "#9aa1a9",
-        "textDim": "#6c727a",
-        "accent": "#6aa9ff",
-        "accentSoft": "#2a3550",
-        "accentOnSoft": "#b8c8e8",
-        "accentOn": "#121417",
-        "danger": "#ff6b6b",
-        "success": "#57c98a",
-        "warning": "#f0a742",
-        "info": "#6aa9ff"
+        "bg": "#e8ebef",
+        "bgElevated": "#f2f4f7",
+        "bgSunken": "#dfe3e8",
+        "surface": "#f2f4f7",
+        "surface2": "#e8ebef",
+        "surfaceHover": "#dde2e8",
+        "border": "#c9cfd6",
+        "borderStrong": "#9ba3ae",
+        "text": "#23272e",
+        "textMuted": "#5b626c",
+        "textDim": "#8a919c",
+        "accent": "#4a5da8",
+        "accentSoft": "#dfe3f0",
+        "accentOnSoft": "#293566",
+        "accentOn": "#ffffff",
+        "danger": "#b83a3a",
+        "success": "#3d7a48",
+        "warning": "#b37216",
+        "info": "#3a76a8"
       },
       "statuses": {
-        "new": "#2a5b66",
-        "warning": "#5c5215",
-        "ok": "#2d4a2c",
-        "own": "#1e3a55",
-        "neutral": "#242a30"
+        "new": "#8EE7EB",
+        "warning": "#FDF304",
+        "ok": "#BDE2AC",
+        "own": "#E8FFFF",
+        "neutral": "#F5F5F5"
+      }
+    },
+
+    "dark-mono": {
+      "label": "Тёмная монохром",
+      "kind": "dark",
+      "colors": {
+        "bg": "#000000",
+        "bgElevated": "#0d0d0d",
+        "bgSunken": "#000000",
+        "surface": "#141414",
+        "surface2": "#1f1f1f",
+        "surfaceHover": "#2b2b2b",
+        "border": "#2b2b2b",
+        "borderStrong": "#484848",
+        "text": "#f0f0f0",
+        "textMuted": "#a0a0a0",
+        "textDim": "#666666",
+        "accent": "#f0f0f0",
+        "accentSoft": "#2b2b2b",
+        "accentOnSoft": "#ffffff",
+        "accentOn": "#000000",
+        "danger": "#ff5757",
+        "success": "#5fcd5f",
+        "warning": "#e0b040",
+        "info": "#7ac4ff"
+      },
+      "statuses": {
+        "new": "#1a2a3a",
+        "warning": "#3d3a15",
+        "ok": "#1a3a1a",
+        "own": "#2a2a2a",
+        "neutral": "#1f1f1f"
       }
     },
 
@@ -134,40 +167,6 @@
       }
     },
 
-    "dark-focus": {
-      "label": "Тёмная фокусная",
-      "kind": "dark",
-      "colors": {
-        "bg": "#0a0a0a",
-        "bgElevated": "#121212",
-        "bgSunken": "#050505",
-        "surface": "#161616",
-        "surface2": "#1e1e1e",
-        "surfaceHover": "#262626",
-        "border": "#2a2a2a",
-        "borderStrong": "#3d3d3d",
-        "text": "#f5f5f5",
-        "textMuted": "#9e9e9e",
-        "textDim": "#6b6b6b",
-        "accent": "#b6ff3a",
-        "accentSoft": "#2a3d10",
-        "accentOnSoft": "#d6ff8a",
-        "accentOn": "#0a0a0a",
-        "danger": "#ff5a5a",
-        "success": "#b6ff3a",
-        "warning": "#ffcc33",
-        "info": "#5ad1ff"
-      },
-      "statuses": {
-        "new": "#1f3b3a",
-        "warning": "#4a3d0c",
-        "ok": "#2c3f14",
-        "own": "#122c40",
-        "neutral": "#1e1e1e"
-      }
-    },
-
-
     "dark-purple": {
       "label": "Тёмная фиолетовая",
       "kind": "dark",
@@ -198,6 +197,72 @@
         "ok": "#2c4a3a",
         "own": "#33285a",
         "neutral": "#33303f"
+      }
+    },
+
+     "dark-blue": {
+      "label": "Тёмно-синяя",
+      "kind": "dark",
+      "colors": {
+        "bg": "#0d1117",
+        "bgElevated": "#161b22",
+        "bgSunken": "#010409",
+        "surface": "#161b22",
+        "surface2": "#21262d",
+        "surfaceHover": "#30363d",
+        "border": "#30363d",
+        "borderStrong": "#484f58",
+        "text": "#e6edf3",
+        "textMuted": "#8b949e",
+        "textDim": "#6e7681",
+        "accent": "#58a6ff",
+        "accentSoft": "#15355c",
+        "accentOnSoft": "#a5d6ff",
+        "accentOn": "#0d1117",
+        "danger": "#f85149",
+        "success": "#3fb950",
+        "warning": "#d29922",
+        "info": "#58a6ff"
+      },
+      "statuses": {
+        "new": "#1e3a5f",
+        "warning": "#4a3d0c",
+        "ok": "#1a3a22",
+        "own": "#1a2b45",
+        "neutral": "#21262d"
+      }
+    },
+
+    "blue": {
+      "label": "Синяя ",
+      "kind": "dark",
+      "colors": {
+        "bg": "#0e1726",
+        "bgElevated": "#152033",
+        "bgSunken": "#0a1220",
+        "surface": "#1a273d",
+        "surface2": "#22304a",
+        "surfaceHover": "#2a3a56",
+        "border": "#2a3a56",
+        "borderStrong": "#3d5070",
+        "text": "#d8e2f0",
+        "textMuted": "#8899b5",
+        "textDim": "#5f7089",
+        "accent": "#5aa9e6",
+        "accentSoft": "#1e3a55",
+        "accentOnSoft": "#a8d4f0",
+        "accentOn": "#0e1726",
+        "danger": "#ff7a7a",
+        "success": "#5fc98d",
+        "warning": "#f0b050",
+        "info": "#5aa9e6"
+      },
+      "statuses": {
+        "new": "#1f3a55",
+        "warning": "#5c4a1a",
+        "ok": "#1f4a3a",
+        "own": "#1a3555",
+        "neutral": "#1a273d"
       }
     }
   }
