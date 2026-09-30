@@ -1705,3 +1705,8 @@ html[data-a24-theme] .bg-red {
   background: var(--a24-danger) !important;
   color: var(--a24-accent-on, #fff) !important;
 }
+
+html[data-a24-theme-kind="dark"] .reports canvas,
+html[data-a24-theme-kind="dark"] canvas {
+  filter: invert(1) hue-rotate(180deg) brightness(1.3) contrast(1.1);
+}
