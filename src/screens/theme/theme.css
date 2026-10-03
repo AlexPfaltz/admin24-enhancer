@@ -1707,3 +1707,12 @@ html[data-a24-theme] .v-overlay__content.v-overlay__content:has(.v-progress-circ
   outline: none !important;
   box-shadow: none !important;
 }
+
+html[data-a24-theme] .a-context-menu-list,
+html[data-a24-theme] .a-context-menu-list * {
+  color: var(--a24-text) !important;
+}
+
+html[data-a24-theme] .a-context-menu-list .a-context-menu-server-select__search input::placeholder {
+  color: var(--a24-text-dim) !important;
+}
